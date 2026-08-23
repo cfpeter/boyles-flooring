@@ -1,0 +1,71 @@
+---
+import '../styles/v3.css';
+import Rail from '../components/v3/Rail.astro';
+import Footer from '../components/v3/Footer.astro';
+import { site } from '../data/site';
+
+interface Props { title: string; description?: string; }
+const { title, description = site.description } = Astro.props;
+const asset = (p: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${p}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | {site.name} — Design C</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0C0F12" />
+    <link rel="icon" href={asset('/favicon.png')} type="image/png" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&display=swap"
+    />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+
+  <body>
+    <a href="#c-main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-brass focus:px-5 focus:py-3 focus:text-sm focus:text-void">
+      Skip to content
+    </a>
+
+    <Rail />
+
+    <!-- Rail is 6rem wide on xl, so the document is inset to match -->
+    <div class="xl:pl-24">
+      <main id="c-main"><slot /></main>
+      <Footer />
+    </div>
+
+    <a
+      href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/designs`}
+      class="fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 border border-brass bg-void/90 px-4 py-2.5 text-[0.6rem] uppercase tracking-[0.2em] text-brass backdrop-blur transition-colors hover:bg-brass hover:text-void"
+    >
+      <span class="h-1 w-1 rounded-full bg-brass"></span>
+      Design C — compare all
+    </a>
+
+    <script>
+      const els = document.querySelectorAll('.c-rise');
+      if (els.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('lit');
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: '0px 0px -5% 0px', threshold: 0.04 }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

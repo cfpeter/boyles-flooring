@@ -79,6 +79,41 @@ To serve this at `www.boyles-flooring.com` instead:
    **Settings → Pages**.
 4. Update the `Sitemap:` line in `public/robots.txt`.
 
+## Design directions (client review)
+
+Four complete, working directions built from the same real content and the same
+showroom photography, so the comparison is about design rather than copy.
+
+| | Direction | Palette | Typefaces | Path |
+| --- | --- | --- | --- | --- |
+| A | Warm classical | sand / bark / oak | Libre Baskerville + Almarai | `/` |
+| B | Swiss editorial | paper / ink / burnt orange | Archivo + Inter | `/v2` |
+| C | Dark luxury gallery | near-black / brass / cream | Cormorant Garamond + Jost | `/v3` |
+| D | Bright bento | linen / forest / terracotta | Bricolage Grotesque + DM Sans | `/v4` |
+
+**Start at `/designs`** — a chooser that links to all four. Every alternate
+direction carries a badge in the corner to get back to it.
+
+Design A is the production candidate and is the only one indexed by search
+engines; B, C and D are marked `noindex` while they are review mock-ups.
+
+Each direction owns its stylesheet, layout and components
+(`src/styles/v2.css`, `src/layouts/V2Layout.astro`, `src/components/v2/`, …)
+with namespaced design tokens, so they cannot bleed into one another. All four
+read the same `src/data/site.ts` and `src/data/content.ts`, so a phone-number
+change updates every version at once.
+
+To drop a direction, delete its four paths — for example:
+
+```bash
+rm -rf src/pages/v4 src/components/v4 src/layouts/V4Layout.astro src/styles/v4.css
+```
+
+> **Note on Tailwind v4:** its automatic source detection skips anything git
+> ignores. Do not add a design's source folders to `.gitignore` or
+> `.git/info/exclude` — Tailwind silently stops generating that design's utility
+> classes and the page renders unstyled.
+
 ## Structure
 
 ```

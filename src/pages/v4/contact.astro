@@ -1,0 +1,230 @@
+---
+import V4Layout from '../../layouts/V4Layout.astro';
+import { Image } from 'astro:assets';
+import { site } from '../../data/site';
+import { categories, storefrontImage } from '../../data/content';
+const formReady = site.web3formsKey !== 'YOUR_ACCESS_KEY_HERE';
+---
+
+<V4Layout title="Visit" description={`Visit the Boyles Flooring showroom at ${site.address.full}, or call ${site.phone}.`}>
+  <!-- ══════════ BENTO HEAD ══════════ -->
+  <section class="d-wrap pt-4">
+    <div class="grid gap-3 md:grid-cols-12">
+      <div class="d-tile d-in bg-forest p-8 text-linen md:col-span-7 md:p-12">
+        <p class="d-chip bg-linen/12 text-honey">Get in touch</p>
+        <h1 class="mt-6 font-bento text-[13vw] font-semibold leading-[0.92] sm:text-6xl lg:text-7xl">
+          Let's talk<br /><span class="text-honey">floors.</span>
+        </h1>
+        <p class="mt-7 max-w-md text-[0.95rem] leading-relaxed text-linen/70">
+          Call, email, or send the form. If you already know roughly what you are
+          after, tell us the rooms and we will come back with options.
+        </p>
+      </div>
+
+      <div class="grid gap-3 md:col-span-5">
+        <a href={site.phoneHref} class="d-tile d-in block bg-rust p-8 text-white transition-transform hover:-translate-y-0.5" style="--d:80ms">
+          <p class="text-xs font-semibold uppercase tracking-widest text-white/70">Call us</p>
+          <p class="mt-3 font-bento text-3xl font-semibold">{site.phone}</p>
+        </a>
+        <a href={site.emailHref} class="d-tile d-in block bg-honey p-8 transition-transform hover:-translate-y-0.5" style="--d:140ms">
+          <p class="text-xs font-semibold uppercase tracking-widest text-forest/60">Email us</p>
+          <p class="mt-3 break-all font-bento text-lg font-semibold">{site.email}</p>
+        </a>
+        <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="d-tile d-in block bg-shell p-8 transition-transform hover:-translate-y-0.5" style="--d:200ms">
+          <p class="text-xs font-semibold uppercase tracking-widest text-forest/60">Visit us</p>
+          <p class="mt-3 text-sm leading-relaxed">{site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FORM ══════════ -->
+  <section class="d-section">
+    <div class="d-wrap grid gap-3 lg:grid-cols-12">
+      <div class="d-tile d-in bg-shell p-8 md:p-12 lg:col-span-7">
+        <h2 class="font-bento text-3xl font-semibold sm:text-4xl">Tell us about the project.</h2>
+        <p class="mt-4 max-w-md text-sm leading-relaxed text-fog">
+          Which rooms, roughly how much area, and when you would like it done.
+        </p>
+
+        {!formReady && (
+          <div class="d-tile mt-8 border-l-4 border-rust bg-linen p-5 text-sm leading-relaxed">
+            <p class="font-semibold">Setup needed before this form can send.</p>
+            <p class="mt-2 text-fog">
+              Create a free access key at <strong>web3forms.com</strong> using {site.email},
+              then paste it into <code class="rounded bg-shell px-1.5 py-0.5 text-xs">src/data/site.ts</code>.
+              Until then the form is disabled rather than silently losing messages.
+            </p>
+          </div>
+        )}
+
+        <form id="d-form" class="mt-10 grid gap-5 sm:grid-cols-2" novalidate>
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="New enquiry from boyles-flooring.com" />
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="d-f">
+            <label for="d-name">Name *</label>
+            <input id="d-name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+            <p class="d-e" data-e="name"></p>
+          </div>
+          <div class="d-f">
+            <label for="d-phone">Phone *</label>
+            <input id="d-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(661) 000-0000" />
+            <p class="d-e" data-e="phone"></p>
+          </div>
+          <div class="d-f sm:col-span-2">
+            <label for="d-email">Email *</label>
+            <input id="d-email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+            <p class="d-e" data-e="email"></p>
+          </div>
+          <div class="d-f sm:col-span-2">
+            <label for="d-int">Interested in</label>
+            <select id="d-int" name="interest">
+              <option value="">Not sure yet — help me choose</option>
+              {categories.map((c) => <option value={c.name}>{c.name}</option>)}
+              <option value="Installation only">Installation only</option>
+            </select>
+          </div>
+          <div class="d-f sm:col-span-2">
+            <label for="d-msg">Project details *</label>
+            <textarea id="d-msg" name="message" rows="4" required placeholder="Kitchen and hallway, about 400 sq ft, hoping for next month."></textarea>
+            <p class="d-e" data-e="message"></p>
+          </div>
+          <div class="sm:col-span-2">
+            <button type="submit" id="d-submit" class="d-btn d-btn-rust w-full sm:w-auto" disabled={!formReady}>
+              <span id="d-label">Send message</span>
+            </button>
+            <p id="d-status" class="mt-4 text-sm" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+
+      <div class="grid gap-3 lg:col-span-5">
+        <div class="d-tile d-in bg-graphite p-8 text-linen" style="--d:80ms">
+          <p class="text-xs font-semibold uppercase tracking-widest text-honey">Opening hours</p>
+          <dl class="mt-5">
+            {site.hours.map((h) => (
+              <div class="flex justify-between gap-4 border-b border-linen/15 py-3 text-sm">
+                <dt class="text-linen/70">{h.days}</dt><dd class="font-semibold">{h.time}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div class="d-tile d-pop d-in min-h-[16rem]" style="--d:140ms">
+          <Image
+            src={storefrontImage}
+            alt="The Boyles Flooring storefront on Soledad Canyon Road"
+            widths={[600, 1000]}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            class="h-full min-h-[16rem] w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ MAP ══════════ -->
+  <section class="d-wrap pb-4">
+    <div class="d-tile">
+      <iframe
+        src={site.mapsEmbed}
+        title={`Map showing ${site.name} at ${site.address.full}`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-[380px] w-full border-0 md:h-[480px]"
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- ══════════ SERVICE AREA ══════════ -->
+  <section class="d-section !pt-8">
+    <div class="d-wrap">
+      <h2 class="d-in font-bento text-3xl font-semibold sm:text-4xl">Where we work.</h2>
+      <ul class="d-in mt-8 flex flex-wrap gap-2">
+        {site.serviceArea.map((a) => (
+          <li class="d-chip bg-shell text-forest">{a}</li>
+        ))}
+      </ul>
+      <p class="d-in mt-6 text-sm text-fog">Outside this list? Call us — we may still be able to help.</p>
+    </div>
+  </section>
+</V4Layout>
+
+<style>
+  .d-f { display: flex; flex-direction: column; gap: 0.5rem; }
+  .d-f label { font-size: 0.8rem; font-weight: 600; color: var(--color-forest); }
+  .d-f input, .d-f select, .d-f textarea {
+    width: 100%; padding: 0.85rem 1.1rem; border-radius: 0.9rem;
+    background: var(--color-linen);
+    border: 2px solid color-mix(in srgb, var(--color-forest) 12%, transparent);
+    font: inherit; font-size: 0.95rem; color: var(--color-forest);
+    transition: border-color 0.25s, background-color 0.25s;
+  }
+  .d-f input::placeholder, .d-f textarea::placeholder { color: color-mix(in srgb, var(--color-fog) 70%, transparent); }
+  .d-f input:focus, .d-f select:focus, .d-f textarea:focus { outline: none; border-color: var(--color-rust); }
+  .d-f textarea { resize: vertical; min-height: 7rem; }
+  .d-f [aria-invalid='true'] { border-color: #C0392B; }
+  .d-e { font-size: 0.75rem; color: #C0392B; }
+  .d-e:empty { display: none; }
+  #d-submit[disabled] { opacity: 0.45; cursor: not-allowed; }
+  #d-submit[disabled]:hover { transform: none; }
+</style>
+
+<script>
+  const form = document.getElementById('d-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('d-status')!;
+    const btn = document.getElementById('d-submit') as HTMLButtonElement;
+    const label = document.getElementById('d-label')!;
+    const rules: Record<string, (v: string) => string> = {
+      name: (v) => (v.trim().length < 2 ? 'Please enter your name.' : ''),
+      phone: (v) => (v.replace(/\D/g, '').length < 10 ? 'Please enter a 10-digit phone number.' : ''),
+      email: (v) => (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? 'Please enter a valid email address.' : ''),
+      message: (v) => (v.trim().length < 10 ? 'A sentence or two helps us reply usefully.' : ''),
+    };
+    const mark = (n: string, m: string) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      form.querySelector(`[data-e="${n}"]`)!.textContent = m;
+      f.setAttribute('aria-invalid', m ? 'true' : 'false');
+      return !m;
+    };
+    Object.keys(rules).forEach((n) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      f.addEventListener('blur', () => mark(n, rules[n](f.value)));
+      f.addEventListener('input', () => { if (f.getAttribute('aria-invalid') === 'true') mark(n, rules[n](f.value)); });
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      let ok = true, first: HTMLInputElement | null = null;
+      for (const n of Object.keys(rules)) {
+        const f = form.elements.namedItem(n) as HTMLInputElement;
+        const good = mark(n, rules[n](f.value));
+        if (!good && !first) first = f;
+        ok = ok && good;
+      }
+      if (!ok) { first?.focus(); status.textContent = 'Please correct the highlighted fields.'; status.className = 'mt-4 text-sm text-[#C0392B]'; return; }
+      btn.disabled = true; label.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error();
+        form.reset();
+        form.querySelectorAll('.d-e').forEach((el) => (el.textContent = ''));
+        status.textContent = 'Thanks — your message is on its way.';
+        status.className = 'mt-4 text-sm font-semibold text-[#2F6B4F]';
+        label.textContent = 'Sent';
+        setTimeout(() => { label.textContent = 'Send message'; btn.disabled = false; }, 4000);
+      } catch {
+        status.innerHTML = 'Something went wrong. Please call <a class="underline" href="tel:+16612841200">(661) 284-1200</a>.';
+        status.className = 'mt-4 text-sm text-[#C0392B]';
+        label.textContent = 'Send message'; btn.disabled = false;
+      }
+    });
+  }
+</script>

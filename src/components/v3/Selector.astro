@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import { categories } from '../../data/content';
+---
+
+<!-- Material selector: choosing a name swaps the plate and its notes.
+     Rendered fully server-side, so every panel is in the HTML and readable
+     without JavaScript — the script only hides the inactive ones. -->
+<div id="c-select" class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+  <!-- Plate -->
+  <div class="relative lg:col-span-7">
+    <div class="relative aspect-[4/3] w-full overflow-hidden border border-edge bg-panel">
+      {categories.map((c, i) => (
+        <Image
+          src={c.image}
+          alt={`${c.name} on display in the showroom`}
+          widths={[700, 1200]}
+          sizes="(min-width: 1024px) 58vw, 100vw"
+          data-plate={i}
+          class:list={[
+            'absolute inset-0 h-full w-full object-cover transition-opacity duration-700',
+            i === 0 ? 'opacity-100' : 'opacity-0',
+          ]}
+        />
+      ))}
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/55 to-transparent"></div>
+
+      <p class="pointer-events-none absolute bottom-5 left-6 c-kicker">
+        <span data-plate-num>01</span> &nbsp;/&nbsp; {String(categories.length).padStart(2, '0')}
+      </p>
+    </div>
+  </div>
+
+  <!-- Names + notes -->
+  <div class="lg:col-span-5">
+    <ul class="border-t border-edge" role="tablist" aria-label="Material collections">
+      {categories.map((c, i) => (
+        <li>
+          <button
+            type="button"
+            role="tab"
+            id={`c-tab-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`c-panel-${i}`}
+            data-tab={i}
+            class="group flex w-full items-baseline gap-5 border-b border-edge py-4 text-left transition-colors aria-selected:text-brass hover:text-cream"
+          >
+            <span class="c-kicker !text-ash transition-colors group-aria-selected:!text-brass">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="c-display flex-1 text-2xl md:text-3xl">{c.name}</span>
+            <span class="text-brass opacity-0 transition-opacity group-aria-selected:opacity-100" aria-hidden="true">&rarr;</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <div class="relative mt-8 min-h-[11rem]">
+      {categories.map((c, i) => (
+        <div
+          id={`c-panel-${i}`}
+          role="tabpanel"
+          aria-labelledby={`c-tab-${i}`}
+          data-panel={i}
+          class:list={['transition-opacity duration-500', i === 0 ? '' : 'hidden']}
+        >
+          <p class="text-sm leading-relaxed text-ash">{c.body}</p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {c.bullets.map((b) => (
+              <li class="border border-edge px-3 py-1.5 text-[0.7rem] uppercase tracking-[0.16em] text-ash">{b}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.getElementById('c-select');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const plates = [...root.querySelectorAll<HTMLElement>('[data-plate]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const num = root.querySelector<HTMLElement>('[data-plate-num]');
+
+    const select = (i: number) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(Number(t.dataset.tab) === i)));
+      plates.forEach((p) => p.classList.toggle('opacity-0', Number(p.dataset.plate) !== i));
+      plates.forEach((p) => p.classList.toggle('opacity-100', Number(p.dataset.plate) === i));
+      panels.forEach((p) => p.classList.toggle('hidden', Number(p.dataset.panel) !== i));
+      if (num) num.textContent = String(i + 1).padStart(2, '0');
+    };
+
+    tabs.forEach((t) => {
+      const i = Number(t.dataset.tab);
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('mouseenter', () => select(i));
+      // Arrow keys move between collections, as expected of a tablist
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        e.preventDefault();
+        const next = (i + (e.key === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[next].focus();
+        select(next);
+      });
+    });
+  }
+</script>

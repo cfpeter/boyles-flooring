@@ -1,0 +1,226 @@
+---
+import V3Layout from '../../layouts/V3Layout.astro';
+import { Image } from 'astro:assets';
+import { site } from '../../data/site';
+import { categories, contactHeroImage } from '../../data/content';
+const formReady = site.web3formsKey !== 'YOUR_ACCESS_KEY_HERE';
+---
+
+<V3Layout title="Enquire" description={`Visit the Boyles Flooring showroom at ${site.address.full}, or call ${site.phone}.`}>
+  <section class="relative flex min-h-[58svh] items-end overflow-hidden border-b border-edge">
+    <Image src={contactHeroImage} alt="" widths={[900, 1600]} sizes="100vw" loading="eager" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-void/80"></div>
+    <div class="c-wrap relative z-10 py-16">
+      <p class="c-kicker c-rise">Enquire</p>
+      <h1 class="c-display c-rise mt-6 text-[12vw] leading-[0.98] sm:text-[8vw] lg:text-[5.5rem]" style="--d:70ms">
+        Let's talk<br /><em class="italic text-brass">floors.</em>
+      </h1>
+    </div>
+  </section>
+
+  <section class="c-section">
+    <div class="c-wrap grid gap-16 lg:grid-cols-12 lg:gap-20">
+      <!-- Details as a gallery placard -->
+      <aside class="lg:col-span-4">
+        <p class="c-kicker c-rise">The showroom</p>
+        <div class="c-hair c-rise mt-6"></div>
+
+        <dl class="c-rise mt-8 space-y-7" style="--d:80ms">
+          <div>
+            <dt class="c-kicker !text-ash">Telephone</dt>
+            <dd class="mt-2"><a href={site.phoneHref} class="c-display text-3xl transition-colors hover:text-brass">{site.phone}</a></dd>
+          </div>
+          <div>
+            <dt class="c-kicker !text-ash">Email</dt>
+            <dd class="mt-2"><a href={site.emailHref} class="break-all text-sm text-ash transition-colors hover:text-brass">{site.email}</a></dd>
+          </div>
+          <div>
+            <dt class="c-kicker !text-ash">Address</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-ash">
+              <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-brass">
+                {site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="c-kicker !text-ash">Hours</dt>
+            <dd class="mt-3 border-t border-edge">
+              {site.hours.map((h) => (
+                <div class="flex justify-between gap-4 border-b border-edge py-2.5 text-sm">
+                  <span class="text-ash">{h.days}</span><span>{h.time}</span>
+                </div>
+              ))}
+            </dd>
+          </div>
+        </dl>
+      </aside>
+
+      <!-- Form -->
+      <div class="lg:col-span-8">
+        <h2 class="c-display c-rise text-4xl sm:text-5xl">Tell us about the project.</h2>
+        <p class="c-rise mt-5 max-w-lg text-sm leading-relaxed text-ash" style="--d:60ms">
+          Which rooms, roughly how much area, and when you would like it done.
+          We reply during showroom hours.
+        </p>
+
+        {!formReady && (
+          <div class="c-rise mt-8 border border-brass/40 bg-panel p-6 text-sm leading-relaxed" style="--d:90ms">
+            <p class="text-brass">Setup needed before this form can send.</p>
+            <p class="mt-2 text-ash">
+              Create a free access key at <strong class="text-cream">web3forms.com</strong> using {site.email},
+              then paste it into <code class="bg-raise px-1.5 py-0.5 text-xs">src/data/site.ts</code>.
+              Until then the form is disabled rather than silently losing messages.
+            </p>
+          </div>
+        )}
+
+        <form id="c-form" class="c-rise mt-12 grid gap-9 sm:grid-cols-2" style="--d:120ms" novalidate>
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="New enquiry from boyles-flooring.com" />
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="c-field">
+            <label for="c-name">Name *</label>
+            <input id="c-name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+            <p class="c-err" data-e="name"></p>
+          </div>
+          <div class="c-field">
+            <label for="c-phone">Telephone *</label>
+            <input id="c-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(661) 000-0000" />
+            <p class="c-err" data-e="phone"></p>
+          </div>
+          <div class="c-field sm:col-span-2">
+            <label for="c-email">Email *</label>
+            <input id="c-email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+            <p class="c-err" data-e="email"></p>
+          </div>
+          <div class="c-field sm:col-span-2">
+            <label for="c-int">Collection of interest</label>
+            <select id="c-int" name="interest">
+              <option value="">Not sure yet — help me choose</option>
+              {categories.map((c) => <option value={c.name}>{c.name}</option>)}
+              <option value="Installation only">Installation only</option>
+            </select>
+          </div>
+          <div class="c-field sm:col-span-2">
+            <label for="c-msg">Project details *</label>
+            <textarea id="c-msg" name="message" rows="4" required placeholder="Kitchen and hallway, about 400 sq ft, hoping for next month."></textarea>
+            <p class="c-err" data-e="message"></p>
+          </div>
+
+          <div class="sm:col-span-2">
+            <button type="submit" id="c-submit" class="c-btn c-btn-solid w-full sm:w-auto" disabled={!formReady}>
+              <span id="c-label">Send enquiry</span>
+            </button>
+            <p id="c-status" class="mt-5 text-sm" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Map to the showroom" class="border-t border-edge">
+    <iframe
+      src={site.mapsEmbed}
+      title={`Map showing ${site.name} at ${site.address.full}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="h-[400px] w-full border-0 grayscale md:h-[520px]"
+    ></iframe>
+  </section>
+
+  <section class="c-section border-t border-edge">
+    <div class="c-wrap grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="c-kicker c-rise">Service area</p>
+        <h2 class="c-display c-rise mt-5 text-4xl" style="--d:60ms">The Santa<br />Clarita Valley.</h2>
+      </div>
+      <ul class="c-rise grid border-t border-edge sm:grid-cols-2 lg:col-span-8" style="--d:110ms">
+        {site.serviceArea.map((a, i) => (
+          <li class="flex items-baseline gap-4 border-b border-edge py-3 text-sm">
+            <span class="c-kicker !text-ash">{String(i + 1).padStart(2, '0')}</span>{a}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</V3Layout>
+
+<style>
+  .c-field { display: flex; flex-direction: column; gap: 0.6rem; }
+  .c-field label {
+    font-size: 0.625rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--color-ash);
+  }
+  .c-field input, .c-field select, .c-field textarea {
+    width: 100%; padding: 0.85rem 0; background: transparent; border: 0;
+    border-bottom: 1px solid var(--color-edge); border-radius: 0;
+    font-family: var(--font-grot); font-size: 1rem; font-weight: 300; color: var(--color-cream);
+    transition: border-color 0.4s var(--ease-c);
+  }
+  .c-field select option { background: var(--color-panel); color: var(--color-cream); }
+  .c-field input::placeholder, .c-field textarea::placeholder { color: color-mix(in srgb, var(--color-ash) 55%, transparent); }
+  .c-field input:focus, .c-field select:focus, .c-field textarea:focus { outline: none; border-bottom-color: var(--color-brass); }
+  .c-field textarea { resize: vertical; min-height: 6rem; }
+  .c-field [aria-invalid='true'] { border-bottom-color: #C2564A; }
+  .c-err { font-size: 0.75rem; color: #C2564A; }
+  .c-err:empty { display: none; }
+  #c-submit[disabled] { opacity: 0.4; cursor: not-allowed; }
+</style>
+
+<script>
+  const form = document.getElementById('c-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('c-status')!;
+    const btn = document.getElementById('c-submit') as HTMLButtonElement;
+    const label = document.getElementById('c-label')!;
+    const rules: Record<string, (v: string) => string> = {
+      name: (v) => (v.trim().length < 2 ? 'Please enter your name.' : ''),
+      phone: (v) => (v.replace(/\D/g, '').length < 10 ? 'Please enter a 10-digit phone number.' : ''),
+      email: (v) => (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? 'Please enter a valid email address.' : ''),
+      message: (v) => (v.trim().length < 10 ? 'A sentence or two helps us reply usefully.' : ''),
+    };
+    const mark = (n: string, m: string) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      form.querySelector(`[data-e="${n}"]`)!.textContent = m;
+      f.setAttribute('aria-invalid', m ? 'true' : 'false');
+      return !m;
+    };
+    Object.keys(rules).forEach((n) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      f.addEventListener('blur', () => mark(n, rules[n](f.value)));
+      f.addEventListener('input', () => { if (f.getAttribute('aria-invalid') === 'true') mark(n, rules[n](f.value)); });
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      let ok = true, first: HTMLInputElement | null = null;
+      for (const n of Object.keys(rules)) {
+        const f = form.elements.namedItem(n) as HTMLInputElement;
+        const good = mark(n, rules[n](f.value));
+        if (!good && !first) first = f;
+        ok = ok && good;
+      }
+      if (!ok) { first?.focus(); status.textContent = 'Please correct the highlighted fields.'; status.className = 'mt-5 text-sm text-[#C2564A]'; return; }
+      btn.disabled = true; label.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error();
+        form.reset();
+        form.querySelectorAll('.c-err').forEach((el) => (el.textContent = ''));
+        status.textContent = 'Thank you — your enquiry is on its way.';
+        status.className = 'mt-5 text-sm text-brass';
+        label.textContent = 'Sent';
+        setTimeout(() => { label.textContent = 'Send enquiry'; btn.disabled = false; }, 4000);
+      } catch {
+        status.innerHTML = 'Something went wrong. Please call <a class="underline" href="tel:+16612841200">(661) 284-1200</a>.';
+        status.className = 'mt-5 text-sm text-[#C2564A]';
+        label.textContent = 'Send enquiry'; btn.disabled = false;
+      }
+    });
+  }
+</script>

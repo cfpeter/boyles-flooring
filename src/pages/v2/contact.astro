@@ -1,0 +1,260 @@
+---
+import V2Layout from '../../layouts/V2Layout.astro';
+import { site } from '../../data/site';
+import { categories } from '../../data/content';
+
+const formReady = site.web3formsKey !== 'YOUR_ACCESS_KEY_HERE';
+---
+
+<V2Layout title="Contact" description={`Visit the Boyles Flooring showroom at ${site.address.full}, or call ${site.phone}.`}>
+  <!-- ══════════════ MASTHEAD ══════════════ -->
+  <section class="v2-wrap pb-12 pt-14 lg:pb-16 lg:pt-20">
+    <p class="v2-tag v2-reveal">Get in touch</p>
+    <h1 class="v2-display v2-reveal mt-6 text-[16vw] leading-[0.82] lg:text-[9vw]" style="--d:60ms">
+      Let's talk<br /><span class="text-accent">floors.</span>
+    </h1>
+
+    <div class="v2-rule v2-reveal mt-10" style="--d:120ms"></div>
+
+    <!-- Contact details as a typographic table rather than a card -->
+    <dl class="v2-reveal mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4" style="--d:160ms">
+      <div>
+        <dt class="v2-tag">Phone</dt>
+        <dd class="mt-2"><a href={site.phoneHref} class="text-xl font-semibold hover:text-accent">{site.phone}</a></dd>
+      </div>
+      <div>
+        <dt class="v2-tag">Email</dt>
+        <dd class="mt-2"><a href={site.emailHref} class="break-all text-sm hover:text-accent">{site.email}</a></dd>
+      </div>
+      <div>
+        <dt class="v2-tag">Address</dt>
+        <dd class="mt-2 text-sm leading-relaxed">
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
+            {site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="v2-tag">Hours</dt>
+        <dd class="mt-2 space-y-1 text-sm">
+          {site.hours.map((h) => (
+            <div class="flex justify-between gap-3 text-mute">
+              <span>{h.days.replace(' – ', '–')}</span><span class="text-ink">{h.time}</span>
+            </div>
+          ))}
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ══════════════ FORM ══════════════ -->
+  <section class="border-t border-line bg-fill">
+    <div class="v2-wrap grid gap-14 py-16 lg:grid-cols-12 lg:gap-20 lg:py-24">
+      <div class="lg:col-span-5">
+        <h2 class="v2-reveal text-3xl sm:text-4xl">Tell us about<br />the project.</h2>
+        <p class="v2-reveal mt-6 max-w-sm text-sm leading-relaxed text-mute" style="--d:60ms">
+          Which rooms, roughly how much area, and when you would like it done.
+          We reply during showroom hours.
+        </p>
+
+        {!formReady && (
+          <div class="v2-reveal mt-8 border-l-2 border-accent bg-paper p-5 text-sm leading-relaxed" style="--d:100ms">
+            <p class="font-semibold">Setup needed before this form can send.</p>
+            <p class="mt-2 text-mute">
+              Create a free access key at <strong>web3forms.com</strong> using {site.email},
+              then paste it into <code class="bg-fill px-1.5 py-0.5 text-xs">src/data/site.ts</code>.
+              Until then the form is disabled rather than silently losing messages.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <!-- Underlined inputs — a deliberate departure from Design A's boxes -->
+      <form id="v2-form" class="v2-reveal grid gap-8 sm:grid-cols-2 lg:col-span-7" style="--d:80ms" novalidate>
+        <input type="hidden" name="access_key" value={site.web3formsKey} />
+        <input type="hidden" name="subject" value="New enquiry from boyles-flooring.com" />
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div class="v2-field">
+          <label for="v2name">Name *</label>
+          <input id="v2name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+          <p class="v2-err" data-e="name"></p>
+        </div>
+
+        <div class="v2-field">
+          <label for="v2phone">Phone *</label>
+          <input id="v2phone" name="phone" type="tel" required autocomplete="tel" placeholder="(661) 000-0000" />
+          <p class="v2-err" data-e="phone"></p>
+        </div>
+
+        <div class="v2-field sm:col-span-2">
+          <label for="v2email">Email *</label>
+          <input id="v2email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+          <p class="v2-err" data-e="email"></p>
+        </div>
+
+        <div class="v2-field sm:col-span-2">
+          <label for="v2interest">Interested in</label>
+          <select id="v2interest" name="interest">
+            <option value="">Not sure yet — help me choose</option>
+            {categories.map((c) => <option value={c.name}>{c.name}</option>)}
+            <option value="Installation only">Installation only</option>
+          </select>
+        </div>
+
+        <div class="v2-field sm:col-span-2">
+          <label for="v2msg">Project details *</label>
+          <textarea id="v2msg" name="message" rows="4" required placeholder="Kitchen and hallway, about 400 sq ft, hoping for next month."></textarea>
+          <p class="v2-err" data-e="message"></p>
+        </div>
+
+        <div class="sm:col-span-2">
+          <button type="submit" id="v2submit" class="v2-btn v2-btn-solid w-full sm:w-auto" disabled={!formReady}>
+            <span id="v2label">Send message</span>
+          </button>
+          <p id="v2status" class="mt-4 text-sm" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══════════════ MAP ══════════════ -->
+  <section aria-label="Map to the showroom" class="border-t border-line">
+    <iframe
+      src={site.mapsEmbed}
+      title={`Map showing ${site.name} at ${site.address.full}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="h-[400px] w-full border-0 md:h-[520px]"
+    ></iframe>
+  </section>
+
+  <!-- ══════════════ SERVICE AREA ══════════════ -->
+  <section class="v2-section border-t border-line">
+    <div class="v2-wrap grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="v2-tag v2-reveal">Service area</p>
+        <h2 class="v2-reveal mt-4 text-3xl sm:text-4xl" style="--d:60ms">The Santa<br />Clarita Valley.</h2>
+      </div>
+      <ul class="v2-reveal grid gap-0 sm:grid-cols-2 lg:col-span-8" style="--d:120ms">
+        {site.serviceArea.map((a, i) => (
+          <li class="flex items-baseline gap-4 border-t border-line py-3.5 text-sm">
+            <span class="v2-tag w-6">{String(i + 1).padStart(2, '0')}</span>{a}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</V2Layout>
+
+<style>
+  .v2-field { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .v2-field label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .v2-field input,
+  .v2-field select,
+  .v2-field textarea {
+    width: 100%;
+    padding: 0.65rem 0 0.7rem;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-line);
+    border-radius: 0;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+    transition: border-color 0.25s;
+  }
+
+  .v2-field input::placeholder,
+  .v2-field textarea::placeholder { color: color-mix(in srgb, var(--color-mute) 55%, transparent); }
+
+  .v2-field input:focus,
+  .v2-field select:focus,
+  .v2-field textarea:focus { outline: none; border-bottom-color: var(--color-accent); }
+
+  .v2-field textarea { resize: vertical; min-height: 6rem; }
+  .v2-field [aria-invalid='true'] { border-bottom-color: #B3261E; }
+
+  .v2-err { font-size: 0.75rem; color: #B3261E; }
+  .v2-err:empty { display: none; }
+
+  #v2submit[disabled] { opacity: 0.4; cursor: not-allowed; }
+</style>
+
+<script>
+  const form = document.getElementById('v2-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('v2status')!;
+    const btn = document.getElementById('v2submit') as HTMLButtonElement;
+    const label = document.getElementById('v2label')!;
+
+    const rules: Record<string, (v: string) => string> = {
+      name: (v) => (v.trim().length < 2 ? 'Please enter your name.' : ''),
+      phone: (v) => (v.replace(/\D/g, '').length < 10 ? 'Please enter a 10-digit phone number.' : ''),
+      email: (v) => (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? 'Please enter a valid email address.' : ''),
+      message: (v) => (v.trim().length < 10 ? 'A sentence or two helps us reply usefully.' : ''),
+    };
+
+    const mark = (n: string, msg: string) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      form.querySelector(`[data-e="${n}"]`)!.textContent = msg;
+      f.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    };
+
+    Object.keys(rules).forEach((n) => {
+      const f = form.elements.namedItem(n) as HTMLInputElement;
+      f.addEventListener('blur', () => mark(n, rules[n](f.value)));
+      f.addEventListener('input', () => { if (f.getAttribute('aria-invalid') === 'true') mark(n, rules[n](f.value)); });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      let ok = true, first: HTMLInputElement | null = null;
+      for (const n of Object.keys(rules)) {
+        const f = form.elements.namedItem(n) as HTMLInputElement;
+        const good = mark(n, rules[n](f.value));
+        if (!good && !first) first = f;
+        ok = ok && good;
+      }
+      if (!ok) {
+        first?.focus();
+        status.textContent = 'Please correct the highlighted fields.';
+        status.className = 'mt-4 text-sm text-[#B3261E]';
+        return;
+      }
+
+      btn.disabled = true;
+      label.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error();
+        form.reset();
+        form.querySelectorAll('.v2-err').forEach((el) => (el.textContent = ''));
+        status.textContent = 'Thanks — your message is on its way.';
+        status.className = 'mt-4 text-sm font-semibold text-[#1E7A44]';
+        label.textContent = 'Sent';
+        setTimeout(() => { label.textContent = 'Send message'; btn.disabled = false; }, 4000);
+      } catch {
+        status.innerHTML = 'Something went wrong. Please call <a class="underline" href="tel:+16612841200">(661) 284-1200</a>.';
+        status.className = 'mt-4 text-sm text-[#B3261E]';
+        label.textContent = 'Send message';
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,187 @@
+---
+import { Image } from 'astro:assets';
+import V3Layout from '../../layouts/V3Layout.astro';
+import Selector from '../../components/v3/Selector.astro';
+import { site } from '../../data/site';
+import { categories, services, gallery, heroImage, storefrontImage, aboutImage } from '../../data/content';
+import { url } from '../../lib/url';
+
+const reel = gallery.slice(0, 6);
+---
+
+<V3Layout title="Gallery">
+  <!-- ══════════ HERO — full-bleed, heavy vignette, thin serif ══════════ -->
+  <section class="relative flex min-h-[92svh] items-center overflow-hidden">
+    <Image
+      src={heroImage}
+      alt=""
+      widths={[900, 1600, 2200]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-void/72"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-void via-void/55 to-transparent"></div>
+
+    <div class="c-wrap relative z-10 py-28">
+      <p class="c-kicker c-rise">Santa Clarita, California</p>
+
+      <h1 class="c-display c-rise mt-8 max-w-4xl text-[13vw] leading-[0.95] sm:text-[9vw] lg:text-[6.6rem]" style="--d:80ms">
+        A room built<br />for the floor<br /><em class="italic text-brass">you haven't</em><br />met yet.
+      </h1>
+
+      <div class="c-hair c-rise mt-12 max-w-md" style="--d:160ms"></div>
+
+      <p class="c-rise mt-8 max-w-md text-sm leading-relaxed text-ash" style="--d:220ms">
+        Hardwood, laminate, luxury vinyl, carpet, tile and doors — hundreds of
+        full-size samples under one roof, with expert guidance from selection
+        through measurement and installation.
+      </p>
+
+      <div class="c-rise mt-12 flex flex-col gap-4 sm:flex-row" style="--d:280ms">
+        <a href={url('/v3/products')} class="c-btn c-btn-solid">View collections</a>
+        <a href={url('/v3/contact')} class="c-btn">Book a viewing</a>
+      </div>
+    </div>
+
+    <!-- Corner meta, gallery-placard style -->
+    <div class="absolute bottom-8 right-6 z-10 hidden text-right md:block">
+      <p class="c-kicker !text-ash">Open today</p>
+      <p class="mt-1.5 text-sm text-cream">{site.hours[0].time}</p>
+    </div>
+  </section>
+
+  <!-- ══════════ STATEMENT ══════════ -->
+  <section id="statement" class="c-section scroll-mt-4 border-t border-edge">
+    <div class="c-wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="c-kicker c-rise">I — The showroom</p>
+      </div>
+      <div class="lg:col-span-8">
+        <p class="c-display c-rise text-3xl leading-[1.15] sm:text-4xl lg:text-[2.9rem]">
+          Choosing a floor from a thumbnail is guesswork.
+          <span class="text-ash">So we built a room full of the real thing — real grain,
+          real texture, real colour under real light.</span>
+        </p>
+        <p class="c-rise mt-10 max-w-xl text-sm leading-relaxed text-ash" style="--d:100ms">
+          Book your flooring consultation today and let our team of skilled
+          professionals guide you in selecting the perfect materials to enhance
+          your home. Our experts are committed to delivering top-notch service
+          and tailored solutions for all your flooring needs.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SELECTOR ══════════ -->
+  <section id="collections" class="c-section scroll-mt-4 border-t border-edge bg-panel">
+    <div class="c-wrap">
+      <div class="c-rise mb-14 flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="c-kicker">II — Collections</p>
+          <h2 class="c-display mt-5 text-4xl sm:text-5xl lg:text-6xl">Six ways to<br />finish a room.</h2>
+        </div>
+        <p class="max-w-xs text-xs leading-relaxed text-ash">
+          Select a collection to view it. Every one of these is on the showroom
+          floor at full size.
+        </p>
+      </div>
+
+      <div class="c-rise" style="--d:80ms"><Selector /></div>
+    </div>
+  </section>
+
+  <!-- ══════════ REEL — horizontal snap gallery ══════════ -->
+  <section id="reel" class="c-section scroll-mt-4 border-t border-edge !pb-0">
+    <div class="c-wrap c-rise flex items-end justify-between gap-6">
+      <div>
+        <p class="c-kicker">III — The floor</p>
+        <h2 class="c-display mt-5 text-4xl sm:text-5xl">Have a look around.</h2>
+      </div>
+      <p class="hidden text-[0.65rem] uppercase tracking-[0.24em] text-ash sm:block">Scroll &rarr;</p>
+    </div>
+
+    <div class="c-rail-scroll c-rise mt-12 flex gap-6 overflow-x-auto px-[clamp(1.25rem,4vw,3rem)] pb-16" style="--d:80ms">
+      {reel.map((g, i) => (
+        <figure class="c-snap c-grow w-[82vw] shrink-0 sm:w-[52vw] lg:w-[36vw]">
+          <div class="overflow-hidden border border-edge">
+            <Image
+              src={g.image}
+              alt={g.alt}
+              widths={[600, 1000]}
+              sizes="(min-width: 1024px) 36vw, 82vw"
+              class="aspect-[3/2] w-full object-cover"
+            />
+          </div>
+          <figcaption class="mt-4 flex items-baseline gap-4">
+            <span class="c-kicker">{String(i + 1).padStart(2, '0')}</span>
+            <span class="text-xs leading-relaxed text-ash">{g.alt}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════ SERVICE — bordered quadrants ══════════ -->
+  <section id="service" class="c-section scroll-mt-4 border-t border-edge">
+    <div class="c-wrap">
+      <div class="c-rise">
+        <p class="c-kicker">IV — What we do</p>
+        <h2 class="c-display mt-5 max-w-2xl text-4xl sm:text-5xl">From first look to final board.</h2>
+      </div>
+
+      <ol class="mt-16 grid border-l border-t border-edge sm:grid-cols-2">
+        {services.map((s, i) => (
+          <li class="c-rise border-b border-r border-edge p-8 md:p-10" style={`--d:${i * 80}ms`}>
+            <p class="c-kicker !text-ash">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="c-display mt-5 text-2xl md:text-3xl">{s.title}</h3>
+            <p class="mt-4 text-sm leading-relaxed text-ash">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════ VISIT — image left, brass detail right ══════════ -->
+  <section id="visit" class="scroll-mt-4 border-t border-edge bg-panel">
+    <div class="grid lg:grid-cols-2">
+      <div class="c-grow c-rise min-h-[24rem] overflow-hidden border-b border-edge lg:min-h-[36rem] lg:border-b-0 lg:border-r">
+        <Image
+          src={storefrontImage}
+          alt="The Boyles Flooring storefront on Soledad Canyon Road"
+          widths={[700, 1300]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          class="h-full w-full object-cover"
+        />
+      </div>
+
+      <div class="flex flex-col justify-center p-8 md:p-14 lg:p-20">
+        <p class="c-kicker c-rise">V — Visit</p>
+        <h2 class="c-display c-rise mt-5 text-4xl sm:text-5xl lg:text-6xl" style="--d:60ms">
+          Come and<br />stand on it.
+        </h2>
+
+        <address class="c-rise mt-10 not-italic" style="--d:110ms">
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="text-sm leading-relaxed text-ash transition-colors hover:text-brass">
+            {site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}
+          </a>
+        </address>
+
+        <dl class="c-rise mt-8 max-w-sm" style="--d:160ms">
+          {site.hours.map((h) => (
+            <div class="flex justify-between gap-6 border-b border-edge py-3 text-sm">
+              <dt class="text-ash">{h.days}</dt>
+              <dd>{h.time}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="c-rise mt-10 flex flex-col gap-4 sm:flex-row" style="--d:210ms">
+          <a href={site.phoneHref} class="c-btn c-btn-solid">{site.phone}</a>
+          <a href={url('/v3/contact')} class="c-btn">Enquire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</V3Layout>

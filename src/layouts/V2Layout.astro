@@ -1,0 +1,70 @@
+---
+import '../styles/v2.css';
+import Nav from '../components/v2/Nav.astro';
+import Footer from '../components/v2/Footer.astro';
+import { site } from '../data/site';
+
+interface Props { title: string; description?: string; }
+const { title, description = site.description } = Astro.props;
+const asset = (p: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${p}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | {site.name} — Design B</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#14110E" />
+    <link rel="icon" href={asset('/favicon.png')} type="image/png" />
+
+    <!-- Design B is deliberately unindexed: it is a comparison mock-up only -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+    />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+
+  <body>
+    <a href="#v2main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:text-paper">
+      Skip to content
+    </a>
+
+    <Nav />
+    <main id="v2main"><slot /></main>
+    <Footer />
+
+    <!-- Lets the client flip between the two directions while reviewing -->
+    <a
+      href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/designs`}
+      class="fixed bottom-5 right-5 z-[60] flex items-center gap-2 border border-ink bg-paper px-4 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] shadow-lg transition-colors hover:bg-ink hover:text-paper"
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+      Design B — compare all
+    </a>
+
+    <script>
+      const items = document.querySelectorAll('.v2-reveal');
+      if (items.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('shown');
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.05 }
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

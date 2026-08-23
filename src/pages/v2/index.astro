@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import V2Layout from '../../layouts/V2Layout.astro';
+import CategoryIndex from '../../components/v2/CategoryIndex.astro';
+import Marquee from '../../components/v2/Marquee.astro';
+import { site } from '../../data/site';
+import { categories, services, gallery, heroImage, aboutImage, storefrontImage } from '../../data/content';
+import { url } from '../../lib/url';
+
+const strip = gallery.slice(0, 8);
+---
+
+<V2Layout title="Home">
+  <!-- ══════════════ HERO — asymmetric split, type-led ══════════════ -->
+  <section class="v2-wrap grid gap-10 pb-14 pt-12 lg:grid-cols-12 lg:gap-12 lg:pb-20 lg:pt-16">
+    <div class="lg:col-span-7 lg:pr-8">
+      <p class="v2-tag v2-reveal">Santa Clarita, California — est. showroom</p>
+
+      <h1 class="v2-display v2-reveal mt-6 text-[15vw] leading-[0.84] sm:text-[11vw] lg:text-[7.4vw]" style="--d:60ms">
+        The floor<br />
+        comes<br />
+        <span class="text-accent">first.</span>
+      </h1>
+
+      <div class="v2-rule v2-reveal mt-10" style="--d:120ms"></div>
+
+      <div class="v2-reveal mt-8 grid gap-8 sm:grid-cols-2" style="--d:180ms">
+        <p class="text-sm leading-relaxed text-mute">
+          Hardwood, laminate, luxury vinyl, carpet, tile and doors — selected
+          with you in the showroom, measured precisely, and installed to a
+          clean, flawless finish.
+        </p>
+        <div class="flex flex-col gap-3 sm:items-start">
+          <a href={url('/v2/products')} class="v2-btn v2-btn-solid w-full sm:w-auto">See the materials</a>
+          <a href={url('/v2/contact')} class="v2-btn v2-btn-line w-full sm:w-auto">Book a consultation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tall image column, deliberately not full-bleed -->
+    <div class="lg:col-span-5">
+      <div class="v2-zoom v2-reveal overflow-hidden" style="--d:100ms">
+        <Image
+          src={heroImage}
+          alt="Rows of flooring samples on the Boyles Flooring showroom floor"
+          widths={[600, 1000, 1400]}
+          sizes="(min-width: 1024px) 42vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[4/5] w-full object-cover"
+        />
+      </div>
+      <div class="v2-reveal mt-4 flex items-start justify-between gap-6 text-xs text-mute" style="--d:160ms">
+        <span>Fig. 01 — The showroom floor</span>
+        <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="text-right underline underline-offset-4 hover:text-accent">
+          {site.address.street}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Marquee items={categories.map((c) => c.name)} />
+
+  <!-- ══════════════ STATEMENT ══════════════ -->
+  <section class="v2-section">
+    <div class="v2-wrap grid gap-12 lg:grid-cols-12">
+      <p class="v2-tag v2-reveal lg:col-span-3">01 — Who we are</p>
+
+      <div class="lg:col-span-9">
+        <p class="v2-display v2-reveal text-[6.5vw] leading-[1.02] sm:text-4xl lg:text-[3.4rem]" style="--d:60ms">
+          Choosing a floor from a<br class="hidden sm:block" />
+          thumbnail is guesswork.<br class="hidden sm:block" />
+          <span class="text-mute">So we built a room full of the real thing.</span>
+        </p>
+
+        <div class="v2-reveal mt-12 grid gap-10 sm:grid-cols-2" style="--d:140ms">
+          <p class="text-sm leading-relaxed text-mute">
+            Book your flooring consultation today and let our team of skilled
+            professionals guide you in selecting the perfect materials to
+            enhance your home. Our experts are committed to delivering top-notch
+            service and tailored solutions for all your flooring needs.
+          </p>
+          <p class="text-sm leading-relaxed text-mute">
+            Hundreds of full-size samples sit side by side on Soledad Canyon
+            Road — real grain, real texture, real colour under real light — with
+            someone on hand who knows which ones hold up where.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CATEGORY INDEX ══════════════ -->
+  <section class="v2-section !pt-0">
+    <div class="v2-wrap">
+      <div class="v2-reveal mb-10 flex items-end justify-between gap-6">
+        <div>
+          <p class="v2-tag">02 — Materials</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl lg:text-5xl">Everything,<br />under one roof.</h2>
+        </div>
+        <a href={url('/v2/products')} class="hidden shrink-0 text-xs font-semibold uppercase tracking-[0.14em] underline underline-offset-8 hover:text-accent sm:block">
+          All materials
+        </a>
+      </div>
+
+      <div class="v2-reveal" style="--d:80ms"><CategoryIndex /></div>
+    </div>
+  </section>
+
+  <!-- ══════════════ PROCESS — offset image + numbered steps ══════════════ -->
+  <section class="v2-section bg-fill">
+    <div class="v2-wrap grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="v2-tag v2-reveal">03 — How it works</p>
+        <h2 class="v2-reveal mt-4 text-3xl sm:text-4xl lg:text-5xl" style="--d:60ms">
+          From first look<br />to final board.
+        </h2>
+        <div class="v2-zoom v2-reveal mt-10 overflow-hidden" style="--d:120ms">
+          <Image
+            src={aboutImage}
+            alt="Sample racks lit by daylight inside the showroom"
+            widths={[500, 900]}
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            class="aspect-[5/4] w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <ol class="lg:col-span-7">
+        {services.map((s, i) => (
+          <li class="v2-reveal grid grid-cols-[auto_1fr] gap-6 border-t border-line py-7 md:gap-10 md:py-9" style={`--d:${i * 70}ms`}>
+            <span class="v2-display text-3xl text-accent md:text-4xl">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="text-lg md:text-xl">{s.title}</h3>
+              <p class="mt-2.5 max-w-lg text-sm leading-relaxed text-mute">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════ GALLERY — horizontal scroll strip ══════════════ -->
+  <section class="v2-section">
+    <div class="v2-wrap v2-reveal flex items-end justify-between gap-6">
+      <div>
+        <p class="v2-tag">04 — The showroom</p>
+        <h2 class="mt-4 text-3xl sm:text-4xl lg:text-5xl">Have a look around.</h2>
+      </div>
+      <p class="hidden text-xs text-mute sm:block">Scroll &rarr;</p>
+    </div>
+
+    <div class="v2-reveal mt-10 flex gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,3.5rem)] pb-4 [scrollbar-width:thin]" style="--d:80ms">
+      {strip.map((g, i) => (
+        <figure class="v2-zoom w-[78vw] shrink-0 overflow-hidden sm:w-[42vw] lg:w-[27vw]">
+          <Image
+            src={g.image}
+            alt={g.alt}
+            widths={[500, 900]}
+            sizes="(min-width: 1024px) 27vw, 78vw"
+            class="aspect-[4/3] w-full object-cover"
+          />
+          <figcaption class="mt-3 text-xs text-mute">
+            Fig. {String(i + 2).padStart(2, '0')} — {g.alt}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══════════════ VISIT ══════════════ -->
+  <section class="bg-ink text-paper">
+    <div class="v2-wrap grid items-stretch gap-0 lg:grid-cols-2">
+      <div class="flex flex-col justify-center py-16 lg:py-24 lg:pr-16">
+        <p class="v2-tag v2-reveal !text-paper/45">05 — Visit</p>
+        <h2 class="v2-reveal mt-4 text-[9vw] leading-[0.9] sm:text-5xl lg:text-6xl" style="--d:60ms">
+          Come and<br />stand on it.
+        </h2>
+        <p class="v2-reveal mt-6 max-w-md text-sm leading-relaxed text-paper/70" style="--d:110ms">
+          Photographs only get you so far. Walk the floor, take samples home,
+          and see them under your own lighting before you commit.
+        </p>
+
+        <dl class="v2-reveal mt-10 max-w-sm space-y-3" style="--d:160ms">
+          {site.hours.map((h) => (
+            <div class="flex justify-between gap-6 border-b border-paper/15 pb-3 text-sm">
+              <dt class="text-paper/60">{h.days}</dt>
+              <dd class="font-semibold">{h.time}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="v2-reveal mt-10 flex flex-col gap-3 sm:flex-row" style="--d:210ms">
+          <a href={site.phoneHref} class="v2-btn v2-btn-invert">Call {site.phone}</a>
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="v2-btn border-paper/40 text-paper hover:bg-paper hover:text-ink">
+            Directions
+          </a>
+        </div>
+      </div>
+
+      <div class="v2-zoom v2-reveal min-h-[22rem] overflow-hidden lg:min-h-full">
+        <Image
+          src={storefrontImage}
+          alt="The Boyles Flooring storefront on Soledad Canyon Road"
+          widths={[700, 1200]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </section>
+</V2Layout>

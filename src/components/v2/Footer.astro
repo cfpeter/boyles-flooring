@@ -1,0 +1,56 @@
+---
+import { site } from '../../data/site';
+import { url } from '../../lib/url';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-ink text-paper">
+  <div class="v2-wrap py-16 md:py-20">
+    <!-- Oversized wordmark anchors the foot of the page -->
+    <p class="v2-display text-[15vw] leading-[0.8] text-paper md:text-[11vw]">
+      Boyles<span class="text-accent">.</span>
+    </p>
+
+    <div class="mt-14 grid gap-10 border-t border-paper/15 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <p class="v2-tag !text-paper/45">Showroom</p>
+        <address class="mt-4 not-italic text-sm leading-relaxed text-paper/80">
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
+            {site.address.street}<br />{site.address.city}, {site.address.state} {site.address.zip}
+          </a>
+        </address>
+      </div>
+
+      <div>
+        <p class="v2-tag !text-paper/45">Hours</p>
+        <dl class="mt-4 space-y-1.5 text-sm text-paper/80">
+          {site.hours.map((h) => (
+            <div class="flex justify-between gap-4">
+              <dt>{h.days}</dt><dd class="text-paper">{h.time}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div>
+        <p class="v2-tag !text-paper/45">Contact</p>
+        <div class="mt-4 space-y-2 text-sm">
+          <a href={site.phoneHref} class="block text-lg font-semibold hover:text-accent">{site.phone}</a>
+          <a href={site.emailHref} class="block text-paper/80 hover:text-accent">{site.email}</a>
+        </div>
+      </div>
+
+      <div>
+        <p class="v2-tag !text-paper/45">Elsewhere</p>
+        <div class="mt-4 flex flex-col gap-2 text-sm text-paper/80">
+          <a href={url('/v2/products')} class="hover:text-accent">Materials</a>
+          <a href={url('/v2/contact')} class="hover:text-accent">Contact</a>
+          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">Instagram</a>
+          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">TikTok</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-12 text-xs text-paper/40">&copy; {year} {site.name}. Santa Clarita, California.</p>
+  </div>
+</footer>

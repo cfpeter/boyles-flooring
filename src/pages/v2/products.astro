@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import V2Layout from '../../layouts/V2Layout.astro';
+import Lightbox from '../../components/v2/Lightbox.astro';
+import Marquee from '../../components/v2/Marquee.astro';
+import { categories, gallery } from '../../data/content';
+import { site } from '../../data/site';
+import { url } from '../../lib/url';
+---
+
+<V2Layout title="Materials" description="Hardwood, laminate, luxury vinyl, carpet, tile and doors at the Boyles Flooring showroom in Santa Clarita.">
+  <!-- ══════════════ MASTHEAD — typographic, no photo ══════════════ -->
+  <section class="v2-wrap pb-12 pt-14 lg:pb-16 lg:pt-20">
+    <p class="v2-tag v2-reveal">Index of materials</p>
+    <h1 class="v2-display v2-reveal mt-6 text-[16vw] leading-[0.82] lg:text-[9vw]" style="--d:60ms">
+      Six ways<br />to finish<br /><span class="text-accent">a room.</span>
+    </h1>
+    <div class="v2-rule v2-reveal mt-10" style="--d:120ms"></div>
+    <p class="v2-reveal mt-8 max-w-xl text-sm leading-relaxed text-mute" style="--d:160ms">
+      Ranges change with the seasons, so the showroom is always the fullest
+      picture. Here is what we carry — come and see the ones you like at
+      full size.
+    </p>
+  </section>
+
+  <Marquee items={categories.map((c) => c.name)} />
+
+  <!-- ══════════════ CATEGORY BLOCKS ══════════════ -->
+  {categories.map((c, i) => (
+    <section id={c.slug} class="v2-section scroll-mt-20 border-b border-line !py-0">
+      <div class="v2-wrap grid gap-10 py-16 lg:grid-cols-12 lg:gap-16 lg:py-24">
+        <div class:list={['lg:col-span-5', i % 2 === 1 && 'lg:order-2']}>
+          <div class="v2-zoom v2-reveal overflow-hidden">
+            <Image
+              src={c.image}
+              alt={`${c.name} samples on display at the showroom`}
+              widths={[600, 1000]}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              class="aspect-[4/5] w-full object-cover"
+            />
+          </div>
+        </div>
+
+        <div class:list={['lg:col-span-7', i % 2 === 1 && 'lg:order-1']}>
+          <div class="flex items-baseline gap-5">
+            <span class="v2-display v2-reveal text-4xl text-accent md:text-5xl">{String(i + 1).padStart(2, '0')}</span>
+            <h2 class="v2-display v2-reveal text-[10vw] leading-[0.9] sm:text-5xl lg:text-6xl" style="--d:50ms">{c.name}</h2>
+          </div>
+
+          <p class="v2-reveal mt-8 max-w-xl text-sm leading-relaxed text-mute" style="--d:100ms">{c.body}</p>
+
+          <ul class="v2-reveal mt-10 grid max-w-xl gap-0 sm:grid-cols-2" style="--d:150ms">
+            {c.bullets.map((b) => (
+              <li class="border-t border-line py-3 text-sm">
+                <span class="mr-3 text-accent">&mdash;</span>{b}
+              </li>
+            ))}
+          </ul>
+
+          <div class="v2-reveal mt-10" style="--d:200ms">
+            <a href={url('/v2/contact')} class="v2-btn v2-btn-line">Ask about {c.name.toLowerCase()}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- ══════════════ GALLERY GRID ══════════════ -->
+  <section class="v2-section">
+    <div class="v2-wrap">
+      <div class="v2-reveal flex items-end justify-between gap-6">
+        <div>
+          <p class="v2-tag">Showroom</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl lg:text-5xl">Have a look around.</h2>
+        </div>
+        <p class="hidden max-w-xs text-right text-xs text-mute sm:block">
+          {site.address.street}<br />Select any frame to enlarge
+        </p>
+      </div>
+
+      <ul class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        {gallery.map((g, i) => (
+          <li class:list={[g.span === 'wide' && 'col-span-2']}>
+            <button type="button" data-v2lb={i} class="v2-zoom group block w-full overflow-hidden bg-fill text-left" aria-label={`View larger: ${g.alt}`}>
+              <Image
+                src={g.image}
+                alt={g.alt}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 25vw, 50vw"
+                class:list={['w-full object-cover', g.span === 'wide' ? 'aspect-[16/9]' : 'aspect-[4/3]']}
+              />
+              <span class="mt-2 block text-[0.65rem] uppercase tracking-[0.14em] text-mute">
+                Fig. {String(i + 1).padStart(2, '0')}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Lightbox items={gallery} />
+
+  <!-- ══════════════ CLOSING ══════════════ -->
+  <section class="border-t border-line bg-fill">
+    <div class="v2-wrap grid gap-8 py-16 lg:grid-cols-12 lg:items-center lg:py-20">
+      <h2 class="v2-reveal text-3xl sm:text-4xl lg:col-span-7 lg:text-5xl">
+        Seen something<br />you like?
+      </h2>
+      <div class="v2-reveal lg:col-span-5" style="--d:80ms">
+        <p class="text-sm leading-relaxed text-mute">
+          Tell us the room, the traffic and roughly the budget. We will point
+          you at the handful of products that genuinely fit — and measure up
+          whenever you are ready.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href={site.phoneHref} class="v2-btn v2-btn-solid">Call {site.phone}</a>
+          <a href={url('/v2/contact')} class="v2-btn v2-btn-line">Send a message</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</V2Layout>
