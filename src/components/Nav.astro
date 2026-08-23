@@ -12,7 +12,7 @@ const pathname = Astro.url.pathname;
   class="fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,padding] duration-300"
 >
   <div class="wrap flex items-center justify-between gap-6 py-4 md:py-5">
-    <a href={url('/')} class="flex shrink-0 items-center gap-3" aria-label={`${site.name} — home`}>
+    <a href={url('/')} class="relative z-50 flex shrink-0 items-center gap-3" aria-label={`${site.name} — home`}>
       <Image
         src={logo}
         alt=""
@@ -67,14 +67,13 @@ const pathname = Astro.url.pathname;
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="invisible fixed inset-0 z-40 flex flex-col justify-center bg-bark opacity-0 transition-[opacity,visibility] duration-300 md:hidden"
+    class="fixed inset-0 z-40 flex-col justify-center bg-bark md:hidden"
   >
     <nav class="wrap flex flex-col gap-2" aria-label="Mobile">
-      {nav.map((item, i) => (
+      {nav.map((item) => (
         <a
           href={url(item.href)}
           aria-current={isActive(item.href, pathname) ? 'page' : undefined}
-          style={`--i:${i}`}
           class="mobile-link border-b border-bone/15 py-5 font-display text-3xl text-bone aria-[current=page]:text-oak"
         >
           {item.label}
@@ -103,7 +102,7 @@ const pathname = Astro.url.pathname;
     --nav-bg-contrast: var(--color-bone);
   }
   /* The logo mark is solid black artwork — invert it while over the hero. */
-  #site-header .logo-mark { filter: invert(1) brightness(1.9); }
+  #site-header .logo-mark { filter: brightness(0) invert(1); }
   #site-header.is-stuck .logo-mark { filter: none; }
 
   /* Header gains a solid ground once the page scrolls under it */
@@ -115,15 +114,7 @@ const pathname = Astro.url.pathname;
   #site-header.is-stuck .wrap { padding-block: 0.625rem; }
 
   body.menu-open { overflow: hidden; }
-  #mobile-menu.is-open { visibility: visible; opacity: 1; }
 
-  .mobile-link {
-    opacity: 0;
-    transform: translateY(0.75rem);
-    transition: opacity 0.4s var(--ease-out-soft), transform 0.4s var(--ease-out-soft);
-    transition-delay: calc(var(--i) * 60ms + 100ms);
-  }
-  #mobile-menu.is-open .mobile-link { opacity: 1; transform: none; }
 
   #menu-toggle[aria-expanded='true'] .menu-bar,
   #menu-toggle[aria-expanded='true'] .menu-bar-mid { background-color: var(--color-bone); }
@@ -131,9 +122,6 @@ const pathname = Astro.url.pathname;
   #menu-toggle[aria-expanded='true'] .menu-bar:first-child { transform: translateY(7px) rotate(45deg); }
   #menu-toggle[aria-expanded='true'] .menu-bar:last-child { transform: translateY(-7px) rotate(-45deg); }
 
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-link { transition: none; opacity: 1; transform: none; }
-  }
 </style>
 
 <script>
@@ -165,4 +153,11 @@ const pathname = Astro.url.pathname;
     }
   });
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+
+  // Resizing to desktop while the menu is open would otherwise leave the
+  // body scroll-locked with no visible way to close it.
+  const desktop = window.matchMedia('(min-width: 48rem)');
+  desktop.addEventListener('change', (e) => {
+    if (e.matches && toggle.getAttribute('aria-expanded') === 'true') setMenu(false);
+  });
 </script>

@@ -19,7 +19,7 @@ const slides = await Promise.all(
 
 <div
   id="lightbox"
-  class="invisible fixed inset-0 z-[70] flex flex-col bg-espresso/97 opacity-0 transition-[opacity,visibility] duration-300"
+  class="fixed inset-0 z-[70] flex-col bg-espresso/97"
   role="dialog"
   aria-modal="true"
   aria-label="Image viewer"
@@ -149,6 +149,4 @@ const slides = await Promise.all(
   })();
 </script>
 
-<style>
-  #lightbox.is-open { visibility: visible; opacity: 1; }
-</style>
+

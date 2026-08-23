@@ -159,3 +159,60 @@
     }
   }
 }
+
+/* ============================================================
+   Overlay panels (mobile menu, gallery lightbox)
+
+   Toggled with `display`, not by transitioning opacity/visibility.
+   A transition that never completes leaves the panel permanently
+   half-rendered — background missing, links invisible — so the open
+   state is unconditional and the fade is a keyframe animation with
+   `both` fill, which always settles on its final frame.
+   ============================================================ */
+#mobile-menu,
+#lightbox {
+  display: none;
+}
+
+/* Shown structurally, with no entrance animation gating visibility.
+   An overlay whose opacity is driven by a transition or animation is
+   left permanently invisible whenever that never completes — which is
+   how this menu broke before. Appearing instantly is worth far more
+   here than a quarter-second fade. */
+#mobile-menu.is-open,
+#lightbox.is-open {
+  display: flex;
+}
+
+/* The overlay menu is mobile-only: never let a stale .is-open state
+   leak onto desktop if the viewport is resized while it is open. */
+@media (min-width: 48rem) {
+  #mobile-menu,
+  #mobile-menu.is-open { display: none; }
+}
+
+/* ------------------------------------------------------------
+   Header while the mobile overlay is open.
+
+   The overlay is a child of the header, so a scrolled ("stuck")
+   header would otherwise paint its pale bar and dark ink on top
+   of the dark menu. Force the light treatment for as long as the
+   menu is open, whatever the scroll position.
+   ------------------------------------------------------------ */
+body.menu-open #site-header,
+body.menu-open #site-header.is-stuck {
+  --nav-fg: var(--color-bone);
+  --nav-accent: var(--color-oak);
+  --nav-bg-contrast: var(--color-espresso);
+  color: var(--color-bone);
+}
+
+body.menu-open #site-header.is-stuck {
+  background-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+body.menu-open #site-header .logo-mark {
+  filter: brightness(0) invert(1);
+}
