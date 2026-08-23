@@ -6,6 +6,8 @@ import Marquee from '../../components/v2/Marquee.astro';
 import { site } from '../../data/site';
 import { categories, services, gallery, heroImage, aboutImage, storefrontImage } from '../../data/content';
 import { url } from '../../lib/url';
+import InstagramEmbed from '../../components/InstagramEmbed.astro';
+import { hasInstagramFeed } from '../../data/social';
 
 const strip = gallery.slice(0, 8);
 ---
@@ -165,6 +167,30 @@ const strip = gallery.slice(0, 8);
           </figcaption>
         </figure>
       ))}
+    </div>
+  </section>
+
+  <!-- ══════════════ INSTAGRAM ══════════════ -->
+  <section class="v2-section !pt-0">
+    <div class="v2-wrap">
+      <div class="v2-reveal flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="v2-tag">05 — Follow along</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl lg:text-5xl">Fresh off the<br />showroom floor.</h2>
+        </div>
+        <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer"
+           class="text-xs font-semibold uppercase tracking-[0.14em] underline underline-offset-8 hover:text-accent">
+          {site.social.instagram.handle}
+        </a>
+      </div>
+      {hasInstagramFeed() ? (
+        <div class="v2-reveal mt-12"><InstagramEmbed /></div>
+      ) : (
+        <div class="v2-reveal mt-10 flex flex-wrap gap-3" style="--d:80ms">
+          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="v2-btn v2-btn-solid">Instagram</a>
+          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="v2-btn v2-btn-line">TikTok</a>
+        </div>
+      )}
     </div>
   </section>
 

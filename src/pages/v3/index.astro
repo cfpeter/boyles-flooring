@@ -5,6 +5,8 @@ import Selector from '../../components/v3/Selector.astro';
 import { site } from '../../data/site';
 import { categories, services, gallery, heroImage, storefrontImage, aboutImage } from '../../data/content';
 import { url } from '../../lib/url';
+import InstagramEmbed from '../../components/InstagramEmbed.astro';
+import { hasInstagramFeed } from '../../data/social';
 
 const reel = gallery.slice(0, 6);
 ---
@@ -144,6 +146,30 @@ const reel = gallery.slice(0, 6);
   </section>
 
   <!-- ══════════ VISIT — image left, brass detail right ══════════ -->
+  <!-- ══════════ INSTAGRAM ══════════ -->
+  <section id="follow" class="c-section scroll-mt-4 border-t border-edge">
+    <div class="c-wrap">
+      <div class="c-rise flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="c-kicker">V — Follow along</p>
+          <h2 class="c-display mt-5 text-4xl sm:text-5xl">Fresh off the floor.</h2>
+        </div>
+        <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer"
+           class="text-[0.65rem] uppercase tracking-[0.24em] text-ash transition-colors hover:text-brass">
+          {site.social.instagram.handle}
+        </a>
+      </div>
+      {hasInstagramFeed() ? (
+        <div class="c-rise mt-12"><InstagramEmbed /></div>
+      ) : (
+        <div class="c-rise mt-10 flex flex-wrap gap-4" style="--d:80ms">
+          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="c-btn c-btn-solid">Instagram</a>
+          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="c-btn">TikTok</a>
+        </div>
+      )}
+    </div>
+  </section>
+
   <section id="visit" class="scroll-mt-4 border-t border-edge bg-panel">
     <div class="grid lg:grid-cols-2">
       <div class="c-grow c-rise min-h-[24rem] overflow-hidden border-b border-edge lg:min-h-[36rem] lg:border-b-0 lg:border-r">

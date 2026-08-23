@@ -1,12 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CtaBand from '../components/CtaBand.astro';
-import Lightbox from '../components/Lightbox.astro';
-import PageHero from '../components/PageHero.astro';
-import { categories, gallery, productsHeroImage } from '../data/content';
-import { site } from '../data/site';
-import { url } from '../lib/url';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import PageHero from '../../components/PageHero.astro';
+import { categories, gallery, productsHeroImage } from '../../data/content';
+import { site } from '../../data/site';
+import { url } from '../../lib/url';
 ---
 
 <BaseLayout
@@ -77,7 +77,7 @@ import { url } from '../lib/url';
           </ul>
 
           <div class="reveal mt-9" style="--reveal-delay:230ms">
-            <a href={url('/contact')} class="btn btn-ghost">Ask about {c.name.toLowerCase()}</a>
+            <a href={url('/v1/contact')} class="btn btn-ghost">Ask about {c.name.toLowerCase()}</a>
           </div>
         </div>
       </div>

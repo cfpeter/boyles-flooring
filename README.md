@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-Then open <http://localhost:4321/boyles-flooring>.
+Then open <http://localhost:4321/boyles-flooring> — the design chooser.
 (The `/boyles-flooring` suffix is the GitHub Pages base path — see *Custom domain* below.)
 
 | Command | Does |
@@ -86,13 +86,13 @@ showroom photography, so the comparison is about design rather than copy.
 
 | | Direction | Palette | Typefaces | Path |
 | --- | --- | --- | --- | --- |
-| A | Warm classical | sand / bark / oak | Libre Baskerville + Almarai | `/` |
+| A | Warm classical | sand / bark / oak | Libre Baskerville + Almarai | `/v1` |
 | B | Swiss editorial | paper / ink / burnt orange | Archivo + Inter | `/v2` |
 | C | Dark luxury gallery | near-black / brass / cream | Cormorant Garamond + Jost | `/v3` |
 | D | Bright bento | linen / forest / terracotta | Bricolage Grotesque + DM Sans | `/v4` |
 
-**Start at `/designs`** — a chooser that links to all four. Every alternate
-direction carries a badge in the corner to get back to it.
+**The site root `/` is the chooser** — a landing page showing all four with live
+screenshots. Every direction carries a badge in the corner to get back to it.
 
 Design A is the production candidate and is the only one indexed by search
 engines; B, C and D are marked `noindex` while they are review mock-ups.
@@ -113,6 +113,28 @@ rm -rf src/pages/v4 src/components/v4 src/layouts/V4Layout.astro src/styles/v4.c
 > ignores. Do not add a design's source folders to `.gitignore` or
 > `.git/info/exclude` — Tailwind silently stops generating that design's utility
 > classes and the page renders unstyled.
+
+## Instagram feed
+
+Instagram login-walls its profile pages and retired the unauthenticated oEmbed
+endpoint, so a public feed cannot simply be pulled into a static site. Two
+supported routes, both configured in `src/data/social.ts`:
+
+**Hand-picked posts (no signup).** Open a post in a browser, use *Copy link*,
+and paste 3–6 URLs into `instagramPosts`. Instagram's official embed script
+renders them. They do not auto-update — a new post means adding its link.
+
+**Auto-updating feed.** A static site cannot call the Instagram API directly
+(it needs a secret token that refreshes every 60 days). A widget service holds
+the token for you — behold.so, lightwidget.com and snapwidget.com all have free
+tiers. Connect the account once, then paste the snippet into `widgetEmbed`.
+
+Until one is set, every design shows a "follow us" panel linking to the real
+profile rather than placeholder posts pretending to be real ones. Configure it
+once and the section fills in across all four designs.
+
+Do **not** rehost images scraped from `cdninstagram` URLs: they are signed and
+expire within days, so the gallery would break on its own.
 
 ## Structure
 

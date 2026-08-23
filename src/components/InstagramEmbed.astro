@@ -1,0 +1,38 @@
+---
+import { instagramPosts, widgetEmbed } from '../data/social';
+
+/* Renders the actual Instagram content — deliberately unstyled so each design
+   can wrap it in its own section. Renders nothing when unconfigured, so the
+   surrounding design can show its own "follow us" panel instead. */
+const usingWidget = widgetEmbed.trim().length > 0;
+const posts = usingWidget ? [] : instagramPosts;
+---
+
+{usingWidget && <div class="ig-widget" set:html={widgetEmbed} />}
+
+{posts.length > 0 && (
+  <div class="ig-grid">
+    {posts.map((href) => (
+      <blockquote
+        class="instagram-media"
+        data-instgrm-permalink={`${href.replace(/\/?$/, '/')}?utm_source=ig_embed`}
+        data-instgrm-version="14"
+        style="background:#FFF;border:0;margin:0;padding:0;width:100%;min-width:260px;"
+      >
+        <a href={href}>View this post on Instagram</a>
+      </blockquote>
+    ))}
+  </div>
+)}
+
+{posts.length > 0 && <script is:inline async src="//www.instagram.com/embed.js"></script>}
+
+<style>
+  .ig-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .ig-grid :global(iframe) { width: 100% !important; min-width: 0 !important; }
+  .ig-widget :global(iframe) { width: 100%; border: 0; }
+</style>
