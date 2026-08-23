@@ -1,0 +1,39 @@
+---
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  body?: string;
+  /** Hide the Contact button on the contact page itself. */
+  showContactLink?: boolean;
+}
+const {
+  title = 'Book your flooring consultation',
+  body = 'Tell us about the space and we will help you choose materials that suit how you actually live — then measure and install them properly.',
+  showContactLink = true,
+} = Astro.props;
+---
+
+<section class="section bg-bark text-bone">
+  <div class="wrap-narrow text-center">
+    <p class="eyebrow !text-oak reveal">Let's talk</p>
+    <h2 class="reveal mt-3 text-3xl leading-[1.15] sm:text-4xl md:text-5xl" style="--reveal-delay:60ms">
+      {title}
+    </h2>
+    <p class="reveal mx-auto mt-6 max-w-xl text-bone/70 leading-relaxed" style="--reveal-delay:120ms">
+      {body}
+    </p>
+    <div class="reveal mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row" style="--reveal-delay:180ms">
+      <a href={site.phoneHref} class="btn btn-on-dark w-full sm:w-auto">Call {site.phone}</a>
+      {showContactLink && (
+        <a
+          href={url('/contact')}
+          class="btn w-full border border-bone/30 text-bone transition-colors hover:border-bone hover:bg-bone hover:text-espresso sm:w-auto"
+        >
+          Send a message
+        </a>
+      )}
+    </div>
+  </div>
+</section>

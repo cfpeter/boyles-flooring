@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { nav } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<BaseLayout title="Page not found" description="That page could not be found.">
+  <section class="flex min-h-[80svh] items-center bg-bark text-bone">
+    <div class="wrap-narrow py-32 text-center">
+      <p class="eyebrow !text-oak">Error 404</p>
+      <h1 class="mt-4 text-4xl sm:text-5xl md:text-6xl">This page has been pulled up.</h1>
+      <p class="mx-auto mt-6 max-w-md leading-relaxed text-bone/70">
+        The page you were after is not here. Try one of these instead.
+      </p>
+      <nav class="mt-10 flex flex-wrap justify-center gap-3" aria-label="Suggested pages">
+        {nav.map((item) => (
+          <a href={url(item.href)} class="btn btn-on-dark">{item.label}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

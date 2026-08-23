@@ -1,0 +1,154 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  items: { image: ImageMetadata; alt: string }[];
+}
+const { items } = Astro.props;
+
+/* Pre-generate one optimised large rendition per gallery image so the
+   lightbox never has to load a multi-megabyte original. */
+const slides = await Promise.all(
+  items.map(async (item) => {
+    const optimised = await getImage({ src: item.image, width: 1600, format: 'webp' });
+    return { src: optimised.src, alt: item.alt };
+  })
+);
+---
+
+<div
+  id="lightbox"
+  class="invisible fixed inset-0 z-[70] flex flex-col bg-espresso/97 opacity-0 transition-[opacity,visibility] duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <!-- Top bar -->
+  <div class="flex items-center justify-between px-5 py-4 md:px-8">
+    <p id="lb-counter" class="text-xs font-bold uppercase tracking-[0.16em] text-bone/50"></p>
+    <button
+      id="lb-close"
+      type="button"
+      class="flex h-11 w-11 items-center justify-center text-bone/70 transition-colors hover:text-bone"
+      aria-label="Close viewer"
+    >
+      <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Stage -->
+  <div class="relative flex flex-1 items-center justify-center px-4 pb-4 md:px-20">
+    <button
+      id="lb-prev"
+      type="button"
+      class="absolute left-2 z-10 flex h-12 w-12 items-center justify-center bg-espresso/60 text-bone/70 transition-colors hover:bg-bone hover:text-espresso md:left-6"
+      aria-label="Previous image"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <img id="lb-image" src="" alt="" class="max-h-full max-w-full object-contain" />
+
+    <button
+      id="lb-next"
+      type="button"
+      class="absolute right-2 z-10 flex h-12 w-12 items-center justify-center bg-espresso/60 text-bone/70 transition-colors hover:bg-bone hover:text-espresso md:right-6"
+      aria-label="Next image"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+
+  <p id="lb-caption" class="px-6 pb-6 text-center text-sm text-bone/60"></p>
+</div>
+
+<script is:inline define:vars={{ slides }}>
+  (function () {
+    const box = document.getElementById('lightbox');
+    if (!box || !slides.length) return;
+
+    const imgEl = document.getElementById('lb-image');
+    const caption = document.getElementById('lb-caption');
+    const counter = document.getElementById('lb-counter');
+    const closeBtn = document.getElementById('lb-close');
+    const prevBtn = document.getElementById('lb-prev');
+    const nextBtn = document.getElementById('lb-next');
+
+    let index = 0;
+    let lastFocused = null;
+
+    function show(i) {
+      index = (i + slides.length) % slides.length;
+      const slide = slides[index];
+      imgEl.src = slide.src;
+      imgEl.alt = slide.alt;
+      caption.textContent = slide.alt;
+      counter.textContent = `${index + 1} / ${slides.length}`;
+    }
+
+    function open(i) {
+      lastFocused = document.activeElement;
+      show(i);
+      box.classList.add('is-open');
+      document.body.classList.add('menu-open');
+      closeBtn.focus();
+    }
+
+    function close() {
+      box.classList.remove('is-open');
+      document.body.classList.remove('menu-open');
+      imgEl.src = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    document.querySelectorAll('[data-lightbox-index]').forEach((btn) => {
+      btn.addEventListener('click', () => open(Number(btn.dataset.lightboxIndex)));
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => show(index - 1));
+    nextBtn.addEventListener('click', () => show(index + 1));
+
+    // Clicking the empty backdrop dismisses, clicking the photo does not.
+    box.addEventListener('click', (e) => {
+      if (e.target === box || e.target.id === 'lb-caption') close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!box.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+      // Keep tab focus inside the dialog while it is open.
+      if (e.key === 'Tab') {
+        const focusable = [closeBtn, prevBtn, nextBtn];
+        const i = focusable.indexOf(document.activeElement);
+        if (i === -1) return;
+        e.preventDefault();
+        const next = e.shiftKey ? i - 1 : i + 1;
+        focusable[(next + focusable.length) % focusable.length].focus();
+      }
+    });
+
+    // Swipe between images on touch devices.
+    let startX = null;
+    box.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', (e) => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) show(dx > 0 ? index - 1 : index + 1);
+      startX = null;
+    }, { passive: true });
+  })();
+</script>
+
+<style>
+  #lightbox.is-open { visibility: visible; opacity: 1; }
+</style>

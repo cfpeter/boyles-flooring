@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Boyles Flooring — design tokens
+   Palette lifted from the existing brand: warm sand ground,
+   dark bark ink, oak accent.
+   ============================================================ */
+@theme {
+  --color-bone:      #F8F5EF;
+  --color-sand:      #ECE4DA;
+  --color-clay:      #DCCFBE;
+  --color-stone:     #B9AC9C;
+  --color-bark:      #36302A;
+  --color-espresso:  #221E1A;
+  --color-oak:       #B5804A;
+  --color-oak-deep:  #8A5F33;
+
+  --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-sans: "Almarai", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-card: 2px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root { color-scheme: light; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    color: var(--color-bark);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Visible, on-brand focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-oak);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-oak);
+    color: var(--color-bone);
+  }
+}
+
+@layer components {
+  /* Section rhythm — one knob for vertical pacing across the site */
+  .section { padding-block: clamp(4rem, 9vw, 8.5rem); }
+
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  .wrap-narrow {
+    width: 100%;
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  /* Small uppercase label that sits above section headings */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-oak-deep);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.75rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    border-radius: var(--radius-card);
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s, transform 0.25s var(--ease-out-soft);
+  }
+  .btn:active { transform: translateY(1px); }
+
+  .btn-primary {
+    background: var(--color-bark);
+    color: var(--color-bone);
+    border: 1px solid var(--color-bark);
+  }
+  .btn-primary:hover { background: var(--color-oak-deep); border-color: var(--color-oak-deep); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-bark);
+    border: 1px solid color-mix(in srgb, var(--color-bark) 30%, transparent);
+  }
+  .btn-ghost:hover { background: var(--color-bark); color: var(--color-bone); border-color: var(--color-bark); }
+
+  .btn-on-dark {
+    background: var(--color-bone);
+    color: var(--color-espresso);
+    border: 1px solid var(--color-bone);
+  }
+  .btn-on-dark:hover { background: var(--color-oak); border-color: var(--color-oak); color: var(--color-bone); }
+
+  /* Thin rule used to close out section headers */
+  .rule {
+    height: 1px;
+    background: color-mix(in srgb, var(--color-bark) 15%, transparent);
+  }
+}
+
+@layer utilities {
+  /* Scroll-reveal. Elements start hidden ONLY when JS is available to
+     reveal them, so a no-JS visitor still sees every word. */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition: opacity 0.7s var(--ease-out-soft), transform 0.7s var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js .reveal.is-visible { opacity: 1; transform: none; }
+
+  .hover-zoom img {
+    transition: transform 0.7s var(--ease-out-soft), filter 0.7s var(--ease-out-soft);
+  }
+  .hover-zoom:hover img { transform: scale(1.045); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .hover-zoom img { transition: none; }
+    .hover-zoom:hover img { transform: none; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

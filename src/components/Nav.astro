@@ -1,0 +1,168 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { site, nav } from '../data/site';
+import { url, isActive } from '../lib/url';
+
+const pathname = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,padding] duration-300"
+>
+  <div class="wrap flex items-center justify-between gap-6 py-4 md:py-5">
+    <a href={url('/')} class="flex shrink-0 items-center gap-3" aria-label={`${site.name} — home`}>
+      <Image
+        src={logo}
+        alt=""
+        width={44}
+        height={44}
+        loading="eager"
+        class="logo-mark h-9 w-9 md:h-11 md:w-11 object-contain transition-[filter] duration-300"
+      />
+      <span class="hidden sm:block leading-none">
+        <span class="block font-display text-base md:text-lg tracking-tight">Boyles</span>
+        <span class="block text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[var(--nav-accent)]">Flooring</span>
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-9 md:flex" aria-label="Main">
+      {nav.map((item) => (
+        <a
+          href={url(item.href)}
+          aria-current={isActive(item.href, pathname) ? 'page' : undefined}
+          class="group relative text-sm font-semibold tracking-wide transition-colors hover:text-[var(--nav-accent)] aria-[current=page]:text-[var(--nav-accent)]"
+        >
+          {item.label}
+          <span
+            class="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-[var(--nav-accent)] transition-transform duration-300 group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"
+          ></span>
+        </a>
+      ))}
+      <a href={site.phoneHref} class="btn !py-2.5 !px-5 !text-xs border border-current/40 hover:bg-[var(--nav-fg)] hover:text-[var(--nav-bg-contrast)]">
+        {site.phone}
+      </a>
+    </nav>
+
+    <!-- Mobile toggle -->
+    <button
+      id="menu-toggle"
+      type="button"
+      class="relative z-50 -mr-1 flex h-11 w-11 items-center justify-center md:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="sr-only">Menu</span>
+      <span class="flex w-6 flex-col gap-[5px]" aria-hidden="true">
+        <span class="menu-bar h-[2px] w-full bg-current transition-transform duration-300"></span>
+        <span class="menu-bar-mid h-[2px] w-full bg-current transition-opacity duration-200"></span>
+        <span class="menu-bar h-[2px] w-full bg-current transition-transform duration-300"></span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="invisible fixed inset-0 z-40 flex flex-col justify-center bg-bark opacity-0 transition-[opacity,visibility] duration-300 md:hidden"
+  >
+    <nav class="wrap flex flex-col gap-2" aria-label="Mobile">
+      {nav.map((item, i) => (
+        <a
+          href={url(item.href)}
+          aria-current={isActive(item.href, pathname) ? 'page' : undefined}
+          style={`--i:${i}`}
+          class="mobile-link border-b border-bone/15 py-5 font-display text-3xl text-bone aria-[current=page]:text-oak"
+        >
+          {item.label}
+        </a>
+      ))}
+      <div class="mt-8 flex flex-col gap-3">
+        <a href={site.phoneHref} class="btn btn-on-dark">{site.phone}</a>
+        <a href={site.emailHref} class="text-center text-sm text-bone/70">{site.email}</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Every page opens on a dark section, so the header starts light and
+     flips to dark ink once it sticks over the light page background. */
+  #site-header {
+    --nav-fg: var(--color-bone);
+    --nav-accent: var(--color-oak);
+    --nav-bg-contrast: var(--color-espresso);
+    color: var(--nav-fg);
+  }
+  #site-header.is-stuck {
+    --nav-fg: var(--color-bark);
+    --nav-accent: var(--color-oak-deep);
+    --nav-bg-contrast: var(--color-bone);
+  }
+  /* The logo mark is solid black artwork — invert it while over the hero. */
+  #site-header .logo-mark { filter: invert(1) brightness(1.9); }
+  #site-header.is-stuck .logo-mark { filter: none; }
+
+  /* Header gains a solid ground once the page scrolls under it */
+  #site-header.is-stuck {
+    background-color: color-mix(in srgb, var(--color-bone) 88%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-bark) 10%, transparent);
+  }
+  #site-header.is-stuck .wrap { padding-block: 0.625rem; }
+
+  body.menu-open { overflow: hidden; }
+  #mobile-menu.is-open { visibility: visible; opacity: 1; }
+
+  .mobile-link {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition: opacity 0.4s var(--ease-out-soft), transform 0.4s var(--ease-out-soft);
+    transition-delay: calc(var(--i) * 60ms + 100ms);
+  }
+  #mobile-menu.is-open .mobile-link { opacity: 1; transform: none; }
+
+  #menu-toggle[aria-expanded='true'] .menu-bar,
+  #menu-toggle[aria-expanded='true'] .menu-bar-mid { background-color: var(--color-bone); }
+  #menu-toggle[aria-expanded='true'] .menu-bar-mid { opacity: 0; }
+  #menu-toggle[aria-expanded='true'] .menu-bar:first-child { transform: translateY(7px) rotate(45deg); }
+  #menu-toggle[aria-expanded='true'] .menu-bar:last-child { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-link { transition: none; opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  // Condense the header once we scroll past the top of the page.
+  const onScroll = () => header.classList.toggle('is-stuck', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
+  };
+
+  toggle.addEventListener('click', () =>
+    setMenu(toggle.getAttribute('aria-expanded') !== 'true')
+  );
+
+  // Escape closes the menu, and so does following a link.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      toggle.focus();
+    }
+  });
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+</script>

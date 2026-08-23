@@ -1,0 +1,333 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+import { categories, storefrontImage, contactHeroImage } from '../data/content';
+
+const formReady = site.web3formsKey !== 'YOUR_ACCESS_KEY_HERE';
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Visit the Boyles Flooring showroom at ${site.address.full}, call ${site.phone}, or send us a message about your project.`}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let's talk about your floors."
+    lead="Call, email, or send the form below. If you already know roughly what you are after, tell us the rooms and we will come back with options."
+    image={contactHeroImage}
+  />
+
+  <!-- ================= FORM + DETAILS ================= -->
+  <section class="section">
+    <div class="wrap grid gap-16 lg:grid-cols-12 lg:gap-20">
+      <!-- ---------- Form ---------- -->
+      <div class="lg:col-span-7">
+        <h2 class="reveal text-2xl sm:text-3xl">Send a message</h2>
+        <p class="reveal mt-3 text-sm text-bark/60" style="--reveal-delay:60ms">
+          We reply during showroom hours. Fields marked * are required.
+        </p>
+
+        {!formReady && (
+          <div class="reveal mt-8 border-l-2 border-oak bg-sand p-5 text-sm leading-relaxed">
+            <p class="font-bold">Setup needed before this form can send.</p>
+            <p class="mt-2 text-bark/70">
+              Create a free access key at <strong>web3forms.com</strong> using
+              {' '}{site.email}, then paste it into
+              <code class="bg-clay px-1.5 py-0.5 text-xs">src/data/site.ts</code>.
+              Until then this form is disabled rather than silently losing messages.
+            </p>
+          </div>
+        )}
+
+        <form id="contact-form" class="reveal mt-10 grid gap-6 sm:grid-cols-2" style="--reveal-delay:120ms" novalidate>
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="New enquiry from boyles-flooring.com" />
+          <input type="hidden" name="from_name" value={site.name} />
+          <!-- Honeypot: real people never fill this in; bots do. -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="field">
+            <label for="name">Name *</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+            <p class="err" data-err-for="name"></p>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone *</label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" placeholder="(661) 000-0000" />
+            <p class="err" data-err-for="phone"></p>
+          </div>
+
+          <div class="field sm:col-span-2">
+            <label for="email">Email *</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com" />
+            <p class="err" data-err-for="email"></p>
+          </div>
+
+          <div class="field sm:col-span-2">
+            <label for="interest">What are you interested in?</label>
+            <select id="interest" name="interest">
+              <option value="">Not sure yet — help me choose</option>
+              {categories.map((c) => <option value={c.name}>{c.name}</option>)}
+              <option value="Installation only">Installation only</option>
+            </select>
+          </div>
+
+          <div class="field sm:col-span-2">
+            <label for="message">Tell us about the project *</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              placeholder="Which rooms, roughly how much area, and when you'd like it done."
+            ></textarea>
+            <p class="err" data-err-for="message"></p>
+          </div>
+
+          <div class="sm:col-span-2">
+            <button type="submit" id="submit-btn" class="btn btn-primary w-full sm:w-auto" disabled={!formReady}>
+              <span id="submit-label">Send message</span>
+            </button>
+            <p id="form-status" class="mt-4 text-sm" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+
+      <!-- ---------- Details ---------- -->
+      <aside class="lg:col-span-5">
+        <div class="reveal bg-sand p-8 md:p-10">
+          <h2 class="text-2xl">Showroom</h2>
+
+          <div class="mt-7 space-y-6 text-sm">
+            <div>
+              <p class="eyebrow">Call</p>
+              <a href={site.phoneHref} class="mt-1.5 block font-display text-2xl transition-colors hover:text-oak-deep">
+                {site.phone}
+              </a>
+            </div>
+
+            <div>
+              <p class="eyebrow">Email</p>
+              <a href={site.emailHref} class="mt-1.5 block break-all transition-colors hover:text-oak-deep">
+                {site.email}
+              </a>
+            </div>
+
+            <div>
+              <p class="eyebrow">Address</p>
+              <address class="mt-1.5 not-italic leading-relaxed">
+                <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-oak-deep">
+                  {site.address.street}<br />
+                  {site.address.city}, {site.address.state} {site.address.zip}
+                </a>
+              </address>
+            </div>
+
+            <div>
+              <p class="eyebrow">Hours</p>
+              <dl class="mt-2 space-y-2">
+                {site.hours.map((h) => (
+                  <div class="flex justify-between gap-4 border-b border-bark/10 pb-2">
+                    <dt class="text-bark/60">{h.days}</dt>
+                    <dd class="font-semibold">{h.time}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div>
+              <p class="eyebrow">Follow</p>
+              <div class="mt-2 flex flex-col gap-1.5">
+                <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-oak-deep">
+                  Instagram {site.social.instagram.handle}
+                </a>
+                <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-oak-deep">
+                  TikTok {site.social.tiktok.handle}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal mt-4 overflow-hidden" style="--reveal-delay:100ms">
+          <Image
+            src={storefrontImage}
+            alt="The Boyles Flooring storefront on Soledad Canyon Road"
+            widths={[500, 900]}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            class="aspect-[16/10] w-full object-cover"
+          />
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= MAP ================= -->
+  <section aria-label="Map to the showroom" class="bg-sand">
+    <iframe
+      src={site.mapsEmbed}
+      title={`Map showing ${site.name} at ${site.address.full}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="h-[380px] w-full border-0 md:h-[460px]"
+    ></iframe>
+  </section>
+
+  <!-- ================= SERVICE AREA ================= -->
+  <section class="section">
+    <div class="wrap-narrow text-center">
+      <p class="eyebrow reveal">Service area</p>
+      <h2 class="reveal mt-3 text-3xl sm:text-4xl" style="--reveal-delay:60ms">
+        Serving the Santa Clarita Valley.
+      </h2>
+      <ul class="reveal mt-8 flex flex-wrap justify-center gap-x-3 gap-y-2.5 text-sm" style="--reveal-delay:120ms">
+        {site.serviceArea.map((area) => (
+          <li class="border border-bark/15 px-4 py-1.5 text-bark/70">{area}</li>
+        ))}
+      </ul>
+      <p class="reveal mt-8 text-sm text-bark/55" style="--reveal-delay:180ms">
+        Outside this list? Call us — we may still be able to help.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .field { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .field label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-bark) 65%, transparent);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--color-bone);
+    border: 1px solid color-mix(in srgb, var(--color-bark) 18%, transparent);
+    border-radius: 2px;
+    font: inherit;
+    font-size: 0.9375rem;
+    color: var(--color-bark);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder { color: color-mix(in srgb, var(--color-bark) 35%, transparent); }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--color-oak);
+    background: #fff;
+  }
+
+  .field textarea { resize: vertical; min-height: 8rem; }
+
+  .field input[aria-invalid='true'],
+  .field textarea[aria-invalid='true'] { border-color: #B03A2E; }
+
+  .err {
+    min-height: 0;
+    font-size: 0.75rem;
+    color: #B03A2E;
+  }
+  .err:empty { display: none; }
+
+  #submit-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('form-status')!;
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const label = document.getElementById('submit-label')!;
+
+    const rules: Record<string, (v: string) => string> = {
+      name: (v) => (v.trim().length < 2 ? 'Please enter your name.' : ''),
+      phone: (v) =>
+        v.replace(/\D/g, '').length < 10 ? 'Please enter a 10-digit phone number.' : '',
+      email: (v) => (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? 'Please enter a valid email address.' : ''),
+      message: (v) => (v.trim().length < 10 ? 'A sentence or two about the project helps us reply usefully.' : ''),
+    };
+
+    const showError = (name: string, msg: string) => {
+      const field = form.elements.namedItem(name) as HTMLInputElement;
+      const slot = form.querySelector(`[data-err-for="${name}"]`)!;
+      slot.textContent = msg;
+      field.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    };
+
+    // Validate a field once the visitor has left it, then live as they fix it.
+    Object.keys(rules).forEach((name) => {
+      const field = form.elements.namedItem(name) as HTMLInputElement;
+      field.addEventListener('blur', () => showError(name, rules[name](field.value)));
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') showError(name, rules[name](field.value));
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.className = 'mt-4 text-sm';
+
+      let valid = true;
+      let firstBad: HTMLInputElement | null = null;
+      for (const name of Object.keys(rules)) {
+        const field = form.elements.namedItem(name) as HTMLInputElement;
+        const ok = showError(name, rules[name](field.value));
+        if (!ok && !firstBad) firstBad = field;
+        valid = valid && ok;
+      }
+      if (!valid) {
+        firstBad?.focus();
+        status.textContent = 'Please correct the highlighted fields.';
+        status.className = 'mt-4 text-sm text-[#B03A2E]';
+        return;
+      }
+
+      btn.disabled = true;
+      label.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          form.querySelectorAll('.err').forEach((el) => (el.textContent = ''));
+          form.reset();
+          status.textContent = 'Thanks — your message is on its way. We will be in touch during showroom hours.';
+          status.className = 'mt-4 text-sm font-semibold text-[#2E7D52]';
+          label.textContent = 'Sent';
+          setTimeout(() => {
+            label.textContent = 'Send message';
+            btn.disabled = false;
+          }, 4000);
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      } catch {
+        status.innerHTML =
+          'Something went wrong sending that. Please call <a class="underline" href="tel:+16612841200">(661) 284-1200</a> or email <a class="underline" href="mailto:sales@boyles-flooring.com">sales@boyles-flooring.com</a>.';
+        status.className = 'mt-4 text-sm text-[#B03A2E]';
+        label.textContent = 'Send message';
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
