@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import PageHero from '../../../components/PageHero.astro';
+import { brands, collectionsFor, colourCount } from '../../../data/brands';
+import { categories } from '../../../data/content';
+import { site } from '../../../data/site';
+import { url } from '../../../lib/url';
+
+/* One page per brand *per category*. A brand that spans several categories —
+   Republic sells laminate and vinyl — gets a page in each, showing only the
+   lines belonging to that category. */
+export function getStaticPaths() {
+  return brands.flatMap((brand) => {
+    const cats = [...new Set(brand.collections.map((c) => c.category))];
+    return cats.map((slug) => ({
+      params: { category: slug, brand: brand.slug },
+      props: { brand, category: categories.find((c) => c.slug === slug)! },
+    }));
+  });
+}
+
+const { brand, category } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const cols = collectionsFor(brand, category.slug);
+const lines = brand.lines.filter(
+  (l) => l.category === category.slug && cols.some((c) => c.line === l.key)
+);
+const total = colourCount(brand, category.slug);
+const elsewhere = [...new Set(brand.collections.map((c) => c.category))].filter((s) => s !== category.slug);
+---
+
+<BaseLayout
+  title={`${brand.name} — ${category.name}`}
+  description={`${brand.name} ${category.name.toLowerCase()} at Boyles Flooring, ${site.address.city} — ${cols.length} collections, ${total} colours.`}
+>
+  <PageHero
+    eyebrow={`${category.name} — Brand`}
+    title={brand.name}
+    lead={brand.blurb}
+    image={category.image}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <nav class="reveal flex flex-wrap items-center gap-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-bark/45" aria-label="Breadcrumb">
+        <a href={url('/products')} class="hover:text-oak-deep">Products</a>
+        <span aria-hidden="true">/</span>
+        <a href={url(`/products/${category.slug}`)} class="hover:text-oak-deep">{category.name}</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-bark/70">{brand.name}</span>
+      </nav>
+
+      <div class="reveal mt-6 flex flex-wrap items-end justify-between gap-6">
+        <div class="max-w-xl">
+          <h2 class="text-3xl sm:text-4xl">
+            {cols.length} {cols.length === 1 ? 'collection' : 'collections'}, {total} colours.
+          </h2>
+          <p class="mt-5 text-sm leading-relaxed text-bark/65">
+            {brand.name}'s {category.name.toLowerCase()} range, grouped the way
+            they group it. Open a collection to see every colour in it.
+          </p>
+        </div>
+        <a href={brand.site} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          Manufacturer site
+        </a>
+      </div>
+
+      {lines.map((line) => {
+        const inLine = cols.filter((c) => c.line === line.key);
+        if (!inLine.length) return null;
+        return (
+          <div class="mt-16">
+            <div class="reveal flex flex-wrap items-baseline justify-between gap-3 border-b border-bark/15 pb-3">
+              <h3 class="font-display text-2xl">{line.label}</h3>
+              <span class="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bark/40">
+                {inLine.reduce((n, c) => n + c.colours.length, 0)} colours
+              </span>
+            </div>
+
+            <ul class="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+              {inLine.map((c, i) => (
+                <li class="reveal" style={`--reveal-delay:${Math.min(i * 50, 300)}ms`}>
+                  <a href={url(`/products/${category.slug}/${brand.slug}/${c.slug}`)} class="group block">
+                    <div class="grid grid-cols-4 gap-1">
+                      {c.colours.slice(0, 4).map((sw) => (
+                        <div class="overflow-hidden border border-bark/10 bg-sand">
+                          {sw.image ? (
+                            <img src={`${base}/brands/${brand.imageDir}/${sw.image}`} alt="" loading="lazy"
+                                 width="700" height="495"
+                                 class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                          ) : <div class="aspect-square w-full"></div>}
+                        </div>
+                      ))}
+                    </div>
+                    <div class="mt-3 flex items-baseline justify-between gap-3">
+                      <h4 class="text-lg leading-tight transition-colors group-hover:text-oak-deep">{c.title}</h4>
+                      <span class="shrink-0 text-[0.65rem] uppercase tracking-[0.12em] text-bark/45">
+                        {c.colours.length} colours
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+
+      {elsewhere.length > 0 && (
+        <div class="reveal mt-16 border-t border-bark/15 pt-8">
+          <p class="text-sm text-bark/65">
+            {brand.name} also supplies{' '}
+            {elsewhere.map((slug, i) => {
+              const other = categories.find((c) => c.slug === slug)!;
+              return (
+                <>
+                  {i > 0 && ', '}
+                  <a href={url(`/products/${slug}/${brand.slug}`)} class="font-semibold text-oak-deep hover:underline">
+                    {other.name.toLowerCase()}
+                  </a>
+                </>
+              );
+            })}.
+          </p>
+        </div>
+      )}
+
+      <p class="reveal mt-10 max-w-2xl text-xs leading-relaxed text-bark/50">
+        Collection names, colour names, product codes and swatch photography are
+        {' '}{brand.name}'s own, shown here as a stockist. Screens render colour
+        differently from the real thing — always judge a floor from a physical sample.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand
+    title={`Ask us about ${brand.name}`}
+    body="Tell us which collection caught your eye and we will get a sample into your hands."
+  />
+</BaseLayout>

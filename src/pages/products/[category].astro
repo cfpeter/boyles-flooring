@@ -104,7 +104,7 @@ const catalogued = (name: string) =>
               return (
                 <li class="reveal bg-sand" style={`--reveal-delay:${Math.min(i * 45, 400)}ms`}>
                   {cat ? (
-                    <a href={url(`/brands/${cat.slug}`)} class="group block h-full">{inner}</a>
+                    <a href={url(`/products/${category.slug}/${cat.slug}`)} class="group block h-full">{inner}</a>
                   ) : (
                     <div class="group h-full">{inner}</div>
                   )}

@@ -116,10 +116,17 @@ Category pages list brand lines. Where a full catalogue exists, the brand name
 links through to it:
 
 ```
-/products/laminate                                  categories -> brands
-/brands/republic-flooring                           lines -> collections
-/brands/republic-flooring/sharc-north-forest        every colour in a collection
+/products/laminate                                       category -> brands
+/products/laminate/republic-flooring                     lines -> collections
+/products/laminate/republic-flooring/sharc-north-forest  every colour
 ```
+
+Brand pages are nested **under the category**, not global. A brand that spans
+several categories gets a page in each, showing only the lines belonging to
+that category — Republic under Laminate shows WoodMax only, while Republic
+under Luxury Vinyl shows Pure SPC, SPC Max and Designer Pro. Each page
+cross-links to the brand's other categories. Scoping is enforced by the URL
+rather than by filtering after the fact, so the two views cannot drift.
 
 Republic Flooring is imported: 4 lines, 34 collections, 180 colours, with the
 manufacturer's descriptions, colour names and SKUs. Swatch images are
@@ -155,7 +162,8 @@ src/
 ├─ layouts/          BaseLayout.astro (SEO, fonts, structured data)
 ├─ lib/url.ts        Base-path-aware link helper
 ├─ pages/            index · products · products/[category]
-│                    brands/[brand] · brands/[brand]/[collection]
+│                    products/[category]/[brand]
+│                    products/[category]/[brand]/[collection]
 │                    meet · contact · 404
 └─ styles/global.css Design tokens and shared component classes
 
