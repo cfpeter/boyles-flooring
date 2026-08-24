@@ -37,7 +37,7 @@ Almost everything lives in two files — no HTML required.
 | File | Holds |
 | --- | --- |
 | `src/data/site.ts` | Phone, email, address, hours, service area, social links, contact-form key |
-| `src/data/content.ts` | Product categories, "how it works" steps, gallery captions |
+| `src/data/content.ts` | Product categories, their brand lines, "how it works" steps, gallery captions |
 
 Change the phone number in `site.ts` and it updates in the header, footer,
 contact page and search-engine metadata at once.
@@ -120,7 +120,8 @@ src/
 ├─ data/             site.ts · content.ts · reels.ts   ← edit these
 ├─ layouts/          BaseLayout.astro (SEO, fonts, structured data)
 ├─ lib/url.ts        Base-path-aware link helper
-├─ pages/            index · products · meet · contact · 404
+├─ pages/            index · products · products/[category] · meet
+│                    contact · 404
 └─ styles/global.css Design tokens and shared component classes
 
 public/

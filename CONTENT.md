@@ -51,6 +51,43 @@ Two further things worth your decision:
 | **Name styling** | Instagram uses "Boyle's Flooring SCV" (with an apostrophe); the website uses "Boyles Flooring". Pick one and I will make it consistent. |
 | **Alternate logo & tagline** | Posts use a second lockup — "Boyles Flooring **& Doors** — Style. Strength. Value." If that is the current brand, the site should use it. Send the artwork and it goes in. |
 
+
+## 🏷️ Brand lists — where they came from
+
+Each category page lists the brand lines for that surface. Sources differ, and
+that matters for how confidently the site can claim them:
+
+| Category | Brands | Source |
+| --- | --- | --- |
+| Hardwood | 18 | ADCO Wholesale's Engineered + Solid wood catalogue |
+| Laminate | 16 | ADCO Wholesale's Laminate catalogue |
+| Luxury Vinyl | 15 | ADCO Wholesale's SPC Vinyl catalogue, plus COREtec |
+| Carpet | 4 | Given directly by the business |
+| Tile & Stone | — | none confirmed |
+| Doors & Hardware | — | none confirmed |
+
+ADCO Wholesale (Burbank) appears to be the distributor: their brand list
+includes Pacific Direct Industries and Republic Flooring, both visible on the
+sample racks in Boyles' own showroom photos.
+
+**The distinction the page makes.** Lines confirmed on the showroom floor —
+Pacific Direct Industries, Republic Flooring, COREtec, plus all four carpet
+brands — carry an "In store" badge. The rest are presented as available to
+order through suppliers, not as stocked. That wording is deliberate: a
+distributor listing a brand does not mean Boyles stocks it.
+
+**What to confirm:**
+
+1. Which of the distributor brands Boyles actually stocks, so more can carry
+   the "In store" badge — set `onFloor: true` in `src/data/content.ts`.
+2. Any brand in the list they do **not** work with, so it can be removed.
+3. Brands for **Tile & Stone** and **Doors & Hardware**. Both categories
+   currently show a "call us" panel instead of a brand list, which is honest
+   but weaker than the others.
+
+Deliberately not shown: the distributor's per-brand product counts (e.g.
+"Eternity (88)"). Those describe the distributor's inventory, not Boyles'.
+
 ## ❌ Deliberately left out
 
 - **Customer testimonials / reviews** — there were none to source, and inventing

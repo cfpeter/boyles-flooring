@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 import { site, nav } from '../data/site';
+import { categories } from '../data/content';
 import { url, isActive } from '../lib/url';
 
 const pathname = Astro.url.pathname;
@@ -29,18 +30,59 @@ const pathname = Astro.url.pathname;
 
     <!-- Desktop nav -->
     <nav class="hidden items-center gap-9 md:flex" aria-label="Main">
-      {nav.map((item) => (
-        <a
-          href={url(item.href)}
-          aria-current={isActive(item.href, pathname) ? 'page' : undefined}
-          class="group relative text-sm font-semibold tracking-wide transition-colors hover:text-[var(--nav-accent)] aria-[current=page]:text-[var(--nav-accent)]"
-        >
-          {item.label}
-          <span
-            class="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-[var(--nav-accent)] transition-transform duration-300 group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"
-          ></span>
-        </a>
-      ))}
+      {nav.map((item) => {
+        const isProducts = item.href === '/products';
+        const current = isActive(item.href, pathname) || (isProducts && pathname.includes('/products'));
+        return isProducts ? (
+          <!-- Opens on hover and on keyboard focus, so it needs no JavaScript
+               and cannot get stuck half-open. -->
+          <div class="nav-drop group/drop relative">
+            <a
+              href={url(item.href)}
+              aria-current={current ? 'page' : undefined}
+              class="group relative flex items-center gap-1.5 py-2 text-sm font-semibold tracking-wide transition-colors hover:text-[var(--nav-accent)] aria-[current=page]:text-[var(--nav-accent)]"
+            >
+              {item.label}
+              <svg viewBox="0 0 24 24" class="h-3 w-3 transition-transform duration-300 group-hover/drop:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="absolute -bottom-0.5 left-0 h-px w-[calc(100%-1.1rem)] origin-left scale-x-0 bg-[var(--nav-accent)] transition-transform duration-300 group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"></span>
+            </a>
+
+            <div class="nav-panel absolute left-1/2 top-full w-60 -translate-x-1/2 pt-3">
+              <ul class="border border-bark/10 bg-bone py-2 shadow-[0_18px_40px_-20px_rgba(54,48,42,0.45)]">
+                {categories.map((c) => (
+                  <li>
+                    <a
+                      href={url(`/products/${c.slug}`)}
+                      class="flex items-center justify-between gap-3 px-5 py-2.5 text-sm text-bark transition-colors hover:bg-sand hover:text-oak-deep"
+                    >
+                      {c.name}
+                      <span class="text-[0.6rem] text-bark/35">{c.brands.length || ''}</span>
+                    </a>
+                  </li>
+                ))}
+                <li class="mt-1 border-t border-bark/10 pt-1">
+                  <a href={url('/products')} class="block px-5 py-2.5 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-oak-deep transition-colors hover:bg-sand">
+                    View all products
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={url(item.href)}
+            aria-current={current ? 'page' : undefined}
+            class="group relative text-sm font-semibold tracking-wide transition-colors hover:text-[var(--nav-accent)] aria-[current=page]:text-[var(--nav-accent)]"
+          >
+            {item.label}
+            <span
+              class="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-[var(--nav-accent)] transition-transform duration-300 group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"
+            ></span>
+          </a>
+        );
+      })}
       <a href={site.phoneHref} class="btn !py-2.5 !px-5 !text-xs border border-current/40 hover:bg-[var(--nav-fg)] hover:text-[var(--nav-bg-contrast)]">
         {site.phone}
       </a>
@@ -69,15 +111,32 @@ const pathname = Astro.url.pathname;
     id="mobile-menu"
     class="fixed inset-0 z-40 flex-col justify-center bg-bark md:hidden"
   >
-    <nav class="wrap flex flex-col gap-2" aria-label="Mobile">
+    <nav class="wrap flex max-h-[78svh] flex-col gap-2 overflow-y-auto py-4" aria-label="Mobile">
       {nav.map((item) => (
-        <a
-          href={url(item.href)}
-          aria-current={isActive(item.href, pathname) ? 'page' : undefined}
-          class="mobile-link border-b border-bone/15 py-5 font-display text-3xl text-bone aria-[current=page]:text-oak"
-        >
-          {item.label}
-        </a>
+        <div class="mobile-link">
+          <a
+            href={url(item.href)}
+            aria-current={isActive(item.href, pathname) ? 'page' : undefined}
+            class="block border-b border-bone/15 py-4 font-display text-3xl text-bone aria-[current=page]:text-oak"
+          >
+            {item.label}
+          </a>
+
+          {item.href === '/products' && (
+            <ul class="mb-2 grid grid-cols-2 gap-x-4">
+              {categories.map((c) => (
+                <li>
+                  <a
+                    href={url(`/products/${c.slug}`)}
+                    class="block border-b border-bone/10 py-2.5 text-sm text-bone/70 transition-colors hover:text-oak"
+                  >
+                    {c.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       ))}
       <div class="mt-8 flex flex-col gap-3">
         <a href={site.phoneHref} class="btn btn-on-dark">{site.phone}</a>
@@ -112,6 +171,12 @@ const pathname = Astro.url.pathname;
     box-shadow: 0 1px 0 color-mix(in srgb, var(--color-bark) 10%, transparent);
   }
   #site-header.is-stuck .wrap { padding-block: 0.625rem; }
+
+  /* Structural show/hide — a panel whose visibility depends on a transition
+     completing can strand itself invisible, so this uses display outright. */
+  .nav-panel { display: none; }
+  .nav-drop:hover .nav-panel,
+  .nav-drop:focus-within .nav-panel { display: block; }
 
   body.menu-open { overflow: hidden; }
 

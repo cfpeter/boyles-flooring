@@ -4,6 +4,26 @@
    ============================================================================ */
 import type { ImageMetadata } from 'astro';
 
+/* ----------------------------------------------------------------------------
+   BRAND SOURCES — read before editing `brands`
+
+   Hardwood, laminate and luxury vinyl brand lines are taken from the catalogue
+   of Boyles' distributor (ADCO Wholesale, Burbank), whose flooring categories
+   map onto ours as: Engineered + Solid wood -> Hardwood, Laminate -> Laminate,
+   SPC Vinyl -> Luxury Vinyl.
+
+   `onFloor: true` marks the lines actually visible in Boyles' own showroom
+   photos and videos — Pacific Direct Industries, Republic Flooring, COREtec,
+   Stanton and Dreamweaver. Everything else is available to order through the
+   distributor rather than confirmed as stocked, which is why the page says
+   "available through our suppliers" rather than claiming they are all in store.
+
+   Carpet is not a distributor line. Shaw, Stanton Carpet, Anderson Tuftex and
+   Dreamweaver were given directly by the business (Stanton and Dreamweaver are
+   also visible on displays in the showroom photos). Tile and doors have no
+   confirmed brand list yet.
+   ---------------------------------------------------------------------------- */
+
 /* Astro optimises every image it can see at build time. Globbing the folder
    means dropping a new photo into src/assets/gallery/ is all it takes. */
 const files = import.meta.glob<{ default: ImageMetadata }>(
@@ -17,6 +37,12 @@ const img = (name: string): ImageMetadata => {
   return hit[1].default;
 };
 
+export type Brand = {
+  name: string;
+  /** Seen on the showroom floor in Boyles' own photos or videos. */
+  onFloor?: boolean;
+};
+
 export type Category = {
   slug: string;
   name: string;
@@ -24,6 +50,8 @@ export type Category = {
   body: string;
   bullets: string[];
   image: ImageMetadata;
+  /** Brand lines available in this category. See BRAND SOURCES note below. */
+  brands: Brand[];
 };
 
 export const categories: Category[] = [
@@ -34,6 +62,26 @@ export const categories: Category[] = [
     body: 'Nothing else ages quite like wood. We carry solid and engineered hardwood across a full range of species, widths and finishes — from pale white oak to deep walnut. Engineered constructions stay stable over concrete slabs and in wider planks, so you can get the look you want in rooms where solid wood would not be the right call.',
     bullets: ['Solid & engineered', 'Wide-plank options', 'Matte to satin finishes', 'Refinishable surfaces'],
     image: img('g09'),
+    brands: [
+      { name: 'ARK' },
+      { name: 'Boen' },
+      { name: 'Celeste' },
+      { name: 'Country Wood Flooring' },
+      { name: 'Hermitage' },
+      { name: 'Johnson' },
+      { name: 'Monarch Plank' },
+      { name: 'Oasis' },
+      { name: 'Opus Hardwood' },
+      { name: 'Pacific Direct Industries', onFloor: true },
+      { name: 'Republic Flooring', onFloor: true },
+      { name: 'Reward' },
+      { name: 'SK' },
+      { name: 'SLCC' },
+      { name: 'Somerset' },
+      { name: 'Tecsun' },
+      { name: 'Tri-West' },
+      { name: 'Urban' },
+    ],
   },
   {
     slug: 'laminate',
@@ -42,6 +90,24 @@ export const categories: Category[] = [
     body: 'Modern laminate has come a long way. High-definition printing and embossed textures track the grain you see, and the wear layers shrug off pets, kids and busy hallways. It is the practical choice when you want the look of wood across a lot of square footage without the hardwood budget.',
     bullets: ['High scratch resistance', 'Great value per sq ft', 'Realistic wood texture', 'Fast installation'],
     image: img('g01'),
+    brands: [
+      { name: 'Alana' },
+      { name: 'Bellissima' },
+      { name: 'Country Wood Flooring' },
+      { name: 'Eternity' },
+      { name: 'Johnson' },
+      { name: 'Linco' },
+      { name: 'Lions Floor' },
+      { name: 'LUX Flooring' },
+      { name: 'Oasis' },
+      { name: 'Pacific Direct Industries', onFloor: true },
+      { name: 'Republic Flooring', onFloor: true },
+      { name: 'SK' },
+      { name: 'SLCC' },
+      { name: 'Staymor' },
+      { name: 'Tecsun' },
+      { name: 'Urban' },
+    ],
   },
   {
     slug: 'luxury-vinyl',
@@ -50,6 +116,23 @@ export const categories: Category[] = [
     body: 'Luxury vinyl plank and tile is the fastest-growing floor we sell, and for good reason: it is 100% waterproof, comfortable underfoot, and tough enough for the busiest house. That makes it the go-to for kitchens, bathrooms, laundry rooms and basements — or for running one continuous floor through the whole home.',
     bullets: ['100% waterproof', 'Kid- and pet-proof wear layers', 'Rigid core stability', 'Warm and quiet underfoot'],
     image: img('g04'),
+    brands: [
+      { name: 'COREtec', onFloor: true },
+      { name: 'Country Wood Flooring' },
+      { name: 'Essen' },
+      { name: 'Eternity' },
+      { name: 'Johnson' },
+      { name: 'Linco' },
+      { name: 'Lions Floor' },
+      { name: 'LUX Flooring' },
+      { name: 'Oasis' },
+      { name: 'Pacific Direct Industries', onFloor: true },
+      { name: 'Republic Flooring', onFloor: true },
+      { name: 'SK' },
+      { name: 'SLCC' },
+      { name: 'Tecsun' },
+      { name: 'Urban' },
+    ],
   },
   {
     slug: 'carpet',
@@ -58,6 +141,12 @@ export const categories: Category[] = [
     body: 'Bedrooms, stairs and family rooms still call for carpet. We stock plush, textured, loop and patterned styles, along with performance fibres engineered to resist staining and release pet accidents. Bring your room dimensions and we will walk you through the trade-offs between feel, durability and cleanability.',
     bullets: ['Plush, textured & patterned', 'Pet-friendly performance fibres', 'Stair runners & bindings', 'Quality pad options'],
     image: img('g03'),
+    brands: [
+      { name: 'Shaw', onFloor: true },
+      { name: 'Stanton Carpet', onFloor: true },
+      { name: 'Anderson Tuftex', onFloor: true },
+      { name: 'Dreamweaver', onFloor: true },
+    ],
   },
   {
     slug: 'tile-stone',
@@ -66,6 +155,7 @@ export const categories: Category[] = [
     body: 'Porcelain and ceramic give you near-limitless format and finish options — wood-look planks, large-format concrete, marble veining, classic subway. Ideal anywhere water and heat are part of daily life, and equally at home on a backsplash or shower surround as underfoot.',
     bullets: ['Porcelain & ceramic', 'Wood-look and stone-look', 'Large-format options', 'Backsplash & surrounds'],
     image: img('g02'),
+    brands: [],
   },
   {
     slug: 'doors',
@@ -74,6 +164,7 @@ export const categories: Category[] = [
     body: 'We carry doors alongside the floors, which means the finishes actually coordinate — and you are dealing with one supplier instead of three. Interior and entry doors, prehung units ready to install, plus shower doors, closet doors and door hardware, measured and fitted by the same team that handles your floor.',
     bullets: ['Interior & entry doors', 'Prehung units', 'Shower & closet doors', 'Door hardware'],
     image: img('g12'),
+    brands: [],
   },
 ];
 

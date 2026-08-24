@@ -112,7 +112,7 @@ import VideoReels from '../components/VideoReels.astro';
         {categories.map((c, i) => (
           <li class="reveal bg-sand" style={`--reveal-delay:${i * 70}ms`}>
             <a
-              href={`${url('/products')}#${c.slug}`}
+              href={url(`/products/${c.slug}`)}
               class="hover-zoom group flex h-full flex-col transition-colors hover:bg-bone"
             >
               <div class="relative overflow-hidden">
