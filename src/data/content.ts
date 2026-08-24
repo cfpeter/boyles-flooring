@@ -214,6 +214,21 @@ export const gallery: { image: ImageMetadata; alt: string; span?: 'wide' }[] = [
 ];
 
 export const heroImage = img('g06');
+
+/* Hero slideshow. Deliberately mixes floors and doors so the range is obvious
+   from the first screen, and ends on the real showroom. */
+export const heroSlides = [
+  { image: img('laminate-room'),        label: 'Laminate',
+    alt: 'A wide-plank wood-look laminate floor running through an open-plan kitchen' },
+  { image: img('door-entry-wood'),      label: 'Entry doors',
+    alt: 'A craftsman-style solid wood entry door with glazing' },
+  { image: img('door-interior-modern'), label: 'Interior doors',
+    alt: 'A bright hallway with a modern frosted-glass interior door' },
+  { image: img('door-wardrobe'),        label: 'Closet doors',
+    alt: 'A bedroom with full-height mirrored wardrobe doors' },
+  { image: img('g06'),                  label: 'The showroom',
+    alt: 'Rows of flooring sample racks on the Boyles Flooring showroom floor' },
+];
 export const storefrontImage = img('g14');
 export const aboutImage = img('g15');
 export const laminateDetail = img('laminate-detail');

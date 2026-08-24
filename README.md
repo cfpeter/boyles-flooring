@@ -79,6 +79,21 @@ To serve this at `www.boyles-flooring.com` instead:
    **Settings → Pages**.
 4. Update the `Sitemap:` line in `public/robots.txt`.
 
+## Hero slideshow
+
+The home page hero cycles five pictures — laminate, entry doors, interior doors,
+closet doors and the showroom — so both halves of the business are visible on
+the first screen. Edit the list in `heroSlides` in `src/data/content.ts`; each
+entry carries the image, a short label shown bottom-left, and alt text.
+
+It advances every 5.2s and pauses on hover, on keyboard focus and when the tab
+is hidden. Dots and arrows drive it manually. Under `prefers-reduced-motion` it
+does not auto-advance at all.
+
+Only the active slide is opaque, and slide one is marked active in the HTML, so
+if the cross-fade never runs the hero still shows a photograph instead of a
+blank panel.
+
 ## Showroom video clips
 
 The "Fresh off the showroom floor" section plays Boyles Flooring's own videos

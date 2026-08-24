@@ -4,27 +4,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
-import { categories, services, heroImage, aboutImage, storefrontImage, doorShowcase, laminateDetail } from '../data/content';
+import { categories, services, heroImage, aboutImage, storefrontImage, doorShowcase, laminateDetail, heroSlides } from '../data/content';
 import { url } from '../lib/url';
 import VideoReels from '../components/VideoReels.astro';
+import HeroSlides from '../components/HeroSlides.astro';
 ---
 
 <BaseLayout title={site.name}>
   <!-- ================= HERO ================= -->
   <section class="relative flex min-h-[92svh] items-end overflow-hidden">
-    <Image
-      src={heroImage}
-      alt=""
-      widths={[800, 1400, 2000]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover"
-    />
+    <HeroSlides slides={heroSlides} />
     <!-- Two-stop scrim: keeps type legible without flattening the photo -->
     <div class="absolute inset-0 bg-gradient-to-t from-espresso/92 via-espresso/55 to-espresso/25"></div>
 
-    <div class="wrap relative z-10 pb-20 pt-40 md:pb-28">
+    <div class="wrap relative z-10 pb-36 pt-40 md:pb-44">
       <div class="max-w-3xl">
         <p class="reveal text-[0.6875rem] font-bold uppercase tracking-[0.22em] text-oak">
           Santa Clarita &middot; Flooring &amp; Doors
