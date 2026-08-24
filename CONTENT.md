@@ -88,6 +88,27 @@ distributor listing a brand does not mean Boyles stocks it.
 Deliberately not shown: the distributor's per-brand product counts (e.g.
 "Eternity (88)"). Those describe the distributor's inventory, not Boyles'.
 
+## 📚 Republic Flooring catalogue
+
+Republic's full range is now on the site — 4 lines, 34 collections, 180 colours
+— imported from the manufacturer's own storefront, with their descriptions,
+colour names, SKUs and swatch photography, self-hosted rather than hot-linked.
+
+**Needs a decision before the real domain goes live:** confirm that Boyles'
+dealer arrangement with Republic covers using their swatch photography and copy
+on the website. If it does not, the structure stays and the images get swapped
+for Boyles' own swatch shots.
+
+**Not shown:** per-colour specifications. Republic's storefront does not publish
+thickness, plank size or box coverage, so rather than guess, each collection page
+says to call. If Boyles can supply a spec sheet per collection, it drops straight
+in as a `specs` block.
+
+**Same treatment available for:** any manufacturer whose site is Shaw, Stanton
+Carpet, Anderson Tuftex, Dreamweaver, COREtec or Pacific Direct Industries.
+Whether it is as quick depends on whether their site exposes a catalogue feed
+the way Republic's does.
+
 ## ❌ Deliberately left out
 
 - **Customer testimonials / reviews** — there were none to source, and inventing

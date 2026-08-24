@@ -110,6 +110,40 @@ ffmpeg -i input.mp4 -vf "scale='trunc(iw*min(1,720/ih)/2)*2':'min(720,ih)'" \
 Posters are pulled from partway through each clip rather than frame 0 — the
 first frame of a reel is usually a title card or someone mid-sentence.
 
+## Brand catalogues
+
+Category pages list brand lines. Where a full catalogue exists, the brand name
+links through to it:
+
+```
+/products/laminate                                  categories -> brands
+/brands/republic-flooring                           lines -> collections
+/brands/republic-flooring/sharc-north-forest        every colour in a collection
+```
+
+Republic Flooring is imported: 4 lines, 34 collections, 180 colours, with the
+manufacturer's descriptions, colour names and SKUs. Swatch images are
+**self-hosted** in `public/brands/republic/` rather than hot-linked, so nothing
+breaks when the manufacturer reorganises its site.
+
+### Adding another brand
+
+Manufacturer sites built on Shopify expose their whole catalogue as JSON —
+`/products.json?limit=250` and `/collections/<line>/products.json`. In
+Republic's case each *product* is a collection and each *variant* is a colour,
+with an image bound to each variant. Import that shape into `src/data/brands.ts`
+and download the images into `public/brands/<brand>/`.
+
+> **Rights.** Collection names, colour names, SKUs, descriptions and swatch
+> photography belong to the manufacturer. They are reproduced here on the basis
+> that Boyles is a stockist. Confirm dealer permission covers website use before
+> the site moves to the real domain, and swap in Boyles' own swatch photography
+> if not.
+
+No specifications are shown. The manufacturer's storefront does not publish
+per-colour thickness or plank size, and inventing them would be worse than
+leaving them out — the page says to call instead.
+
 ## Structure
 
 ```
@@ -117,15 +151,17 @@ src/
 ├─ assets/gallery/   Showroom photos (optimised at build time)
 ├─ components/       Nav, Footer, PageHero, SectionHeading, CtaBand,
 │                    Lightbox, VideoReels, FeatureVideo
-├─ data/             site.ts · content.ts · reels.ts   ← edit these
+├─ data/             site.ts · content.ts · reels.ts · brands.ts
 ├─ layouts/          BaseLayout.astro (SEO, fonts, structured data)
 ├─ lib/url.ts        Base-path-aware link helper
-├─ pages/            index · products · products/[category] · meet
-│                    contact · 404
+├─ pages/            index · products · products/[category]
+│                    brands/[brand] · brands/[brand]/[collection]
+│                    meet · contact · 404
 └─ styles/global.css Design tokens and shared component classes
 
 public/
 ├─ reels/            Self-hosted video clips + poster images
+├─ brands/           Manufacturer swatch images
 ├─ og.jpg            Social sharing card
 └─ favicon.png, apple-touch-icon.png, robots.txt
 ```

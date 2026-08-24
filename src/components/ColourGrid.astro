@@ -1,0 +1,118 @@
+---
+import type { Colour } from '../data/brands';
+
+interface Props { colours: Colour[]; dir: string; collection: string; }
+const { colours, dir, collection } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+  {colours.map((c, i) => (
+    <li>
+      <button
+        type="button"
+        class="swatch group block w-full text-left"
+        data-swatch={i}
+        data-name={c.name}
+        data-sku={c.sku}
+        data-src={c.image ? `${base}/brands/${dir}/${c.image}` : ''}
+        aria-label={`View ${c.name} larger`}
+      >
+        <div class="hover-zoom overflow-hidden border border-bark/10 bg-sand">
+          {c.image ? (
+            <img
+              src={`${base}/brands/${dir}/${c.image}`}
+              alt={`${c.name} — ${collection}`}
+              loading="lazy"
+              width="700"
+              height="495"
+              class="aspect-[4/3] w-full object-cover transition-transform duration-700"
+            />
+          ) : (
+            <div class="flex aspect-[4/3] w-full items-center justify-center text-xs text-bark/40">
+              Swatch coming
+            </div>
+          )}
+        </div>
+        <p class="mt-2.5 text-sm leading-tight transition-colors group-hover:text-oak-deep">{c.name}</p>
+        {c.sku && <p class="mt-0.5 text-[0.65rem] uppercase tracking-[0.12em] text-bark/40">{c.sku}</p>}
+      </button>
+    </li>
+  ))}
+</ul>
+
+<!-- Enlarged view. Shown structurally, never gated on a transition. -->
+<div id="sw-view" class="fixed inset-0 z-[70] flex-col bg-espresso/97" role="dialog" aria-modal="true" aria-label="Swatch viewer">
+  <div class="flex items-center justify-between px-6 py-5">
+    <p id="sw-count" class="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-bone/50"></p>
+    <button id="sw-close" type="button" class="flex h-11 w-11 items-center justify-center text-bone/70 transition-colors hover:text-oak" aria-label="Close viewer">
+      <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="relative flex flex-1 items-center justify-center px-4 pb-2 md:px-24">
+    <button id="sw-prev" type="button" class="absolute left-2 z-10 flex h-12 w-12 items-center justify-center border border-bone/25 text-bone/70 transition-colors hover:border-oak hover:text-oak md:left-8" aria-label="Previous swatch">
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <img id="sw-img" src="" alt="" class="max-h-full max-w-full object-contain" />
+    <button id="sw-next" type="button" class="absolute right-2 z-10 flex h-12 w-12 items-center justify-center border border-bone/25 text-bone/70 transition-colors hover:border-oak hover:text-oak md:right-8" aria-label="Next swatch">
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="px-6 pb-8 text-center">
+    <p id="sw-name" class="font-display text-2xl text-bone"></p>
+    <p id="sw-sku" class="mt-1 text-[0.7rem] uppercase tracking-[0.16em] text-bone/45"></p>
+  </div>
+</div>
+
+<style>
+  #sw-view { display: none; }
+  #sw-view.open { display: flex; }
+</style>
+
+<script>
+  const view = document.getElementById('sw-view');
+  const btns = [...document.querySelectorAll<HTMLButtonElement>('[data-swatch]')].filter((b) => b.dataset.src);
+  if (view && btns.length) {
+    const img = document.getElementById('sw-img') as HTMLImageElement;
+    const nameEl = document.getElementById('sw-name')!;
+    const skuEl = document.getElementById('sw-sku')!;
+    const countEl = document.getElementById('sw-count')!;
+    const close = document.getElementById('sw-close')!;
+    const prev = document.getElementById('sw-prev')!;
+    const next = document.getElementById('sw-next')!;
+    let i = 0, last: HTMLElement | null = null;
+
+    const show = (n: number) => {
+      i = (n + btns.length) % btns.length;
+      const b = btns[i];
+      img.src = b.dataset.src!;
+      img.alt = b.dataset.name!;
+      nameEl.textContent = b.dataset.name!;
+      skuEl.textContent = b.dataset.sku || '';
+      countEl.textContent = `${i + 1} / ${btns.length}`;
+    };
+    const open = (n: number) => {
+      last = document.activeElement as HTMLElement;
+      show(n); view.classList.add('open');
+      document.body.classList.add('menu-open');
+      close.focus();
+    };
+    const shut = () => {
+      view.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      img.src = ''; last?.focus();
+    };
+
+    btns.forEach((b, n) => b.addEventListener('click', () => open(n)));
+    close.addEventListener('click', shut);
+    prev.addEventListener('click', () => show(i - 1));
+    next.addEventListener('click', () => show(i + 1));
+    view.addEventListener('click', (e) => { if (e.target === view) shut(); });
+    document.addEventListener('keydown', (e) => {
+      if (!view.classList.contains('open')) return;
+      if (e.key === 'Escape') shut();
+      if (e.key === 'ArrowLeft') show(i - 1);
+      if (e.key === 'ArrowRight') show(i + 1);
+    });
+  }
+</script>

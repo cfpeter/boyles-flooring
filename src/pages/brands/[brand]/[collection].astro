@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import ColourGrid from '../../../components/ColourGrid.astro';
+import { brands } from '../../../data/brands';
+import { categories } from '../../../data/content';
+import { site } from '../../../data/site';
+import { url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return brands.flatMap((b) =>
+    b.collections.map((c) => ({
+      params: { brand: b.slug, collection: c.slug },
+      props: { brand: b, collection: c },
+    }))
+  );
+}
+
+const { brand, collection } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const line = brand.lines.find((l) => l.key === collection.line);
+const cat = categories.find((c) => c.slug === collection.category);
+const siblings = brand.collections.filter((c) => c.line === collection.line && c.slug !== collection.slug);
+const hero = collection.colours.find((c) => c.image);
+const paras = collection.description.split('\n\n').filter(Boolean);
+---
+
+<BaseLayout
+  title={`${collection.title} — ${brand.name}`}
+  description={`${collection.title} by ${brand.name}: ${collection.colours.length} colours, available through Boyles Flooring in ${site.address.city}.`}
+>
+  <!-- ================= HEAD ================= -->
+  <section class="relative flex min-h-[52svh] items-end overflow-hidden pt-28">
+    {hero && (
+      <img src={`${base}/brands/${brand.imageDir}/${hero.image}`} alt="" width="700" height="495"
+           class="absolute inset-0 h-full w-full object-cover" />
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-espresso/95 via-espresso/70 to-espresso/45"></div>
+
+    <div class="wrap relative z-10 pb-12">
+      <nav class="reveal flex flex-wrap items-center gap-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-bone/60" aria-label="Breadcrumb">
+        <a href={url('/products')} class="hover:text-oak">Products</a>
+        <span aria-hidden="true">/</span>
+        {cat && <><a href={url(`/products/${cat.slug}`)} class="hover:text-oak">{cat.name}</a><span aria-hidden="true">/</span></>}
+        <a href={url(`/brands/${brand.slug}`)} class="hover:text-oak">{brand.name}</a>
+      </nav>
+
+      <h1 class="reveal mt-5 font-display text-4xl leading-[1.05] text-bone sm:text-5xl md:text-6xl" style="--reveal-delay:70ms">
+        {collection.title}
+      </h1>
+      {line && (
+        <p class="reveal mt-4 text-sm text-bone/70" style="--reveal-delay:120ms">
+          {brand.name} &middot; {line.label} &middot; {collection.colours.length} colours
+        </p>
+      )}
+    </div>
+  </section>
+
+  <!-- ================= DESCRIPTION + FACTS ================= -->
+  <section class="section">
+    <div class="wrap grid gap-12 md:grid-cols-12 md:gap-16">
+      <div class="md:col-span-7">
+        <p class="eyebrow reveal">About this collection</p>
+        <div class="reveal mt-6 space-y-5 text-base leading-relaxed text-bark/75" style="--reveal-delay:60ms">
+          {paras.map((p) => <p>{p}</p>)}
+        </div>
+        <p class="reveal mt-6 text-xs text-bark/45" style="--reveal-delay:100ms">
+          Description supplied by {brand.name}.
+        </p>
+      </div>
+
+      <div class="md:col-span-5">
+        <div class="reveal border border-bark/12 bg-sand p-7" style="--reveal-delay:120ms">
+          <h2 class="font-display text-xl">At a glance</h2>
+          <dl class="mt-5 text-sm">
+            <div class="flex justify-between gap-4 border-b border-bark/10 py-2.5">
+              <dt class="text-bark/60">Brand</dt><dd class="text-right">{brand.name}</dd>
+            </div>
+            {line && (
+              <div class="flex justify-between gap-4 border-b border-bark/10 py-2.5">
+                <dt class="text-bark/60">Line</dt><dd class="text-right">{line.label}</dd>
+              </div>
+            )}
+            {cat && (
+              <div class="flex justify-between gap-4 border-b border-bark/10 py-2.5">
+                <dt class="text-bark/60">Category</dt>
+                <dd class="text-right"><a href={url(`/products/${cat.slug}`)} class="hover:text-oak-deep">{cat.name}</a></dd>
+              </div>
+            )}
+            <div class="flex justify-between gap-4 border-b border-bark/10 py-2.5">
+              <dt class="text-bark/60">Colours</dt><dd class="text-right">{collection.colours.length}</dd>
+            </div>
+            <div class="flex justify-between gap-4 py-2.5">
+              <dt class="text-bark/60">Samples</dt><dd class="text-right">In the showroom</dd>
+            </div>
+          </dl>
+
+          <p class="mt-5 text-xs leading-relaxed text-bark/55">
+            Thickness, plank size and box coverage vary by collection — call
+            {' '}{site.phone} and we will confirm for the colour you are considering.
+          </p>
+
+          <div class="mt-6 flex flex-col gap-3">
+            <a href={site.phoneHref} class="btn btn-primary">Call {site.phone}</a>
+            <a href={url('/contact')} class="btn btn-ghost">Request a sample</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COLOURS ================= -->
+  <section class="section bg-sand !pt-0">
+    <div class="wrap">
+      <div class="reveal border-t border-bark/15 pt-12">
+        <p class="eyebrow">The colours</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl">All {collection.colours.length} in {collection.title}.</h2>
+        <p class="mt-4 max-w-xl text-sm text-bark/60">
+          Select any swatch to see it larger. Colour on a screen is only ever a
+          guide — judge the real thing from a sample.
+        </p>
+      </div>
+
+      <div class="reveal mt-12" style="--reveal-delay:80ms">
+        <ColourGrid colours={collection.colours} dir={brand.imageDir} collection={collection.title} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SIBLINGS ================= -->
+  {siblings.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">More from {line?.label ?? brand.name}</p>
+        <h2 class="reveal mt-3 text-3xl sm:text-4xl" style="--reveal-delay:60ms">Other collections.</h2>
+
+        <ul class="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {siblings.slice(0, 8).map((c, i) => (
+            <li class="reveal" style={`--reveal-delay:${i * 50}ms`}>
+              <a href={url(`/brands/${brand.slug}/${c.slug}`)} class="group block">
+                <div class="grid grid-cols-2 gap-1">
+                  {c.colours.slice(0, 4).map((sw) => (
+                    <div class="overflow-hidden border border-bark/10 bg-sand">
+                      {sw.image ? (
+                        <img src={`${base}/brands/${brand.imageDir}/${sw.image}`} alt="" loading="lazy"
+                             width="700" height="495"
+                             class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      ) : <div class="aspect-square w-full"></div>}
+                    </div>
+                  ))}
+                </div>
+                <h3 class="mt-3 text-base leading-tight transition-colors group-hover:text-oak-deep">{c.title}</h3>
+                <p class="text-[0.65rem] uppercase tracking-[0.12em] text-bark/45">{c.colours.length} colours</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <CtaBand
+    title={`Request a ${collection.title} sample`}
+    body="Take a sample home, live with it for a few days under your own lighting, then decide."
+  />
+</BaseLayout>

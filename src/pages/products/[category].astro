@@ -7,6 +7,7 @@ import PageHero from '../../components/PageHero.astro';
 import { categories } from '../../data/content';
 import { site } from '../../data/site';
 import { url } from '../../lib/url';
+import { brands, colourCount } from '../../data/brands';
 
 export function getStaticPaths() {
   return categories.map((c) => ({ params: { category: c.slug }, props: { category: c } }));
@@ -15,6 +16,10 @@ export function getStaticPaths() {
 const { category } = Astro.props;
 const others = categories.filter((c) => c.slug !== category.slug);
 const onFloor = category.brands.filter((b) => b.onFloor);
+
+/* A brand links through to its own catalogue only when we hold one. */
+const catalogued = (name: string) =>
+  brands.find((br) => br.name.toLowerCase() === name.toLowerCase());
 ---
 
 <BaseLayout
@@ -76,18 +81,36 @@ const onFloor = category.brands.filter((b) => b.onFloor);
           />
 
           <ul class="mt-14 grid gap-px overflow-hidden bg-clay sm:grid-cols-2 lg:grid-cols-3">
-            {category.brands.map((b, i) => (
-              <li class="reveal bg-sand" style={`--reveal-delay:${Math.min(i * 45, 400)}ms`}>
-                <div class="flex h-full items-center justify-between gap-4 p-6 transition-colors hover:bg-bone">
-                  <span class="font-display text-lg leading-tight">{b.name}</span>
+            {category.brands.map((b, i) => {
+              const cat = catalogued(b.name);
+              const n = cat ? colourCount(cat, category.slug) : 0;
+              const inner = (
+                <div class="flex h-full items-center justify-between gap-4 p-6 transition-colors group-hover:bg-bone">
+                  <span>
+                    <span class="block font-display text-lg leading-tight">{b.name}</span>
+                    {n > 0 && (
+                      <span class="mt-1 block text-[0.65rem] uppercase tracking-[0.12em] text-oak-deep">
+                        {n} colours &rarr;
+                      </span>
+                    )}
+                  </span>
                   {b.onFloor && (
                     <span class="shrink-0 border border-oak/50 px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-oak-deep">
                       In store
                     </span>
                   )}
                 </div>
-              </li>
-            ))}
+              );
+              return (
+                <li class="reveal bg-sand" style={`--reveal-delay:${Math.min(i * 45, 400)}ms`}>
+                  {cat ? (
+                    <a href={url(`/brands/${cat.slug}`)} class="group block h-full">{inner}</a>
+                  ) : (
+                    <div class="group h-full">{inner}</div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
 
           <p class="reveal mt-8 max-w-2xl text-xs leading-relaxed text-bark/55">
