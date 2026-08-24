@@ -1,13 +1,13 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
-import FeatureVideo from '../../components/FeatureVideo.astro';
-import VideoReels from '../../components/VideoReels.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import PageHero from '../../components/PageHero.astro';
-import { site } from '../../data/site';
-import { owner, featuredReel, otherReels } from '../../data/reels';
-import { aboutImage } from '../../data/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureVideo from '../components/FeatureVideo.astro';
+import VideoReels from '../components/VideoReels.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+import { owner, featuredReel, otherReels } from '../data/reels';
+import { aboutImage } from '../data/content';
 
 const lead = featuredReel();
 const rest = otherReels();

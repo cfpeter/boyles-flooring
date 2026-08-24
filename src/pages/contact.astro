@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import PageHero from '../../components/PageHero.astro';
-import { site } from '../../data/site';
-import { categories, storefrontImage, contactHeroImage } from '../../data/content';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+import { categories, storefrontImage, contactHeroImage } from '../data/content';
 
 const formReady = site.web3formsKey !== 'YOUR_ACCESS_KEY_HERE';
 ---

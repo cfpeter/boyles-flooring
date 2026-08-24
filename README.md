@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-Then open <http://localhost:4321/boyles-flooring> — the design chooser.
+Then open <http://localhost:4321/boyles-flooring>.
 (The `/boyles-flooring` suffix is the GitHub Pages base path — see *Custom domain* below.)
 
 | Command | Does |
@@ -79,41 +79,6 @@ To serve this at `www.boyles-flooring.com` instead:
    **Settings → Pages**.
 4. Update the `Sitemap:` line in `public/robots.txt`.
 
-## Design directions (client review)
-
-Four complete, working directions built from the same real content and the same
-showroom photography, so the comparison is about design rather than copy.
-
-| | Direction | Palette | Typefaces | Path |
-| --- | --- | --- | --- | --- |
-| A | Warm classical | sand / bark / oak | Libre Baskerville + Almarai | `/v1` |
-| B | Swiss editorial | paper / ink / burnt orange | Archivo + Inter | `/v2` |
-| C | Dark luxury gallery | near-black / brass / cream | Cormorant Garamond + Jost | `/v3` |
-| D | Bright bento | linen / forest / terracotta | Bricolage Grotesque + DM Sans | `/v4` |
-
-**The site root `/` is the chooser** — a landing page showing all four with live
-screenshots. Every direction carries a badge in the corner to get back to it.
-
-Design A is the production candidate and is the only one indexed by search
-engines; B, C and D are marked `noindex` while they are review mock-ups.
-
-Each direction owns its stylesheet, layout and components
-(`src/styles/v2.css`, `src/layouts/V2Layout.astro`, `src/components/v2/`, …)
-with namespaced design tokens, so they cannot bleed into one another. All four
-read the same `src/data/site.ts` and `src/data/content.ts`, so a phone-number
-change updates every version at once.
-
-To drop a direction, delete its four paths — for example:
-
-```bash
-rm -rf src/pages/v4 src/components/v4 src/layouts/V4Layout.astro src/styles/v4.css
-```
-
-> **Note on Tailwind v4:** its automatic source detection skips anything git
-> ignores. Do not add a design's source folders to `.gitignore` or
-> `.git/info/exclude` — Tailwind silently stops generating that design's utility
-> classes and the page renders unstyled.
-
 ## Showroom video clips
 
 The "Fresh off the showroom floor" section plays Boyles Flooring's own videos
@@ -149,13 +114,19 @@ first frame of a reel is usually a title card or someone mid-sentence.
 
 ```
 src/
-├─ assets/gallery/   Source photos (optimised at build time)
-├─ components/       Nav, Footer, PageHero, SectionHeading, CtaBand, Lightbox
-├─ data/             site.ts + content.ts  ← edit these
+├─ assets/gallery/   Showroom photos (optimised at build time)
+├─ components/       Nav, Footer, PageHero, SectionHeading, CtaBand,
+│                    Lightbox, VideoReels, FeatureVideo
+├─ data/             site.ts · content.ts · reels.ts   ← edit these
 ├─ layouts/          BaseLayout.astro (SEO, fonts, structured data)
 ├─ lib/url.ts        Base-path-aware link helper
-├─ pages/            index · products · contact · 404
+├─ pages/            index · products · meet · contact · 404
 └─ styles/global.css Design tokens and shared component classes
+
+public/
+├─ reels/            Self-hosted video clips + poster images
+├─ og.jpg            Social sharing card
+└─ favicon.png, apple-touch-icon.png, robots.txt
 ```
 
 ## Accessibility & SEO notes
