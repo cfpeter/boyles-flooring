@@ -4,8 +4,7 @@ import V4Layout from '../../layouts/V4Layout.astro';
 import { site } from '../../data/site';
 import { categories, services, gallery, heroImage, storefrontImage } from '../../data/content';
 import { url } from '../../lib/url';
-import InstagramEmbed from '../../components/InstagramEmbed.astro';
-import { hasInstagramFeed } from '../../data/social';
+import VideoReels from '../../components/VideoReels.astro';
 
 /* Each category card gets its own colourway — the point of this direction */
 const skins = [
@@ -185,14 +184,9 @@ const spans = [
           {site.social.instagram.handle}
         </a>
       </div>
-      {hasInstagramFeed() ? (
-        <div class="d-in mt-10"><InstagramEmbed /></div>
-      ) : (
-        <div class="d-in mt-8 flex flex-wrap gap-3" style="--d:80ms">
-          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="d-btn d-btn-forest">Instagram</a>
-          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="d-btn d-btn-outline">TikTok</a>
-        </div>
-      )}
+      <div class="d-in mt-10" style="--reels-radius:1rem;--reels-muted:var(--color-fog);--reels-accent:var(--color-rust)">
+        <VideoReels />
+      </div>
     </div>
   </section>
 

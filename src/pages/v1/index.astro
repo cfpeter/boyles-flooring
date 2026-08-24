@@ -6,8 +6,7 @@ import CtaBand from '../../components/CtaBand.astro';
 import { site } from '../../data/site';
 import { categories, services, heroImage, aboutImage, storefrontImage } from '../../data/content';
 import { url } from '../../lib/url';
-import InstagramEmbed from '../../components/InstagramEmbed.astro';
-import { hasInstagramFeed } from '../../data/social';
+import VideoReels from '../../components/VideoReels.astro';
 ---
 
 <BaseLayout title={site.name}>
@@ -227,18 +226,14 @@ import { hasInstagramFeed } from '../../data/social';
         title="Fresh off the showroom floor."
         lead="New arrivals, finished installs and the odd behind-the-scenes — posted as it happens."
       />
-      {hasInstagramFeed() ? (
-        <div class="reveal mt-12"><InstagramEmbed /></div>
-      ) : (
-        <div class="reveal mt-10 flex flex-wrap gap-3" style="--reveal-delay:80ms">
-          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            Instagram {site.social.instagram.handle}
-          </a>
-          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-            TikTok {site.social.tiktok.handle}
-          </a>
-        </div>
-      )}
+      <div class="reveal mt-12" style="--reels-radius:2px;--reels-muted:color-mix(in srgb,var(--color-bark) 62%,transparent);--reels-accent:var(--color-oak-deep)">
+        <VideoReels />
+      </div>
+      <div class="reveal mt-10 flex flex-wrap gap-3" style="--reveal-delay:80ms">
+        <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          More on Instagram {site.social.instagram.handle}
+        </a>
+      </div>
     </div>
   </section>
 

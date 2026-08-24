@@ -21,8 +21,8 @@ below is a bug — it is a list of claims only Boyles can confirm.
 
 | # | Claim | Where | Why it needs checking |
 | --- | --- | --- | --- |
-| 1 | **Carpet** is a category you sell | Home, Products, nav ticker | Inferred from showroom photos (Stanton display, carpet sample boards). The old site never says it. |
-| 2 | **Tile & Stone** is a category you sell | Home, Products, nav ticker | Inferred from a tile/stone sample stand in the photos. Not stated on the old site. |
+| ~~1~~ | ~~**Carpet** is a category you sell~~ | — | **RESOLVED.** The Instagram bio reads "Carpet & Flooring Store … expertise in Floors, Doors, Carpet …" and several posts show completed carpet installs. Confirmed. |
+| 2 | **Tile & Stone** is a category you sell | Home, Products, nav ticker | **Still unconfirmed, and now looks doubtful.** Inferred from one sample stand in a showroom photo. The Instagram bio lists Floors, Doors, Carpet, Shower Doors, Closet Doors and Door Hardware — no tile. Remove this category unless you do sell it. |
 | 3 | "**Take samples home**" | Home → How it works | Assumed to be standard practice. Remove if you don't lend samples. |
 | 4 | "**In-home measurement**" | Home → How it works | Old site says "measurement"; it does not say in-home. |
 | 5 | **Service-area towns** | Contact page | A plausible Santa Clarita Valley list — edit to match where you actually go. |
@@ -31,6 +31,25 @@ below is a bug — it is a list of claims only Boyles can confirm.
 | 8 | "Hundreds of samples" | Products page headline | Directional. Change the number if it overstates the showroom. |
 
 Edit 1–6 in `src/data/site.ts` and `src/data/content.ts`; 7–8 in `src/data/content.ts`.
+
+## ✅ Confirmed from the Instagram profile (@boylesflooringscv)
+
+Read from the live profile on 2026-08-23:
+
+> Carpet & Flooring Store · Boyle's Flooring SCV
+> Professional expertise in **Floors, Doors, Carpet, Shower Doors, Closet Doors,
+> and Door Hardware**. Upgrade your space with us!
+
+Acted on already: carpet is confirmed, and the doors category has been widened
+to **Doors & Hardware** to include prehung units, shower doors, closet doors and
+door hardware — all of which the website was previously missing.
+
+Two further things worth your decision:
+
+| Item | Detail |
+| --- | --- |
+| **Name styling** | Instagram uses "Boyle's Flooring SCV" (with an apostrophe); the website uses "Boyles Flooring". Pick one and I will make it consistent. |
+| **Alternate logo & tagline** | Posts use a second lockup — "Boyles Flooring **& Doors** — Style. Strength. Value." If that is the current brand, the site should use it. Send the artwork and it goes in. |
 
 ## ❌ Deliberately left out
 

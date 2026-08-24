@@ -114,27 +114,36 @@ rm -rf src/pages/v4 src/components/v4 src/layouts/V4Layout.astro src/styles/v4.c
 > `.git/info/exclude` — Tailwind silently stops generating that design's utility
 > classes and the page renders unstyled.
 
-## Instagram feed
+## Showroom video clips
 
-Instagram login-walls its profile pages and retired the unauthenticated oEmbed
-endpoint, so a public feed cannot simply be pulled into a static site. Two
-supported routes, both configured in `src/data/social.ts`:
+The "Fresh off the showroom floor" section plays Boyles Flooring's own videos
+**self-hosted from this repo** — plain HTML5 `<video>`, no Instagram embed.
 
-**Hand-picked posts (no signup).** Open a post in a browser, use *Copy link*,
-and paste 3–6 URLs into `instagramPosts`. Instagram's official embed script
-renders them. They do not auto-update — a new post means adding its link.
+That was a deliberate choice. Instagram's embed injects its own chrome (profile
+header, like counts, comment box), loads third-party tracking, and its media
+URLs are signed and expire within days, so hot-linking breaks on its own.
+Self-hosting is faster, looks like the site rather than like Instagram, and
+cannot break when Instagram changes.
 
-**Auto-updating feed.** A static site cannot call the Instagram API directly
-(it needs a secret token that refreshes every 60 days). A widget service holds
-the token for you — behold.so, lightwidget.com and snapwidget.com all have free
-tiers. Connect the account once, then paste the snippet into `widgetEmbed`.
+- Files live in `public/reels/` as `<name>.mp4` plus a `<name>.jpg` poster
+- The list and captions are in `src/data/reels.ts`
+- Videos are H.264, capped at 720px tall, `+faststart`, ~0.8–3 MB each
+- `preload="none"` means only the poster loads until someone presses play
+- One clip plays at a time; each card links to the original Instagram post
 
-Until one is set, every design shows a "follow us" panel linking to the real
-profile rather than placeholder posts pretending to be real ones. Configure it
-once and the section fills in across all four designs.
+### Adding or replacing a clip
 
-Do **not** rehost images scraped from `cdninstagram` URLs: they are signed and
-expire within days, so the gallery would break on its own.
+Drop `<name>.mp4` and `<name>.jpg` into `public/reels/`, then add an entry to
+`src/data/reels.ts`. To re-encode something heavy:
+
+```bash
+ffmpeg -i input.mp4 -vf "scale='trunc(iw*min(1,720/ih)/2)*2':'min(720,ih)'" \
+  -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 31 -preset veryslow \
+  -c:a aac -b:a 48k -ac 1 -movflags +faststart output.mp4
+```
+
+Posters are pulled from partway through each clip rather than frame 0 — the
+first frame of a reel is usually a title card or someone mid-sentence.
 
 ## Structure
 

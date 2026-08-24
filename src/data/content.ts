@@ -69,10 +69,10 @@ export const categories: Category[] = [
   },
   {
     slug: 'doors',
-    name: 'Interior & Entry Doors',
-    blurb: 'The finishing detail most flooring stores leave out.',
-    body: 'We carry interior and entry doors alongside the floors, which means the finishes actually coordinate — and you are dealing with one supplier instead of three. Panel doors, flush slabs, barn-door hardware and entry units, measured and fitted by the same team that handles your floor.',
-    bullets: ['Interior panel & flush doors', 'Entry doors', 'Barn-door hardware', 'Coordinated finishes'],
+    name: 'Doors & Hardware',
+    blurb: 'Interior, entry, shower and closet doors — plus the hardware.',
+    body: 'We carry doors alongside the floors, which means the finishes actually coordinate — and you are dealing with one supplier instead of three. Interior and entry doors, prehung units ready to install, plus shower doors, closet doors and door hardware, measured and fitted by the same team that handles your floor.',
+    bullets: ['Interior & entry doors', 'Prehung units', 'Shower & closet doors', 'Door hardware'],
     image: img('g12'),
   },
 ];

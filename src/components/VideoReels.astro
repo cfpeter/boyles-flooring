@@ -1,0 +1,152 @@
+---
+import { reels } from '../data/reels';
+
+interface Props {
+  /** How many to show; the rest stay in the data file. */
+  limit?: number;
+}
+const { limit = 6 } = Astro.props;
+const items = reels.slice(0, limit);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!-- Self-hosted vertical clips. preload="none" means nothing but the poster
+     downloads until someone actually presses play, so the page stays light. -->
+<ul class="reel-grid">
+  {items.map((r, i) => (
+    <li class="reel-card">
+      <div class="reel-frame">
+        <video
+          id={`reel-${i}`}
+          class="reel-video"
+          poster={`${base}/reels/${r.file}.jpg`}
+          preload="none"
+          playsinline
+          loop
+          controls={false}
+          aria-label={r.caption}
+        >
+          <source src={`${base}/reels/${r.file}.mp4`} type="video/mp4" />
+        </video>
+
+        <button type="button" class="reel-play" data-reel={i} aria-label={`Play: ${r.caption}`}>
+          <span class="reel-play-dot" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <p class="reel-cap">
+        {r.caption}
+        <a href={r.source} target="_blank" rel="noopener noreferrer" class="reel-src">Original&nbsp;&rarr;</a>
+      </p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* Themed by the surrounding design through these variables */
+  .reel-grid {
+    --reel-radius: var(--reels-radius, 2px);
+    --reel-fg: var(--reels-fg, currentColor);
+    --reel-muted: var(--reels-muted, currentColor);
+    --reel-accent: var(--reels-accent, currentColor);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 40rem) { .reel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .reel-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.9rem; } }
+
+  .reel-frame {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border-radius: var(--reel-radius);
+    background: #000;
+  }
+
+  .reel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .reel-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,.05) 45%);
+    border: 0;
+    cursor: pointer;
+    transition: opacity .3s ease;
+  }
+  .reel-play-dot {
+    display: grid;
+    place-items: center;
+    width: 3rem; height: 3rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.92);
+    color: #111;
+    padding-left: 2px;
+    transition: transform .3s cubic-bezier(.22,1,.36,1), background-color .3s;
+  }
+  .reel-card:hover .reel-play-dot { transform: scale(1.08); background: #fff; }
+  .reel-frame.is-playing .reel-play { opacity: 0; pointer-events: none; }
+
+  .reel-cap {
+    margin: 0.75rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--reel-muted);
+  }
+  .reel-src {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    color: var(--reel-accent);
+    text-decoration: none;
+    opacity: .85;
+  }
+  .reel-src:hover { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reel-play-dot, .reel-play { transition: none; }
+    .reel-card:hover .reel-play-dot { transform: none; }
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-reel]');
+  const videos = [...document.querySelectorAll<HTMLVideoElement>('.reel-video')];
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const video = document.getElementById(`reel-${btn.dataset.reel}`) as HTMLVideoElement | null;
+      if (!video) return;
+
+      // Only one clip plays at a time.
+      videos.forEach((v) => { if (v !== video) { v.pause(); v.closest('.reel-frame')?.classList.remove('is-playing'); v.controls = false; } });
+
+      video.controls = true;
+      video.closest('.reel-frame')?.classList.add('is-playing');
+      // Started by a click, so sound is allowed; fall back to muted if blocked.
+      video.play().catch(() => { video.muted = true; video.play().catch(() => {}); });
+    });
+  });
+
+  // Returning to the poster once a clip finishes keeps the grid tidy.
+  videos.forEach((v) => {
+    v.addEventListener('pause', () => {
+      if (v.ended) { v.controls = false; v.closest('.reel-frame')?.classList.remove('is-playing'); }
+    });
+  });
+</script>

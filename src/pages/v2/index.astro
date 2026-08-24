@@ -6,8 +6,7 @@ import Marquee from '../../components/v2/Marquee.astro';
 import { site } from '../../data/site';
 import { categories, services, gallery, heroImage, aboutImage, storefrontImage } from '../../data/content';
 import { url } from '../../lib/url';
-import InstagramEmbed from '../../components/InstagramEmbed.astro';
-import { hasInstagramFeed } from '../../data/social';
+import VideoReels from '../../components/VideoReels.astro';
 
 const strip = gallery.slice(0, 8);
 ---
@@ -183,14 +182,9 @@ const strip = gallery.slice(0, 8);
           {site.social.instagram.handle}
         </a>
       </div>
-      {hasInstagramFeed() ? (
-        <div class="v2-reveal mt-12"><InstagramEmbed /></div>
-      ) : (
-        <div class="v2-reveal mt-10 flex flex-wrap gap-3" style="--d:80ms">
-          <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer" class="v2-btn v2-btn-solid">Instagram</a>
-          <a href={site.social.tiktok.url} target="_blank" rel="noopener noreferrer" class="v2-btn v2-btn-line">TikTok</a>
-        </div>
-      )}
+      <div class="v2-reveal mt-12" style="--reels-radius:0px;--reels-muted:var(--color-mute);--reels-accent:var(--color-accent)">
+        <VideoReels />
+      </div>
     </div>
   </section>
 
