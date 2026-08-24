@@ -16,6 +16,8 @@ export type Reel = {
   caption: string;
   /** Instagram permalink, so viewers can see the original post */
   source: string;
+  /** Marks the clip featured at the top of the "Meet the Owner" page. */
+  featured?: boolean;
 };
 
 export const reels: Reel[] = [
@@ -30,5 +32,27 @@ export const reels: Reel[] = [
   { file: 'DYm9qSvNDrz', caption: 'Carpet, for the warmth it puts back in a room',
     source: 'https://www.instagram.com/reel/DYm9qSvNDrz/' },
   { file: 'DVrfPwyEnFz', caption: 'Flooring and doors, all from one showroom',
-    source: 'https://www.instagram.com/reel/DVrfPwyEnFz/' },
+    source: 'https://www.instagram.com/reel/DVrfPwyEnFz/', featured: true },
 ];
+
+/* ----------------------------------------------------------------------------
+   "Meet the Owner" page.
+
+   NOTE — two things here need confirming by the business:
+     1. `featured` above marks which clip leads the page. It is currently the
+        showroom walk-through pitch. If a different clip is the owner speaking,
+        move the `featured: true` flag to it — nothing else needs changing.
+     2. `ownerName` is intentionally blank. Fill it in and the page uses it in
+        the heading and intro; left empty, the page reads naturally without a
+        name rather than inventing one.
+   ---------------------------------------------------------------------------- */
+export const owner = {
+  name: '',                 // e.g. 'Mike Boyle'
+  role: 'Owner',
+  /** Shown under the featured video. Keep it in the owner's own voice. */
+  intro:
+    'Boyles Flooring is a family-run showroom on Soledad Canyon Road. We would rather walk you through the samples ourselves than sell you a floor from a screen — so come in, take a few home, and see how they look under your own lighting.',
+};
+
+export const featuredReel = () => reels.find((r) => r.featured) ?? reels[0];
+export const otherReels = () => reels.filter((r) => !r.featured);

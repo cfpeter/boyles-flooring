@@ -1,12 +1,15 @@
 ---
 import { reels } from '../data/reels';
+import type { Reel } from '../data/reels';
 
 interface Props {
   /** How many to show; the rest stay in the data file. */
   limit?: number;
+  /** Explicit list, e.g. the non-featured clips on the Meet page. */
+  items?: Reel[];
 }
-const { limit = 6 } = Astro.props;
-const items = reels.slice(0, limit);
+const { limit = 6, items: given } = Astro.props;
+const items = (given ?? reels).slice(0, limit);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 

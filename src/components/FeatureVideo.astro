@@ -1,0 +1,91 @@
+---
+import type { Reel } from '../data/reels';
+
+interface Props { reel: Reel; }
+const { reel } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!-- Single large player. Same preload="none" discipline as the grid: only the
+     poster loads until someone presses play. -->
+<div class="feat">
+  <div class="feat-frame">
+    <video
+      id="feat-video"
+      class="feat-video"
+      poster={`${base}/reels/${reel.file}.jpg`}
+      preload="none"
+      playsinline
+      controls={false}
+      aria-label={reel.caption}
+    >
+      <source src={`${base}/reels/${reel.file}.mp4`} type="video/mp4" />
+    </video>
+
+    <button id="feat-play" type="button" class="feat-play" aria-label={`Play: ${reel.caption}`}>
+      <span class="feat-dot" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true">
+          <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .feat { --feat-radius: var(--reels-radius, 2px); }
+  .feat-frame {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    max-height: 74vh;
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: var(--feat-radius);
+    background: #000;
+  }
+  @media (min-width: 48rem) { .feat-frame { aspect-ratio: 9 / 14; } }
+
+  .feat-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .feat-play {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    width: 100%; border: 0; cursor: pointer;
+    background: linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,.08) 50%);
+    transition: opacity .3s ease;
+  }
+  .feat-dot {
+    display: grid; place-items: center;
+    width: 4.5rem; height: 4.5rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.94);
+    color: #111; padding-left: 3px;
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  .feat-frame:hover .feat-dot { transform: scale(1.07); }
+  .feat-frame.playing .feat-play { opacity: 0; pointer-events: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feat-dot, .feat-play { transition: none; }
+    .feat-frame:hover .feat-dot { transform: none; }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('feat-play');
+  const video = document.getElementById('feat-video') as HTMLVideoElement | null;
+  if (btn && video) {
+    btn.addEventListener('click', () => {
+      // Pause any grid clips so two things never play at once.
+      document.querySelectorAll<HTMLVideoElement>('.reel-video').forEach((v) => {
+        v.pause(); v.controls = false; v.closest('.reel-frame')?.classList.remove('is-playing');
+      });
+      video.controls = true;
+      video.closest('.feat-frame')?.classList.add('playing');
+      video.play().catch(() => { video.muted = true; video.play().catch(() => {}); });
+    });
+    video.addEventListener('pause', () => {
+      if (video.ended) { video.controls = false; video.closest('.feat-frame')?.classList.remove('playing'); }
+    });
+  }
+</script>

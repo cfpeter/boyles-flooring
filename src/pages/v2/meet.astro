@@ -1,0 +1,67 @@
+---
+import V2Layout from '../../layouts/V2Layout.astro';
+import FeatureVideo from '../../components/FeatureVideo.astro';
+import VideoReels from '../../components/VideoReels.astro';
+import { site } from '../../data/site';
+import { owner, featuredReel, otherReels } from '../../data/reels';
+
+const lead = featuredReel();
+const rest = otherReels();
+---
+
+<V2Layout title="The Owner" description="Meet the owner of Boyles Flooring, Santa Clarita.">
+  <section class="v2-wrap pb-10 pt-14 lg:pt-20">
+    <p class="v2-tag v2-reveal">The owner</p>
+    <h1 class="v2-display v2-reveal mt-6 text-[15vw] leading-[0.84] lg:text-[8vw]" style="--d:60ms">
+      {owner.name ? owner.name : 'The person'}<br /><span class="text-accent">behind it.</span>
+    </h1>
+    <div class="v2-rule v2-reveal mt-10" style="--d:120ms"></div>
+  </section>
+
+  <section class="v2-section !pt-0">
+    <div class="v2-wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="v2-reveal lg:col-span-5" style="--reels-radius:0px">
+        <FeatureVideo reel={lead} />
+        <p class="mt-4 text-xs text-mute">Fig. 01 — {lead.caption}</p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <p class="v2-reveal v2-display text-[6vw] leading-[1.05] sm:text-3xl lg:text-[2.5rem]">
+          {owner.intro}
+        </p>
+        <ul class="v2-reveal mt-12 grid max-w-xl gap-0 sm:grid-cols-2" style="--d:120ms">
+          <li class="border-t border-line py-3.5 text-sm">
+            <span class="v2-tag block">Showroom</span>
+            <span class="mt-1 block">{site.address.street}</span>
+          </li>
+          <li class="border-t border-line py-3.5 text-sm">
+            <span class="v2-tag block">Direct</span>
+            <a href={site.phoneHref} class="mt-1 block font-semibold hover:text-accent">{site.phone}</a>
+          </li>
+        </ul>
+        <div class="v2-reveal mt-10 flex flex-wrap gap-3" style="--d:180ms">
+          <a href={site.phoneHref} class="v2-btn v2-btn-solid">Call the showroom</a>
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="v2-btn v2-btn-line">Directions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="v2-section border-t border-line !pt-16">
+    <div class="v2-wrap">
+      <div class="v2-reveal flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="v2-tag">More from the floor</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl">The rest of the showroom.</h2>
+        </div>
+        <a href={site.social.instagram.url} target="_blank" rel="noopener noreferrer"
+           class="text-xs font-semibold uppercase tracking-[0.14em] underline underline-offset-8 hover:text-accent">
+          {site.social.instagram.handle}
+        </a>
+      </div>
+      <div class="v2-reveal mt-12" style="--reels-radius:0px;--reels-muted:var(--color-mute);--reels-accent:var(--color-accent)">
+        <VideoReels items={rest} />
+      </div>
+    </div>
+  </section>
+</V2Layout>

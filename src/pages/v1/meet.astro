@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import FeatureVideo from '../../components/FeatureVideo.astro';
+import VideoReels from '../../components/VideoReels.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PageHero from '../../components/PageHero.astro';
+import { site } from '../../data/site';
+import { owner, featuredReel, otherReels } from '../../data/reels';
+import { aboutImage } from '../../data/content';
+
+const lead = featuredReel();
+const rest = otherReels();
+const who = owner.name ? `${owner.name}, ${owner.role.toLowerCase()}` : `the ${owner.role.toLowerCase()}`;
+---
+
+<BaseLayout
+  title="Meet the Owner"
+  description={`Meet the owner of Boyles Flooring and hear how the showroom in ${site.address.city} works.`}
+>
+  <PageHero
+    eyebrow="Meet the owner"
+    title={owner.name ? `Hello, I'm ${owner.name}.` : 'The person behind the showroom.'}
+    lead="A flooring showroom is only as good as the people in it. Here is a short introduction, straight from the floor."
+    image={aboutImage}
+  />
+
+  <section class="section">
+    <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-20">
+      <div class="reveal lg:col-span-5">
+        <FeatureVideo reel={lead} />
+      </div>
+
+      <div class="lg:col-span-7">
+        <SectionHeading eyebrow="In their words" title="Why we do it this way." />
+        <p class="reveal mt-6 max-w-xl text-base leading-relaxed text-bark/75" style="--reveal-delay:80ms">
+          {owner.intro}
+        </p>
+        <p class="reveal mt-5 max-w-xl leading-relaxed text-bark/60" style="--reveal-delay:120ms">
+          {lead.caption}
+        </p>
+
+        <dl class="reveal mt-10 max-w-md" style="--reveal-delay:170ms">
+          <div class="flex justify-between gap-6 border-b border-bark/10 py-3 text-sm">
+            <dt class="text-bark/60">Showroom</dt>
+            <dd class="text-right">{site.address.street}</dd>
+          </div>
+          <div class="flex justify-between gap-6 border-b border-bark/10 py-3 text-sm">
+            <dt class="text-bark/60">Speak to {who}</dt>
+            <dd><a href={site.phoneHref} class="font-semibold transition-colors hover:text-oak-deep">{site.phone}</a></dd>
+          </div>
+        </dl>
+
+        <div class="reveal mt-9 flex flex-wrap gap-3" style="--reveal-delay:220ms">
+          <a href={site.phoneHref} class="btn btn-primary">Call the showroom</a>
+          <a href={site.mapsLink} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Get directions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sand">
+    <div class="wrap">
+      <SectionHeading eyebrow="More from the floor" title="The rest of the showroom." />
+      <div
+        class="reveal mt-12"
+        style="--reels-radius:2px;--reels-muted:color-mix(in srgb,var(--color-bark) 62%,transparent);--reels-accent:var(--color-oak-deep)"
+      >
+        <VideoReels items={rest} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
