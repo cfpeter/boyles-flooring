@@ -52,6 +52,28 @@ Two further things worth your decision:
 | **Alternate logo & tagline** | Posts use a second lockup — "Boyles Flooring **& Doors** — Style. Strength. Value." If that is the current brand, the site should use it. Send the artwork and it goes in. |
 
 
+## 🖼️ Stock photography
+
+One image on the site is not Boyles' own: the **laminate** category photo
+(`src/assets/gallery/laminate-room.jpg`) — a modern kitchen with a wide-plank
+wood-look floor.
+
+| | |
+| --- | --- |
+| Licence | **CC0** (public domain) — commercial use, no attribution required |
+| Source | rawpixel via Openverse |
+| Page | https://www.rawpixel.com/image/5919755 |
+
+**Why it is there.** Every showroom photograph shows sample racks, which sell
+the shop but not the floor. A category needs to show the material in a finished
+room. The herringbone laminate reel was the honest alternative, but it is a
+job-site walkthrough with packaging still on the floor, so no frame was
+presentable.
+
+**The better fix** is a photo of a Boyles installation. Send one and it replaces
+this immediately — one line in `src/data/content.ts`. The same is true for the
+other five categories, which still use showroom racks.
+
 ## 🏷️ Brand lists — where they came from
 
 Each category page lists the brand lines for that surface. Sources differ, and

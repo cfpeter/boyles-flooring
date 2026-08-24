@@ -89,7 +89,9 @@ export const categories: Category[] = [
     blurb: 'Hard-wearing, budget-friendly, and remarkably convincing.',
     body: 'Modern laminate has come a long way. High-definition printing and embossed textures track the grain you see, and the wear layers shrug off pets, kids and busy hallways. It is the practical choice when you want the look of wood across a lot of square footage without the hardwood budget.',
     bullets: ['High scratch resistance', 'Great value per sq ft', 'Realistic wood texture', 'Fast installation'],
-    image: img('g01'),
+    /* A finished room rather than a sample rack — the showroom photos show
+       racks, which sell the shop but not the floor. CC0, see CONTENT.md. */
+    image: img('laminate-room'),
     brands: [
       { name: 'Alana' },
       { name: 'Bellissima' },

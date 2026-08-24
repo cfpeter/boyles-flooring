@@ -21,9 +21,11 @@ const { eyebrow, title, lead, image } = Astro.props;
     sizes="100vw"
     loading="eager"
     fetchpriority="high"
-    class="absolute inset-0 h-full w-full object-cover"
+    class="absolute inset-0 h-full w-full object-cover [object-position:center_62%]"
   />
-  <div class="absolute inset-0 bg-gradient-to-t from-espresso/94 via-espresso/70 to-espresso/45"></div>
+  <!-- Weighted to the bottom, where the text sits, so a bright photograph
+       still reads at the top instead of being flattened by the scrim. -->
+  <div class="absolute inset-0 bg-gradient-to-t from-espresso/94 via-espresso/60 to-espresso/20"></div>
 
   <div class="wrap relative z-10 pb-14 pt-36 md:pb-16 md:pt-40">
     <p class="reveal text-[0.6875rem] font-bold uppercase tracking-[0.22em] text-oak">{eyebrow}</p>
