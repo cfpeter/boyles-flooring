@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
-import { categories, services, heroImage, aboutImage, storefrontImage } from '../data/content';
+import { categories, services, heroImage, aboutImage, storefrontImage, doorShowcase, laminateDetail } from '../data/content';
 import { url } from '../lib/url';
 import VideoReels from '../components/VideoReels.astro';
 ---
@@ -99,8 +99,60 @@ import VideoReels from '../components/VideoReels.astro';
     </div>
   </section>
 
-  <!-- ================= CATEGORIES ================= -->
+  <!-- ================= FLOORS AND DOORS ================= -->
   <section class="section bg-sand">
+    <div class="wrap">
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <SectionHeading
+            eyebrow="Floors and doors"
+            title="It is not only the floor."
+            lead="Half of what leaves our showroom is doors. Entry doors, interior doors, closet and shower doors, and the hardware to hang them — from the same team, measured and fitted alongside your floor."
+          />
+          <div class="reveal mt-9 flex flex-wrap gap-3" style="--reveal-delay:100ms">
+            <a href={url('/products/doors')} class="btn btn-primary">See the doors</a>
+            <a href={url('/products/laminate')} class="btn btn-ghost">See the floors</a>
+          </div>
+
+          <div class="reveal mt-10 hover-zoom overflow-hidden" style="--reveal-delay:160ms">
+            <Image
+              src={laminateDetail}
+              alt="Close view of a wide-plank wood-look laminate floor"
+              widths={[500, 900, 1200]}
+              sizes="(min-width: 1024px) 38vw, 100vw"
+              class="aspect-[3/1] w-full object-cover"
+            />
+            <p class="mt-3 text-xs uppercase tracking-[0.16em] text-bark/50">Laminate &middot; and five more floor types</p>
+          </div>
+        </div>
+
+        <ul class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          {doorShowcase.map((d, i) => (
+            <li class="reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <a href={url('/products/doors')} class="hover-zoom group block overflow-hidden">
+                <div class="overflow-hidden">
+                  <Image
+                    src={d.image}
+                    alt={`${d.label} — ${d.note}`}
+                    widths={[400, 800]}
+                    sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
+                    class="aspect-[4/5] w-full object-cover"
+                  />
+                </div>
+                <div class="mt-3">
+                  <h3 class="text-lg leading-tight transition-colors group-hover:text-oak-deep">{d.label}</h3>
+                  <p class="mt-1 text-xs leading-relaxed text-bark/55">{d.note}</p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section class="section">
     <div class="wrap">
       <SectionHeading
         eyebrow="What we carry"

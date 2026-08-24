@@ -165,8 +165,13 @@ export const categories: Category[] = [
     blurb: 'Interior, entry, shower and closet doors — plus the hardware.',
     body: 'We carry doors alongside the floors, which means the finishes actually coordinate — and you are dealing with one supplier instead of three. Interior and entry doors, prehung units ready to install, plus shower doors, closet doors and door hardware, measured and fitted by the same team that handles your floor.',
     bullets: ['Interior & entry doors', 'Prehung units', 'Shower & closet doors', 'Door hardware'],
-    image: img('g12'),
-    brands: [],
+    image: img('door-interior-modern'),
+    brands: [
+      { name: 'JELD-WEN' },
+      { name: 'Simpson' },
+      { name: 'Millennium Collection' },
+      { name: 'Talon Hardware' },
+    ],
   },
 ];
 
@@ -211,5 +216,14 @@ export const gallery: { image: ImageMetadata; alt: string; span?: 'wide' }[] = [
 export const heroImage = img('g06');
 export const storefrontImage = img('g14');
 export const aboutImage = img('g15');
+export const laminateDetail = img('laminate-detail');
+
+/* Doors, so the home page shows the half of the business that is not flooring. */
+export const doorShowcase = [
+  { image: img('door-entry-wood'),      label: 'Entry doors',    note: 'Solid wood, glazed and craftsman styles' },
+  { image: img('door-interior-modern'), label: 'Interior doors', note: 'Panel, flush and prehung units' },
+  { image: img('door-wardrobe'),        label: 'Closet doors',   note: 'Mirrored and sliding wardrobe systems' },
+  { image: img('door-hardware'),        label: 'Hardware',       note: 'Handles, hinges and closers' },
+];
 export const productsHeroImage = img('g07');
 export const contactHeroImage = img('g11');

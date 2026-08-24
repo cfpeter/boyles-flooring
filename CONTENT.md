@@ -74,6 +74,29 @@ presentable.
 this immediately — one line in `src/data/content.ts`. The same is true for the
 other five categories, which still use showroom racks.
 
+## 🚪 Door imagery and brands
+
+The home page now carries a **Floors and doors** block, and the Doors &
+Hardware category finally has brand lines. Both come from **American Building
+Supply (ABS)**, the door distributor whose catalogue the business pointed me at.
+
+| | |
+| --- | --- |
+| Photographs | 6, from abs-abs.com's product grid, self-hosted |
+| Brands added | JELD-WEN, Simpson, Millennium Collection, Talon Hardware |
+
+**Confirm before the real domain goes live:** that Boyles' arrangement with ABS
+covers using their product photography on the website — the same question as the
+Republic swatches. If it does not, the layout stays and the images swap for
+photos of doors on the Boyles floor.
+
+**Also worth confirming:** the four brand names. ABS distributes many lines and
+I picked the residential ones that match what the business says it sells. I
+deliberately left out Steelcraft hollow metal and Timely frames (commercial fire
+doors and corridor frames) and JELD-WEN Windows, since the Instagram bio lists
+doors and hardware but never windows. If Boyles does sell windows, that is a
+category the site is currently missing entirely.
+
 ## 🏷️ Brand lists — where they came from
 
 Each category page lists the brand lines for that surface. Sources differ, and
