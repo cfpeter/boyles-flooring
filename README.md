@@ -151,6 +151,7 @@ than hot-linked, so nothing breaks when a manufacturer reorganises its site:
 | Republic Flooring | 4 | 34 | 180 | not published by the maker |
 | Lions Floor | 1 (laminate) | 2 | 23 | full, uniform per collection |
 | Pacific Direct Industries | 1 (laminate) | 3 | 18 | full, and varies per colour |
+| Oasis | 1 (laminate) | 1 | 13 | full, and varies per colour |
 
 Where a manufacturer publishes a specification it appears in the collection's
 "At a glance" panel; where it does not, the page says to call instead. A field

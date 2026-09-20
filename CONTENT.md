@@ -212,6 +212,30 @@ room/plank toggle hides itself rather than showing an empty tab.
 photography are PDI's own, reproduced as a stockist. That is now four
 manufacturers. Worth settling permission in one conversation.
 
+## 🏔️ Oasis catalogue
+
+Oasis's water-resistant laminate is on the site: **13 colours**, named after the
+Sierra Nevada — Clark Range, El Capitan, Mirror Lake, Glacier Point.
+
+Supplied in two plank formats, so the size sits against each colour rather than
+the collection:
+
+| Format | Colours | Carton |
+| --- | --- | --- |
+| 1215 × 195 × 8 mm | 6 | 20.40 sq ft |
+| 1515 × 238 × 12 mm | 7 | 23.29 sq ft |
+
+Their site is WooCommerce with the WordPress REST API open, so the whole
+catalogue — titles, part numbers, specs and images — came from a single request
+rather than page scraping.
+
+**Excluded:** "WRL Stair Tread", which is in the same category but is a trim
+piece with no colour code, not a floor. Same treatment as Republic's mouldings
+and stairnose.
+
+**Rights:** as with the others — part numbers, colour names and photography are
+Oasis's own, reproduced as a stockist.
+
 ## ❌ Deliberately left out
 
 - **Customer testimonials / reviews** — there were none to source, and inventing

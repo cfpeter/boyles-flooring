@@ -791,6 +791,96 @@ export const brands: Brand[] = [
     }
     ],
   },
+  {
+    slug: 'oasis',
+    name: 'Oasis',
+    site: 'https://oasiswoodflooring.com',
+    blurb:
+      'Water-resistant laminate named after the Sierra Nevada — Clark Range, El Capitan, Mirror Lake. Two plank formats, thirteen colours.',
+    imageDir: 'oasis',
+    lines: [
+      { key: "laminate", label: "Water-Resistant Laminate", category: "laminate" },
+    ],
+    collections: [
+    {
+      slug: "water-resistant-laminate",
+      title: "Water-Resistant Laminate",
+      line: "laminate",
+      category: "laminate",
+      description: "Oasis's water-resistant laminate, named after the Sierra Nevada. Supplied in two plank formats — a 1215x195x8mm board and a longer, thicker 1515x238x12mm board — so the size is listed against each colour.",
+      specs: [
+        { label: "Species", value: "Water Resistant Laminate" }
+      ],
+      colours: [
+          { name: "Clark Range", sku: "WRL1305L", image: "wrl1305l.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] },
+          { name: "Liberty Cap", sku: "WRLH003L", image: "wrlh003l.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Clouds Rest", sku: "WRL4494L", image: "wrl4494l.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Echo Peaks", sku: "WRL4493L", image: "wrl4493l.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "El Capitan", sku: "WRL5211", image: "wrl5211.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Snow Creek", sku: "WRL0524", image: "wrl0524.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Aspen Valley", sku: "WRL0523", image: "wrl0523.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Park Shadow", sku: "WRL0041", image: "wrl0041.jpg",
+          specs: [
+            { label: "Board size", value: "1515*238*12mm" },
+            { label: "Carton coverage", value: "23.29 Sq Ft" }
+          ] },
+          { name: "Silver Apron", sku: "WRL2052", image: "wrl2052.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] },
+          { name: "Merced River", sku: "WRL2047", image: "wrl2047.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] },
+          { name: "Mirror Lake", sku: "WRL2046", image: "wrl2046.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] },
+          { name: "Golden Sunset", sku: "WRL2012", image: "wrl2012.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] },
+          { name: "Glacier Point", sku: "WRL2010", image: "wrl2010.jpg",
+          specs: [
+            { label: "Board size", value: "1215*195*8mm" },
+            { label: "Carton coverage", value: "20.40 Sq Ft" }
+          ] }
+      ],
+    }
+    ],
+  },
 ];
 
 export const brandBySlug = (slug: string) => brands.find((b) => b.slug === slug);
