@@ -186,6 +186,32 @@ SKUs, copy and photography are Lions Floor's own, reproduced on the basis that
 Boyles is a stockist. That is now three manufacturers' imagery on the site —
 worth settling the dealer-permission question in one go before the real domain.
 
+## 🌊 Pacific Direct Industries catalogue
+
+PDI's laminate range is on the site: **3 collections, 18 colours**, with the
+manufacturer's product numbers and full specifications.
+
+| Collection | Colours | Plank |
+| --- | --- | --- |
+| Poseidon | 14 | 12.3 mm, mostly 9.4″ × 5′ |
+| Poseidon XL | 1 | 12.3 mm × 9.4″ × 6′ |
+| Herringbone | 3 | 12 mm × 5″ × 30″ or 36″ |
+
+All AC4 on a Unilin locking system, 30-year residential / 10-year commercial.
+
+Unlike the other two brands, **PDI's specs vary within a collection** — in
+Poseidon most planks are 9.4″ wide but Hermes and Lindos are 7.68″, with
+different box coverage. The site shows shared values once on the collection and
+the differing ones on each colour, so nothing is stated wrongly and nothing
+repeats fourteen times.
+
+PDI publishes no room photographs, so those colours show the plank only — the
+room/plank toggle hides itself rather than showing an empty tab.
+
+**Rights:** as with Republic, Lions Floor and ABS — names, product numbers and
+photography are PDI's own, reproduced as a stockist. That is now four
+manufacturers. Worth settling permission in one conversation.
+
 ## ❌ Deliberately left out
 
 - **Customer testimonials / reviews** — there were none to source, and inventing

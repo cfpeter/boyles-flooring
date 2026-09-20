@@ -30,6 +30,9 @@ export type Colour = {
   image: string;
   /** Room photograph of this colour laid, where the manufacturer supplies one. */
   room?: string;
+  /** Specs that differ between colours in the same collection. Fields shared by
+      the whole collection live on the Collection instead, so nothing repeats. */
+  specs?: Spec[];
 };
 
 export type Collection = {
@@ -638,6 +641,152 @@ export const brands: Brand[] = [
           { name: "Parkside Lane", sku: "LI-HH08", image: "lihh08.jpg", room: "lihh08-room.jpg" },
           { name: "Larkspur Place", sku: "LI-HH09", image: "lihh09.jpg", room: "lihh09-room.jpg" },
           { name: "Rosewood Way", sku: "LI-HH10", image: "lihh10.jpg", room: "lihh10-room.jpg" }
+      ],
+    }
+    ],
+  },
+  {
+    slug: 'pacific-direct-industries',
+    name: 'Pacific Direct Industries',
+    site: 'https://www.pacificdirectflooring.com',
+    blurb:
+      'Wide-plank and herringbone laminate on a Unilin click system, rated AC4 for busy rooms. One of the lines on the showroom floor.',
+    imageDir: 'pdi',
+    lines: [
+      { key: "laminate", label: "Laminate", category: "laminate" },
+    ],
+    collections: [
+    {
+      slug: "poseidon",
+      title: "Poseidon",
+      line: "laminate",
+      category: "laminate",
+      description: "Pacific Direct's Poseidon laminate — 14 colours, all on a Unilin locking system.",
+      specs: [
+        { label: "Locking system", value: "Unilin" },
+        { label: "AC rating", value: "AC4" },
+        { label: "Residential warranty", value: "30 Year" },
+        { label: "Commercial warranty", value: "10 Year" }
+      ],
+      colours: [
+          { name: "Zephyr", sku: "PSDN044", image: "poseidon-zephyr.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Morpheus", sku: "PSDN050", image: "poseidon-morpheus.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Iris", sku: "PSDN042", image: "poseidon-iris.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Lindos", sku: "PSDN021", image: "poseidon-lindos.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 7.68\" x 4'" },
+            { label: "Sq ft per box", value: "20.40 sf/box" }
+          ] },
+          { name: "Maia", sku: "PSDN043", image: "poseidon-maia.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Hercules", sku: "PSDN049", image: "poseidon-hercules.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Hermes", sku: "PSDN020", image: "poseidon-hermes.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 7.68\" x 5'" },
+            { label: "Sq ft per box", value: "19.08 sf/box" }
+          ] },
+          { name: "Hades", sku: "PSDN048", image: "poseidon-hades.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Eros", sku: "PSDN045", image: "poseidon-eros.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Corfu", sku: "PSDN047", image: "poseidon-corfu.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Chariot", sku: "PSDN051", image: "poseidon-chariot.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Adonis", sku: "PSDN040", image: "poseidon-adonis.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Artemis", sku: "PSDN046", image: "poseidon-artemis.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] },
+          { name: "Apollo", sku: "PSDN041", image: "poseidon-apollo.jpg",
+          specs: [
+            { label: "Plank size", value: "12.3 mm x 9.4\" x 5'" },
+            { label: "Sq ft per box", value: "23.29 sf/box" }
+          ] }
+      ],
+    },
+    {
+      slug: "poseidon-xl",
+      title: "Poseidon XL",
+      line: "laminate",
+      category: "laminate",
+      description: "Pacific Direct's Poseidon XL laminate — 1 colour, all on a Unilin locking system.",
+      specs: [
+        { label: "Plank size", value: "12.3mm x 9.4''x 6'" },
+        { label: "Sq ft per box", value: "23.31" },
+        { label: "Locking system", value: "Unilin" },
+        { label: "AC rating", value: "AC4" },
+        { label: "Residential warranty", value: "30 Year" },
+        { label: "Commercial warranty", value: "10 Year" }
+      ],
+      colours: [
+          { name: "Vulcan", sku: "PSDN088", image: "poseidon-xl-vulcan.jpg" }
+      ],
+    },
+    {
+      slug: "herringbone",
+      title: "Herringbone",
+      line: "laminate",
+      category: "laminate",
+      description: "Pacific Direct's Herringbone laminate — 3 colours, all on a Unilin locking system.",
+      specs: [
+        { label: "Locking system", value: "Unilin" },
+        { label: "AC rating", value: "AC4" },
+        { label: "Residential warranty", value: "30 Years" },
+        { label: "Commercial warranty", value: "10 Years" }
+      ],
+      colours: [
+          { name: "Morpheus", sku: "PSDH020", image: "herringbone-morpheus.jpg",
+          specs: [
+            { label: "Plank size", value: "12mm x 5\" x 30\"" },
+            { label: "Sq ft per box", value: "16.32" }
+          ] },
+          { name: "Vulcan", sku: "PSDH019", image: "herringbone-vulcan.jpg",
+          specs: [
+            { label: "Plank size", value: "12mm x 5\" x 36\"" },
+            { label: "Sq ft per box", value: "19.86" }
+          ] },
+          { name: "Hermes", sku: "PSDH018", image: "herringbone-hermes.jpg",
+          specs: [
+            { label: "Plank size", value: "12mm x 5\" x 30\"" },
+            { label: "Sq ft per box", value: "16.32" }
+          ] }
       ],
     }
     ],

@@ -149,11 +149,18 @@ than hot-linked, so nothing breaks when a manufacturer reorganises its site:
 | Brand | Lines | Collections | Colours | Specs |
 | --- | --- | --- | --- | --- |
 | Republic Flooring | 4 | 34 | 180 | not published by the maker |
-| Lions Floor | 1 (laminate) | 2 | 23 | full, per collection |
+| Lions Floor | 1 (laminate) | 2 | 23 | full, uniform per collection |
+| Pacific Direct Industries | 1 (laminate) | 3 | 18 | full, and varies per colour |
 
 Where a manufacturer publishes a specification it appears in the collection's
 "At a glance" panel; where it does not, the page says to call instead. A field
 the maker states inconsistently is dropped rather than guessed.
+
+Specs are split by whether they actually vary. Fields shared by every colour in
+a collection sit on the collection; fields that differ between colours sit on
+the colour and appear in the enlarged swatch view. Pacific Direct's Poseidon is
+the case that needs this — most planks are 9.4" wide but two are 7.68", with
+different box coverage.
 
 Lions Floor also supplies a room photograph per colour, so the enlarged swatch
 view opens on the room and toggles to the plank.

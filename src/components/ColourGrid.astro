@@ -17,6 +17,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         data-sku={c.sku}
         data-src={c.image ? `${base}/brands/${dir}/${c.image}` : ''}
         data-room={c.room ? `${base}/brands/${dir}/${c.room}` : ''}
+        data-specs={c.specs && c.specs.length ? JSON.stringify(c.specs) : ''}
         aria-label={`View ${c.name} larger`}
       >
         <div class="hover-zoom overflow-hidden border border-bark/10 bg-sand">
@@ -62,6 +63,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="px-6 pb-8 text-center">
     <p id="sw-name" class="font-display text-2xl text-bone"></p>
     <p id="sw-sku" class="mt-1 text-[0.7rem] uppercase tracking-[0.16em] text-bone/45"></p>
+    <dl id="sw-specs" class="mx-auto mt-4 flex max-w-lg flex-wrap justify-center gap-x-8 gap-y-1.5 text-xs" hidden></dl>
     <div id="sw-toggle" class="mt-5 inline-flex border border-bone/25" hidden>
       <button type="button" data-view="room" aria-pressed="true"
         class="sw-tab px-4 py-2 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bone/60 transition-colors aria-pressed:bg-bone aria-pressed:text-espresso">
@@ -115,6 +117,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       nameEl.textContent = b.dataset.name!;
       skuEl.textContent = b.dataset.sku || '';
       countEl.textContent = `${i + 1} / ${btns.length}`;
+
+      // only the specs that differ between colours are carried per colour;
+      // the shared ones are already on the collection page above
+      const specsEl = document.getElementById('sw-specs')!;
+      let rows: { label: string; value: string }[] = [];
+      try { rows = b.dataset.specs ? JSON.parse(b.dataset.specs) : []; } catch { rows = []; }
+      specsEl.innerHTML = rows
+        .map((r) => `<div><dt class="inline text-bone/45">${r.label}</dt> <dd class="inline text-bone/85">${r.value}</dd></div>`)
+        .join('');
+      specsEl.hidden = rows.length === 0;
+
       paint();
     };
 
