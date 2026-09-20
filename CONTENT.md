@@ -154,6 +154,38 @@ Carpet, Anderson Tuftex, Dreamweaver, COREtec or Pacific Direct Industries.
 Whether it is as quick depends on whether their site exposes a catalogue feed
 the way Republic's does.
 
+## 🦁 Lions Floor catalogue
+
+Lions Floor's full laminate range is on the site: **2 collections, 23 colours**,
+imported from the manufacturer's own product pages.
+
+| | Comfort Heights | Haven Heights |
+| --- | --- | --- |
+| Colours | 13 | 10 |
+| Thickness | 12 mm | 10 mm |
+| AC rating | AC4 | AC3 |
+| Plank | 9¼″ × 60″ | 9⅓″ × 60″ |
+| Sq ft per box | 19.16 | 30.92 |
+
+Unlike Republic, Lions Floor **publishes a full specification**, so the
+collection pages show it — thickness, plank size, AC rating, box coverage,
+finish, edge, installation method and warranty. Every one of those is identical
+across all the colours in a collection, so it is stated once on the collection
+page rather than repeated under each swatch.
+
+Two photographs per colour: the plank detail and the colour laid in a room.
+The enlarged view opens on the room shot with a toggle to the plank.
+
+**Deliberately not published:** wear layer. The manufacturer's pages state it
+inconsistently — some give a thickness in mils, some repeat the AC rating, nine
+omit it. A spec that unreliable is worse than none, so it is dropped rather than
+guessed. Same rule as everywhere else on this site.
+
+**Same rights question as Republic and ABS:** collection names, colour names,
+SKUs, copy and photography are Lions Floor's own, reproduced on the basis that
+Boyles is a stockist. That is now three manufacturers' imagery on the site —
+worth settling the dealer-permission question in one go before the real domain.
+
 ## ❌ Deliberately left out
 
 - **Customer testimonials / reviews** — there were none to source, and inventing

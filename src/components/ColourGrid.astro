@@ -16,6 +16,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         data-name={c.name}
         data-sku={c.sku}
         data-src={c.image ? `${base}/brands/${dir}/${c.image}` : ''}
+        data-room={c.room ? `${base}/brands/${dir}/${c.room}` : ''}
         aria-label={`View ${c.name} larger`}
       >
         <div class="hover-zoom overflow-hidden border border-bark/10 bg-sand">
@@ -61,6 +62,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="px-6 pb-8 text-center">
     <p id="sw-name" class="font-display text-2xl text-bone"></p>
     <p id="sw-sku" class="mt-1 text-[0.7rem] uppercase tracking-[0.16em] text-bone/45"></p>
+    <div id="sw-toggle" class="mt-5 inline-flex border border-bone/25" hidden>
+      <button type="button" data-view="room" aria-pressed="true"
+        class="sw-tab px-4 py-2 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bone/60 transition-colors aria-pressed:bg-bone aria-pressed:text-espresso">
+        In a room
+      </button>
+      <button type="button" data-view="swatch" aria-pressed="false"
+        class="sw-tab px-4 py-2 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bone/60 transition-colors aria-pressed:bg-bone aria-pressed:text-espresso">
+        The plank
+      </button>
+    </div>
   </div>
 </div>
 
@@ -82,15 +93,34 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const next = document.getElementById('sw-next')!;
     let i = 0, last: HTMLElement | null = null;
 
+    const toggle = document.getElementById('sw-toggle')!;
+    const tabs = [...toggle.querySelectorAll<HTMLButtonElement>('[data-view]')];
+    let mode: 'room' | 'swatch' = 'room';
+
+    const paint = () => {
+      const b = btns[i];
+      const room = b.dataset.room || '';
+      const useRoom = mode === 'room' && room;
+      img.src = useRoom ? room : b.dataset.src!;
+      img.alt = `${b.dataset.name} — ${useRoom ? 'laid in a room' : 'plank detail'}`;
+      toggle.hidden = !room;                       // nothing to toggle without one
+      tabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.view === mode)));
+    };
+
     const show = (n: number) => {
       i = (n + btns.length) % btns.length;
       const b = btns[i];
-      img.src = b.dataset.src!;
-      img.alt = b.dataset.name!;
+      // a colour with no room photo falls back to the plank
+      if (mode === 'room' && !b.dataset.room) mode = 'swatch';
       nameEl.textContent = b.dataset.name!;
       skuEl.textContent = b.dataset.sku || '';
       countEl.textContent = `${i + 1} / ${btns.length}`;
+      paint();
     };
+
+    tabs.forEach((t) =>
+      t.addEventListener('click', () => { mode = t.dataset.view as 'room' | 'swatch'; paint(); })
+    );
     const open = (n: number) => {
       last = document.activeElement as HTMLElement;
       show(n); view.classList.add('open');

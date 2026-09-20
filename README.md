@@ -143,10 +143,20 @@ under Luxury Vinyl shows Pure SPC, SPC Max and Designer Pro. Each page
 cross-links to the brand's other categories. Scoping is enforced by the URL
 rather than by filtering after the fact, so the two views cannot drift.
 
-Republic Flooring is imported: 4 lines, 34 collections, 180 colours, with the
-manufacturer's descriptions, colour names and SKUs. Swatch images are
-**self-hosted** in `public/brands/republic/` rather than hot-linked, so nothing
-breaks when the manufacturer reorganises its site.
+Two brands are imported, both self-hosted in `public/brands/<brand>/` rather
+than hot-linked, so nothing breaks when a manufacturer reorganises its site:
+
+| Brand | Lines | Collections | Colours | Specs |
+| --- | --- | --- | --- | --- |
+| Republic Flooring | 4 | 34 | 180 | not published by the maker |
+| Lions Floor | 1 (laminate) | 2 | 23 | full, per collection |
+
+Where a manufacturer publishes a specification it appears in the collection's
+"At a glance" panel; where it does not, the page says to call instead. A field
+the maker states inconsistently is dropped rather than guessed.
+
+Lions Floor also supplies a room photograph per colour, so the enlarged swatch
+view opens on the room and toggles to the plank.
 
 ### Adding another brand
 

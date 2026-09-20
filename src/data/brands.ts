@@ -20,12 +20,16 @@
    omitting them. Add a `specs` block per collection once confirmed.
    ============================================================================ */
 
+export type Spec = { label: string; value: string };
+
 export type Colour = {
   name: string;
   /** Manufacturer's own SKU, useful when ordering. */
   sku: string;
   /** Filename in public/brands/<brand>/ — empty when no swatch is available. */
   image: string;
+  /** Room photograph of this colour laid, where the manufacturer supplies one. */
+  room?: string;
 };
 
 export type Collection = {
@@ -36,6 +40,11 @@ export type Collection = {
   /** Which category on this site the line maps to. */
   category: string;
   description: string;
+  /** Published specification, where the manufacturer states one. Omitted
+      entirely rather than guessed. */
+  specs?: Spec[];
+  /** Room photograph for the collection header, in public/brands/<brand>/. */
+  room?: string;
   colours: Colour[];
 };
 
@@ -551,6 +560,84 @@ export const brands: Brand[] = [
           { name: "Sea Pearl", sku: "RELB9308", image: "relb9308.jpg" },
           { name: "Countryside Lake", sku: "RELB9307", image: "relb9307.jpg" },
           { name: "Desert Beach", sku: "RELB9301", image: "relb9301.jpg" }
+      ],
+    }
+    ],
+  },
+  {
+    slug: 'lions-floor',
+    name: 'Lions Floor',
+    site: 'https://www.lionsfloor.com',
+    blurb:
+      'Waterproof laminate in wide, long planks with an embossed-in-register surface — the grain you see is the grain you feel. Two collections, twenty-three colours.',
+    imageDir: 'lions',
+    lines: [
+      { key: "laminate", label: "Laminate", category: "laminate" },
+    ],
+    collections: [
+    {
+      slug: "comfort-heights",
+      title: "Comfort Heights",
+      line: "laminate",
+      category: "laminate",
+      description: "Lions Floor's Comfort Heights collection aims to take home décor to the next level. The large profile plank resembles the authentic and timeless charm of hardwood. The Embossed in Register (EIR), yet matte finish, is a vivid expression of nature. Proven to be waterproof with a painted bevel, waxed joints and AC4 level scratch-resistance, Comfort Heights high density core delivers beauty, durability, and performance that suits any décor.",
+      room: "room-comfort-heights.jpg",
+      specs: [
+        { label: "Thickness", value: "12mm" },
+        { label: "Plank width", value: "9 1/4\"" },
+        { label: "Plank length", value: "60\"" },
+        { label: "AC rating", value: "AC4" },
+        { label: "Sq ft per box", value: "19.16" },
+        { label: "Finish", value: "UV Aluminum Oxide" },
+        { label: "Edge", value: "Painted bevel" },
+        { label: "Installation", value: "Uniclic/Floating" },
+        { label: "Warranty", value: "Residential: 50 Years Limited / Commercial: 10 Years Limited" }
+      ],
+      colours: [
+          { name: "Village Park", sku: "LI-CH01", image: "lich01.jpg", room: "lich01-room.jpg" },
+          { name: "Baywood Place", sku: "LI-CH02", image: "lich02.jpg", room: "lich02-room.jpg" },
+          { name: "Cliff Cottage", sku: "LI-CH03", image: "lich03.jpg", room: "lich03-room.jpg" },
+          { name: "Boardwalk Court", sku: "LI-CH04", image: "lich04.jpg", room: "lich04-room.jpg" },
+          { name: "Camden Ridge", sku: "LI-CH05", image: "lich05.jpg", room: "lich05-room.jpg" },
+          { name: "Huntington Gardens", sku: "LI-CH06", image: "lich06.jpg", room: "lich06-room.jpg" },
+          { name: "Country Aura", sku: "LI-CH07", image: "lich07.jpg", room: "lich07-room.jpg" },
+          { name: "City Pointe", sku: "LI-CH08", image: "lich08.jpg", room: "lich08-room.jpg" },
+          { name: "Pine Ridge", sku: "LI-CH09", image: "lich09.jpg", room: "lich09-room.jpg" },
+          { name: "Cedar View", sku: "LI-CH10", image: "lich10.jpg", room: "lich10-room.jpg" },
+          { name: "Sunset Terrace", sku: "LI-CH12", image: "lich12.jpg", room: "lich12-room.jpg" },
+          { name: "River Walk", sku: "LI-CH13", image: "lich13.jpg", room: "lich13-room.jpg" },
+          { name: "Maple Gardens", sku: "LI-CH14", image: "lich14.jpg", room: "lich14-room.jpg" }
+      ],
+    },
+    {
+      slug: "haven-heights",
+      title: "Haven Heights",
+      line: "laminate",
+      category: "laminate",
+      description: "Haven Heights is a laminate collection created for homes that celebrate everyday living—from lively gatherings to quiet mornings and shared family moments. Inspired by the character of real neighborhoods and residential communities, each design reflects a familiar sense of comfort and belonging. With a warm, approachable palette and durable construction designed for daily life, Haven Heights balances style with practicality. It's flooring that feels welcoming, personal, and easy to live with—bringing timeless design and everyday comfort together in one place. Distinguishing itself from traditional laminate flooring, Lions Floor's Haven Heights waterproof laminate is engineered to defy warping, swelling, or buckling when exposed to water or moisture.",
+      room: "room-haven-heights.jpg",
+      specs: [
+        { label: "Thickness", value: "10mm" },
+        { label: "Plank width", value: "9 1/3\"" },
+        { label: "Plank length", value: "60\"" },
+        { label: "AC rating", value: "AC3" },
+        { label: "Sq ft per box", value: "30.92" },
+        { label: "Finish", value: "UV Aluminum Oxide" },
+        { label: "Edge", value: "Painted Bevel" },
+        { label: "Installation", value: "Uniclic/Floating" },
+        { label: "Warranty", value: "Residential: 50 Years Limited / Commercial: 10 Years Limited" }
+      ],
+      colours: [
+          { name: "Harbor Court", sku: "LI-HH01", image: "lihh01.jpg", room: "lihh01-room.jpg" },
+          { name: "Cedar Fields", sku: "LI-HH02", image: "lihh02.jpg", room: "lihh02-room.jpg" },
+          { name: "Pinecrest Walk", sku: "LI-HH03", image: "lihh03.jpg", room: "lihh03-room.jpg" },
+          { name: "Oakview Place", sku: "LI-HH04", image: "lihh04.jpg", room: "lihh04-room.jpg" },
+          { name: "Elm Terrace", sku: "LI-HH05", image: "lihh05.jpg", room: "lihh05-room.jpg" },
+          { name: "Harlow Commons", sku: "LI-HH06", image: "lihh06.jpg", room: "lihh06-room.jpg" },
+          { name: "Laurel Court", sku: "LI-HH07", image: "lihh07.jpg", room: "lihh07-room.jpg" },
+          { name: "Parkside Lane", sku: "LI-HH08", image: "lihh08.jpg", room: "lihh08-room.jpg" },
+          { name: "Larkspur Place", sku: "LI-HH09", image: "lihh09.jpg", room: "lihh09-room.jpg" },
+          { name: "Rosewood Way", sku: "LI-HH10", image: "lihh10.jpg", room: "lihh10-room.jpg" }
       ],
     }
     ],
