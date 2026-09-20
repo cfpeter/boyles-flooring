@@ -11,6 +11,9 @@ export const site = {
 
   phone: '(661) 284-1200',
   phoneHref: 'tel:+16612841200',
+  // Text-message only — this line does not take voice calls.
+  textPhone: '(747) 264-6414',
+  textPhoneHref: 'sms:+17472646414',
 
   email: 'sales@boyles-flooring.com',
   emailHref: 'mailto:sales@boyles-flooring.com',

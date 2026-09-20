@@ -22,6 +22,12 @@ const line = brand.lines.find((l) => l.key === collection.line);
 const siblings = brand.collections.filter((c) => c.line === collection.line && c.slug !== collection.slug);
 const heroFile = collection.room || collection.colours.find((c) => c.image)?.image || '';
 const paras = collection.description.split('\n\n').filter(Boolean);
+// Opens the phone's messaging app with the collection named and this page's
+// link attached, so whoever reads the text can open exactly what was asked about.
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const smsBody = 'Hi Boyles Flooring, I would like more information about ' +
+  collection.title + ' by ' + brand.name + '. ' + pageUrl;
+const smsHref = site.textPhoneHref + '?body=' + encodeURIComponent(smsBody);
 ---
 
 <BaseLayout
@@ -106,8 +112,11 @@ const paras = collection.description.split('\n\n').filter(Boolean);
 
           <div class="mt-6 flex flex-col gap-3">
             <a href={site.phoneHref} class="btn btn-primary">Call {site.phone}</a>
-            <a href={url('/contact')} class="btn btn-ghost">Request a sample</a>
+            <a href={smsHref} class="btn btn-ghost">Text {site.textPhone}</a>
           </div>
+          <p class="mt-3 text-xs text-bark/55">
+            {site.textPhone} is for text messages only — call {site.phone} to reach the showroom.
+          </p>
         </div>
       </div>
     </div>
@@ -160,7 +169,7 @@ const paras = collection.description.split('\n\n').filter(Boolean);
   )}
 
   <CtaBand
-    title={`Request a ${collection.title} sample`}
-    body="Take a sample home, live with it for a few days under your own lighting, then decide."
+    title={`See ${collection.title} in the showroom`}
+    body="Judge a floor under your own lighting, next to your own furniture. Call or text us and we will get it in front of you."
   />
 </BaseLayout>

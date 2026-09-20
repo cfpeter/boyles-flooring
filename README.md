@@ -152,6 +152,7 @@ than hot-linked, so nothing breaks when a manufacturer reorganises its site:
 | Lions Floor | 1 (laminate) | 2 | 23 | full, uniform per collection |
 | Pacific Direct Industries | 1 (laminate) | 3 | 18 | full, and varies per colour |
 | Oasis | 1 (laminate) | 1 | 13 | full, and varies per colour |
+| InStride Surfaces | 1 (laminate) | 1 | 10 | full, uniform across the collection |
 
 Where a manufacturer publishes a specification it appears in the collection's
 "At a glance" panel; where it does not, the page says to call instead. A field
@@ -165,6 +166,16 @@ different box coverage.
 
 Lions Floor also supplies a room photograph per colour, so the enlarged swatch
 view opens on the room and toggles to the plank.
+
+### Call and text on a collection page
+
+Every collection page ends its spec panel with two buttons: the showroom line,
+and a text-only number (`textPhone` / `textPhoneHref` in `src/data/site.ts`).
+The text button is an `sms:` link with a prefilled body naming the collection
+and carrying that page's own canonical URL, so whoever reads the message can
+open exactly what the customer was looking at. The URL is built from `site` and
+`base` in `astro.config.mjs` — switching the site to the real domain updates
+every one of those links with no further edits.
 
 ### Adding another brand
 

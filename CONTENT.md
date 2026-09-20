@@ -9,6 +9,7 @@ below is a bug — it is a list of claims only Boyles can confirm.
 | Item | Value |
 | --- | --- |
 | Phone | (661) 284-1200 |
+| Text line | (747) 264-6414 — given by the business, text only |
 | Email | sales@boyles-flooring.com |
 | Address | 21515 Soledad Canyon Road, Suite #113, Santa Clarita, CA 91350 |
 | Hours | Mon–Fri 8:30 am – 6 pm · Sat 9 am – 5 pm |
@@ -235,6 +236,29 @@ and stairnose.
 
 **Rights:** as with the others — part numbers, colour names and photography are
 Oasis's own, reproduced as a stockist.
+
+## 🚶 InStride Surfaces catalogue
+
+The brand ADCO lists as **"SK"** trades as **InStride Surfaces**, so that is the
+name the site now uses in Hardwood, Laminate and Luxury Vinyl. If ADCO's
+paperwork still says SK, both names refer to the same maker.
+
+Their **NexGen** laminate is on the site: **10 colours**, NG200–NG209.
+
+Every one of the ten product pages publishes the same specification — 12 mm
+(10 mm HDF waxed core + 2 mm HD pad), AC4, 9.4" × 60", pressed bevel, embossed
+in register, click lock — so it sits on the collection rather than being
+repeated against each colour. Nothing varies between the colours except the
+photograph.
+
+Their site publishes no box coverage, so none is claimed.
+
+**Excluded:** the t-mold, stairnose and end-cap trims sold alongside the line.
+Same treatment as Republic's mouldings and Oasis's stair tread — they are trim,
+not floors.
+
+**Rights:** SKUs, colour names and photography are InStride's own, reproduced
+as a stockist.
 
 ## ❌ Deliberately left out
 

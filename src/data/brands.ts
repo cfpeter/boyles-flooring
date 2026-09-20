@@ -881,6 +881,47 @@ export const brands: Brand[] = [
     }
     ],
   },
+  {
+    slug: 'instride-surfaces',
+    name: 'InStride Surfaces',
+    site: 'https://instridesurfaces.com',
+    blurb:
+      'Rigid 12mm laminate on an HDF core with the pad already attached, embossed in register so the texture follows the grain. Ten colours in the NexGen line.',
+    imageDir: 'instride',
+    lines: [
+      { key: "nexgen", label: "NexGen", category: "laminate" },
+    ],
+    collections: [
+    {
+      slug: "nexgen",
+      title: "NexGen",
+      line: "nexgen",
+      category: "laminate",
+      description: "NexGen is InStride's 12mm laminate: a high-density fibreboard core with a 2mm pad bonded underneath, so it lays over a subfloor without separate underlayment. Rated AC4 for busy domestic rooms, embossed in register so the surface texture lines up with the printed grain, and finished with a pressed bevel on a click-lock system.",
+      specs: [
+        { label: "Thickness", value: "12.0 mm (10 mm HDF waxed core + 2 mm HD pad)" },
+        { label: "AC rating", value: "AC4" },
+        { label: "Plank width", value: "9.4\"" },
+        { label: "Plank length", value: "60\"" },
+        { label: "Edge", value: "Pressed / pillowed bevel" },
+        { label: "Texture", value: "Embossed in register (EIR), A+B film prints" },
+        { label: "Installation", value: "Locking click system" }
+      ],
+      colours: [
+          { name: "Glacial Linen Oak", sku: "NG200", image: "ng200.jpg" },
+          { name: "Hearthstone", sku: "NG201", image: "ng201.jpg" },
+          { name: "Orris", sku: "NG202", image: "ng202.jpg" },
+          { name: "Santana", sku: "NG203", image: "ng203.jpg" },
+          { name: "Plumed Maple", sku: "NG204", image: "ng204.jpg" },
+          { name: "Golden Dahlia", sku: "NG205", image: "ng205.jpg" },
+          { name: "Halo Oak", sku: "NG206", image: "ng206.jpg" },
+          { name: "Caldera Ash", sku: "NG207", image: "ng207.jpg" },
+          { name: "Opaled Hickory", sku: "NG208", image: "ng208.jpg" },
+          { name: "Reclaimed Aspen", sku: "NG209", image: "ng209.jpg" }
+      ],
+    }
+    ],
+  },
 ];
 
 export const brandBySlug = (slug: string) => brands.find((b) => b.slug === slug);

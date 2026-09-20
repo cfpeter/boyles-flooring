@@ -12,6 +12,9 @@ import type { ImageMetadata } from 'astro';
    map onto ours as: Engineered + Solid wood -> Hardwood, Laminate -> Laminate,
    SPC Vinyl -> Luxury Vinyl.
 
+   One rename: ADCO lists the maker as "SK". It trades as InStride Surfaces,
+   which is the name used here and on its own catalogue in `brands.ts`.
+
    `onFloor: true` marks the lines actually visible in Boyles' own showroom
    photos and videos — Pacific Direct Industries, Republic Flooring, COREtec,
    Stanton and Dreamweaver. Everything else is available to order through the
@@ -75,7 +78,7 @@ export const categories: Category[] = [
       { name: 'Pacific Direct Industries', onFloor: true },
       { name: 'Republic Flooring', onFloor: true },
       { name: 'Reward' },
-      { name: 'SK' },
+      { name: 'InStride Surfaces' },
       { name: 'SLCC' },
       { name: 'Somerset' },
       { name: 'Tecsun' },
@@ -104,7 +107,7 @@ export const categories: Category[] = [
       { name: 'Oasis' },
       { name: 'Pacific Direct Industries', onFloor: true },
       { name: 'Republic Flooring', onFloor: true },
-      { name: 'SK' },
+      { name: 'InStride Surfaces' },
       { name: 'SLCC' },
       { name: 'Staymor' },
       { name: 'Tecsun' },
@@ -130,7 +133,7 @@ export const categories: Category[] = [
       { name: 'Oasis' },
       { name: 'Pacific Direct Industries', onFloor: true },
       { name: 'Republic Flooring', onFloor: true },
-      { name: 'SK' },
+      { name: 'InStride Surfaces' },
       { name: 'SLCC' },
       { name: 'Tecsun' },
       { name: 'Urban' },
